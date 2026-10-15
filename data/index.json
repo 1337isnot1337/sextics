@@ -269,15 +269,20 @@
     {
       "id": "xtype-sparse-rational-1m142",
       "title": "Sparse X-type · rational bundle",
-      "status": "open",
-      "formalStatus": "unproved",
-      "evidenceKind": "none",
-      "certificateAvailable": false,
+      "status": "solved",
+      "formalStatus": "proved",
+      "evidenceKind": "explicit-certificate",
+      "certificateAvailable": true,
       "visibility": "navigation",
-      "draftDisplayStatus": "open",
+      "draftDisplayStatus": "solved",
       "category": "Challenge instances",
       "q": 1,
-      "path": "data/xtype-sparse-rational-1m142/record.json"
+      "path": "data/xtype-sparse-rational-1m142/record.json",
+      "credit": {
+        "githubLogin": "benediamond",
+        "origin": "contribution",
+        "awardedAt": "2026-10-15T16:52:59Z"
+      }
     },
     {
       "id": "xtype-strict-rational-113",
