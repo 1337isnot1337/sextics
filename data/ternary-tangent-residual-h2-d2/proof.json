@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 2,
+  "instanceId": "ternary-tangent-residual-h2-d2",
+  "theorem": "Submission.certificate",
+  "witnessTheorem": "Submission.witness"
+}
