@@ -279,7 +279,31 @@
         0,
         0
       ]
-    }
+    },
+    "divisorTerms": [
+      [
+        1.0,
+        [
+          0,
+          0,
+          4,
+          0,
+          0,
+          0
+        ]
+      ],
+      [
+        -1.0,
+        [
+          0,
+          0,
+          0,
+          0,
+          2,
+          2
+        ]
+      ]
+    ]
   },
   "visibility": "navigation",
   "category": "Challenge instances",
@@ -289,13 +313,76 @@
   "slice": "slices/twoties-tie2-x2-quartic-strict.json",
   "rationale": "why.md",
   "provenanceFile": "provenance.json",
-  "formalStatus": "unproved",
-  "status": "open",
-  "evidenceKind": "none",
-  "certificateAvailable": false,
+  "formalStatus": "proved",
+  "status": "solved",
+  "evidenceKind": "explicit-certificate",
+  "certificateAvailable": true,
   "content": {
-    "why": "data/twoties-tie2-x2-quartic-strict/why.html"
+    "why": "data/twoties-tie2-x2-quartic-strict/why.html",
+    "solution": "data/twoties-tie2-x2-quartic-strict/solution.html"
   },
-  "witnessAvailability": "missing",
-  "draftDisplayStatus": "open"
+  "pullRequest": {
+    "number": 12,
+    "url": "https://github.com/hodge-computer/sextics/pull/12",
+    "headCommit": "4c4ad6784fca769085ee7e7633ec25ab96680372",
+    "baseCommit": "aa1b0a6d16015673abaa3f697abb2116e3f927ef",
+    "mergeCommit": "c9c98dc4f3e864d688307c6fe5e4c6218a8fdb85"
+  },
+  "certificate": {
+    "N": [
+      "0",
+      "0",
+      "X2**2*Y1**3/6 - Y1*Y2**4/6",
+      "0",
+      "-X2**3*Y2**2/3",
+      "X2*Y1**3*Y2/3"
+    ],
+    "C": "0",
+    "strict": true
+  },
+  "D": {
+    "expression": "X2**4 - Y1**2*Y2**2",
+    "degree": 4,
+    "terms": [
+      [
+        "1",
+        [
+          0,
+          0,
+          4,
+          0,
+          0,
+          0
+        ]
+      ],
+      [
+        "-1",
+        [
+          0,
+          0,
+          0,
+          0,
+          2,
+          2
+        ]
+      ]
+    ],
+    "termCount": 2,
+    "latex": "X_{2}^{4} - Y_{1}^{2} Y_{2}^{2}"
+  },
+  "witnessAvailability": "literal",
+  "leanVerification": {
+    "formalStatus": "proved",
+    "status": "accepted",
+    "proofFile": "data/twoties-tie2-x2-quartic-strict/Solution.lean",
+    "receipt": "data/twoties-tie2-x2-quartic-strict/acceptance.json",
+    "theorem": "Submission.certificate",
+    "checker": "Lean (version 4.33.0, x86_64-unknown-linux-gnu, commit d8b18978322de05a8f3dba51ef03cf5461676c17, Release)"
+  },
+  "credit": {
+    "githubLogin": "benediamond",
+    "origin": "contribution",
+    "awardedAt": "2026-10-15T16:53:15Z"
+  },
+  "draftDisplayStatus": "solved"
 }

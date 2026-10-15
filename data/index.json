@@ -449,15 +449,20 @@
     {
       "id": "twoties-tie2-x2-quartic-strict",
       "title": "Two ties · second-block contact",
-      "status": "open",
-      "formalStatus": "unproved",
-      "evidenceKind": "none",
-      "certificateAvailable": false,
+      "status": "solved",
+      "formalStatus": "proved",
+      "evidenceKind": "explicit-certificate",
+      "certificateAvailable": true,
       "visibility": "navigation",
-      "draftDisplayStatus": "open",
+      "draftDisplayStatus": "solved",
       "category": "Challenge instances",
       "q": 1,
-      "path": "data/twoties-tie2-x2-quartic-strict/record.json"
+      "path": "data/twoties-tie2-x2-quartic-strict/record.json",
+      "credit": {
+        "githubLogin": "benediamond",
+        "origin": "contribution",
+        "awardedAt": "2026-10-15T16:53:15Z"
+      }
     },
     {
       "id": "tie-singleton-3odd-strict",
