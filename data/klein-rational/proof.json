@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 2,
+  "instanceId": "klein-rational",
+  "theorem": "Submission.certificate",
+  "witnessTheorem": "Submission.witness"
+}
