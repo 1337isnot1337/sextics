@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 2,
+  "instanceId": "family-sylvester-norm",
+  "theorem": "Submission.certificate",
+  "witnessTheorem": "Submission.witness"
+}
