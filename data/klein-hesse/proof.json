@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 2,
+  "instanceId": "klein-hesse",
+  "theorem": "Submission.certificate",
+  "witnessTheorem": "Submission.witness"
+}
