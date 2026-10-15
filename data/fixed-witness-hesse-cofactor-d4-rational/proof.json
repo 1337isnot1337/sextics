@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 2,
+  "instanceId": "fixed-witness-hesse-cofactor-d4-rational",
+  "theorem": "Submission.certificate",
+  "witnessTheorem": "Submission.witness"
+}
