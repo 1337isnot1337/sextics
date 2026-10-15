@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 2,
+  "instanceId": "twoblock-cubic",
+  "theorem": "Submission.certificate",
+  "witnessTheorem": "Submission.witness"
+}
