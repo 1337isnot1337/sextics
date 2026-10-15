@@ -268,7 +268,75 @@
         0,
         0
       ]
-    }
+    },
+    "divisorTerms": [
+      [
+        1.0,
+        [
+          0,
+          4,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      [
+        1.0,
+        [
+          0,
+          2,
+          2,
+          0,
+          0,
+          0
+        ]
+      ],
+      [
+        -4.0,
+        [
+          0,
+          2,
+          0,
+          0,
+          2,
+          0
+        ]
+      ],
+      [
+        1.0,
+        [
+          0,
+          0,
+          4,
+          0,
+          0,
+          0
+        ]
+      ],
+      [
+        -2.0,
+        [
+          0,
+          0,
+          2,
+          0,
+          2,
+          0
+        ]
+      ],
+      [
+        4.0,
+        [
+          0,
+          0,
+          0,
+          0,
+          4,
+          0
+        ]
+      ]
+    ]
   },
   "visibility": "navigation",
   "category": "Challenge instances",
@@ -278,13 +346,120 @@
   "slice": "slices/three-block-rational-d4-strict.json",
   "rationale": "why.md",
   "provenanceFile": "provenance.json",
-  "formalStatus": "unproved",
-  "status": "open",
-  "evidenceKind": "none",
-  "certificateAvailable": false,
+  "formalStatus": "proved",
+  "status": "solved",
+  "evidenceKind": "explicit-certificate",
+  "certificateAvailable": true,
   "content": {
-    "why": "data/three-block-rational-d4-strict/why.html"
+    "why": "data/three-block-rational-d4-strict/why.html",
+    "solution": "data/three-block-rational-d4-strict/solution.html"
   },
-  "witnessAvailability": "missing",
-  "draftDisplayStatus": "open"
+  "pullRequest": {
+    "number": 7,
+    "url": "https://github.com/hodge-computer/sextics/pull/7",
+    "headCommit": "bf526d1f9b7f204cf14645ef434d154dfd265581",
+    "baseCommit": "dff9d83261fa8b1acd7b6c7f4a40f898d9fa9505",
+    "mergeCommit": "b4a36eea46f47976872e272de1f8bdd0a995855f"
+  },
+  "certificate": {
+    "N": [
+      "0",
+      "X0*X2**3*Y1/6",
+      "X0*X1**3*Y1/6 + X0*X1*X2**2*Y1/6 - X0*X1*Y1**3/3",
+      "0",
+      "X0*X1*X2**3/6",
+      "0"
+    ],
+    "C": "0",
+    "strict": true
+  },
+  "D": {
+    "expression": "X1**4 + X1**2*X2**2 - 4*X1**2*Y1**2 + X2**4 - 2*X2**2*Y1**2 + 4*Y1**4",
+    "degree": 4,
+    "terms": [
+      [
+        "1",
+        [
+          0,
+          4,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      [
+        "1",
+        [
+          0,
+          2,
+          2,
+          0,
+          0,
+          0
+        ]
+      ],
+      [
+        "-4",
+        [
+          0,
+          2,
+          0,
+          0,
+          2,
+          0
+        ]
+      ],
+      [
+        "1",
+        [
+          0,
+          0,
+          4,
+          0,
+          0,
+          0
+        ]
+      ],
+      [
+        "-2",
+        [
+          0,
+          0,
+          2,
+          0,
+          2,
+          0
+        ]
+      ],
+      [
+        "4",
+        [
+          0,
+          0,
+          0,
+          0,
+          4,
+          0
+        ]
+      ]
+    ],
+    "termCount": 6,
+    "latex": "X_{1}^{4} + X_{1}^{2} X_{2}^{2} - 4 X_{1}^{2} Y_{1}^{2} + X_{2}^{4} - 2 X_{2}^{2} Y_{1}^{2} + 4 Y_{1}^{4}"
+  },
+  "witnessAvailability": "literal",
+  "leanVerification": {
+    "formalStatus": "proved",
+    "status": "accepted",
+    "proofFile": "data/three-block-rational-d4-strict/Solution.lean",
+    "receipt": "data/three-block-rational-d4-strict/acceptance.json",
+    "theorem": "Submission.certificate",
+    "checker": "Lean (version 4.33.0, x86_64-unknown-linux-gnu, commit d8b18978322de05a8f3dba51ef03cf5461676c17, Release)"
+  },
+  "credit": {
+    "githubLogin": "benediamond",
+    "origin": "contribution",
+    "awardedAt": "2026-10-15T16:53:07Z"
+  },
+  "draftDisplayStatus": "solved"
 }
