@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 2,
+  "instanceId": "tie-singleton-3odd-strict",
+  "theorem": "Submission.certificate",
+  "witnessTheorem": "Submission.witness"
+}
