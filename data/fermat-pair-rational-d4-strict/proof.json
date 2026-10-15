@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 2,
+  "instanceId": "fermat-pair-rational-d4-strict",
+  "theorem": "Submission.certificate",
+  "witnessTheorem": "Submission.witness"
+}
