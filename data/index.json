@@ -791,15 +791,20 @@
     {
       "id": "family-root-cube",
       "title": "Root cube · crossed blocks",
-      "status": "open",
-      "formalStatus": "unproved",
-      "evidenceKind": "none",
-      "certificateAvailable": false,
+      "status": "solved",
+      "formalStatus": "proved",
+      "evidenceKind": "explicit-certificate",
+      "certificateAvailable": true,
       "visibility": "navigation",
-      "draftDisplayStatus": "open",
+      "draftDisplayStatus": "solved",
       "category": "Challenge instances",
       "q": 1,
-      "path": "data/family-root-cube/record.json"
+      "path": "data/family-root-cube/record.json",
+      "credit": {
+        "githubLogin": "benediamond",
+        "origin": "contribution",
+        "awardedAt": "2026-10-15T16:53:51Z"
+      }
     },
     {
       "id": "family-trace-zero",
