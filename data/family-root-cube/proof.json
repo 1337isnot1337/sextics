@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 2,
+  "instanceId": "family-root-cube",
+  "theorem": "Submission.certificate",
+  "witnessTheorem": "Submission.witness"
+}
