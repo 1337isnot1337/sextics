@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 2,
+  "instanceId": "xtype-strict-rational-113",
+  "theorem": "Submission.certificate",
+  "witnessTheorem": "Submission.witness"
+}
