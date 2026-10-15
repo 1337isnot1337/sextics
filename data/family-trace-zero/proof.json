@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 2,
+  "instanceId": "family-trace-zero",
+  "theorem": "Submission.certificate",
+  "witnessTheorem": "Submission.witness"
+}
