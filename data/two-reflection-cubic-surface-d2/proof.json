@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 2,
+  "instanceId": "two-reflection-cubic-surface-d2",
+  "theorem": "Submission.certificate",
+  "witnessTheorem": "Submission.witness"
+}
