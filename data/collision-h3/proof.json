@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 2,
+  "instanceId": "collision-h3",
+  "theorem": "Submission.certificate",
+  "witnessTheorem": "Submission.witness"
+}
