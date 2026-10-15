@@ -1,0 +1,1 @@
+An inflection collision increases the order of contact in the underlying plane cubic. This offers a precise way to test whether geometric degeneration can lower the pole degree. The target is the resulting odd polynomial direction on that fixed fiber, rather than a claim about arbitrary monomials on a generic cubic.

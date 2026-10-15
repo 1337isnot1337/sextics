@@ -1,0 +1,1 @@
+This ternary target asks whether a special contact collision can reduce the denominator degree while retaining rational coefficients. It is a useful test of the difference between a generic contact divisor and a degenerate one. The prescribed parity character fixes which target direction the construction must reach.

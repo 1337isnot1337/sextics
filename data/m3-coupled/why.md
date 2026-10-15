@@ -1,0 +1,1 @@
+This sextic is genuinely coupled across the obvious blocks, making it a test of constructions that rely on hidden coordinates rather than visible separation. The target is also a bundle rather than a lone coordinate monomial. The challenge is to locate a small algebraic problem inside the six-variable one while preserving the divergence equation under transport.

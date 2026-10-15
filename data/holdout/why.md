@@ -1,0 +1,1 @@
+One of ten independent residual directions in the 58-dimensional paired-sign sector. Existing quotient support covers 48 of those directions (182 of all 208 \(q=1\) directions), and misses this target. Every nonzero combination of these ten requires horizontal support; purely vertical denominators are excluded at every degree.

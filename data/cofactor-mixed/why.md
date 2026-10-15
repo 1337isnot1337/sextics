@@ -1,0 +1,1 @@
+This version puts both parity blocks inside the quadratic–cubic map, so the structure is less separated in the original variables. The target again contains a Jacobian factor. The instance tests whether the cofactor method depends on visible separation or only on the adapted-coordinate identities.

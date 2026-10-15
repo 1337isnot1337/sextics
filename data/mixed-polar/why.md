@@ -1,0 +1,1 @@
+New local challenge proposed by this curation; no certificate is supplied or known from the inspected catalogue. Tests a balanced all-variable target after adding an opposite-biweight coupling.

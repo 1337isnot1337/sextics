@@ -1,0 +1,2 @@
+# Preserve compiler receipts exactly, including diagnostic whitespace.
+formal/verification/logs/*.log -whitespace

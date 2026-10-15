@@ -1,0 +1,106 @@
+{
+  "vertices": "slice-639787bcbf1d6562.vertices.bin.gz",
+  "indices": "slice-639787bcbf1d6562.indices.bin.gz",
+  "meta": {
+    "format": "indexed-p3-n3-phase2-d1-v3",
+    "stride": 9,
+    "pairId": "ytype-companion-231-d4-strict-rational",
+    "vertexCount": 57292,
+    "triangleCount": 114592,
+    "centerOriginal": [
+      -0.07903567135642153,
+      0.2234340761386308,
+      -0.4555118326526668
+    ],
+    "displayScale": 3.3573529947029703,
+    "projectionBox": 10,
+    "sourceResolution": 88,
+    "planeSeed": 80595230,
+    "warp": 2.5,
+    "planeMatrix": [
+      [
+        0.043844180391949455,
+        -0.028172325443131363,
+        0.7515706936744351,
+        -0.20992081454068526
+      ],
+      [
+        0.6073884639941135,
+        -0.0390956168344525,
+        -0.04930634403548776,
+        0.21671501614018815
+      ],
+      [
+        -0.5093672869847654,
+        0.6472340736122693,
+        -0.1935301372528105,
+        0.20336582806308007
+      ],
+      [
+        -0.5559932703659066,
+        -0.6913464974991698,
+        0.0775043238436843,
+        0.3215377426204879
+      ],
+      [
+        0.06911122615117891,
+        0.24790791559185088,
+        0.4869188144396779,
+        0.7437076365934983
+      ],
+      [
+        0.23621395032917436,
+        -0.1983622760538448,
+        -0.3900764165553755,
+        0.45948082084150677
+      ]
+    ],
+    "phaseSigns": [
+      1,
+      1,
+      1,
+      -1,
+      -1,
+      -1
+    ],
+    "roots": null,
+    "source": "ytype-companion-231-d4-strict-rational",
+    "complexScale": 0.4011557440716924,
+    "min": -0.7187022347036182,
+    "max": 0.43253267721906496,
+    "maxEdge": 0.10657827357880251,
+    "edgeBound": 0.2914106467323572,
+    "maxRootResidual": 1.1188640617297574e-12,
+    "skippedDegenerateTriangles": 0,
+    "geometryBytes": 3437616,
+    "validationPassed": true,
+    "computedMs": 3327.774516999998,
+    "mesherSha256": "671c22f96927121bbbc33c6dbeb2e64972e1a58948fafd3577c0c4428295dfec",
+    "selectedCamera": {
+      "yaw": -0.29906373198585795,
+      "pitch": 0.525524348043321,
+      "distance": 2.58,
+      "center": [
+        0,
+        0,
+        0
+      ]
+    },
+    "cameraSelection": {
+      "method": "frontmost-curvature-and-framing-v1",
+      "viewCandidates": 60,
+      "score": 1.7555276366185055,
+      "clippedFraction": 0
+    },
+    "sliceSelection": {
+      "method": "deterministic-qr-coarse-curvature-v1",
+      "candidateCount": 4,
+      "coarseResolution": 32,
+      "seed": 80595230
+    },
+    "divisorScale": 1,
+    "divisorMin": 1,
+    "divisorMax": 1,
+    "divisorCrossingTriangles": 0
+  }
+}

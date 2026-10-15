@@ -1,0 +1,1 @@
+Two separated three-coordinate ties provide a controlled test of whether a construction local to one block can ignore a second deformation. The target lies in the second block but the ambient sextic contains both. The point is to determine precisely when unused variables are true spectators.

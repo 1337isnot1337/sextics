@@ -1,0 +1,1 @@
+A binary cubic in \(X_0^2,Y_0^2\) couples two formerly separate Fermat coordinates. The target combines two odd monomials, so the interesting question is whether the relative coefficient can absorb the obstruction introduced by that coupling. This tests a sparse rational bundle rather than an arbitrary single monomial or a general sextic.

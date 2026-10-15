@@ -1,0 +1,1 @@
+The sporadic target \(X_1^2X_2Y_1^2Y_2\) is a useful test of what completing a square can buy in a non-diagonal sextic. Its odd direction is carried by several coordinates, so the choice of active variables and passive multiplier matters. The instance asks for a mechanism adapted to the completed-square structure rather than a general search in all monomials.

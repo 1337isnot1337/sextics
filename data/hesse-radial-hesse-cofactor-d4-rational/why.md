@@ -1,0 +1,1 @@
+A non-diagonal passive block can coexist with a small active target, but it is not automatic that the usual Euler constructions survive. This instance asks how much of the sextic a field actually needs to differentiate. The target singles out two active coordinates while carrying a multiplier from the remaining block.

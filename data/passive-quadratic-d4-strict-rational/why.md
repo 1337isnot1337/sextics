@@ -1,0 +1,1 @@
+Replacing a passive square by a quadratic form in several variables tests whether a construction depends on an accidental coordinate choice. Here the target carries a passive multiplier while the active pair is coupled through that quadratic. Rationality is part of the issue: geometric factors may exist only after extending the coefficient field.

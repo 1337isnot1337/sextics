@@ -1,0 +1,1 @@
+New local challenge proposed by this curation; no certificate is supplied or known from the inspected catalogue. Includes both \((4,2)\) and \((2,4)\) X/Y bidegrees; tests beyond one-sided coupling mechanisms.

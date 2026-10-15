@@ -1,0 +1,1 @@
+A second binary-block fiber tests whether a phenomenon is tied to one specially chosen coefficient tuple. Here the coefficients and the relative weight of the target monomials both change. The instance is useful for distinguishing a repeatable companion mechanism from a numerical accident on the first fiber.

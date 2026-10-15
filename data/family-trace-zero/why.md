@@ -1,0 +1,1 @@
+A line times a conic provides a different cubic structure from the fully reducible Hesse triangle. This instance tests whether a trace-zero action on that conic can produce the needed logarithmic field. The target carries the Jacobian density of a quadratic map, making divergence-preserving transport central to the problem.

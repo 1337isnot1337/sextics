@@ -1,0 +1,1 @@
+A cross-block target tests whether a multiplier from one tied block can accompany a field acting on another. The passive status of that multiplier must be checked against the actual active variables. This instance isolates that issue while retaining a small, exact sextic.

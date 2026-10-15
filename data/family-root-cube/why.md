@@ -1,0 +1,1 @@
+Crossed-block terms test the limits of constructions based on a binary-cubic root. The target is fixed even though the sextic contains several mixed terms with rational coefficients. The key question is whether those terms share a common weighted symmetry that can replace visible block separation.

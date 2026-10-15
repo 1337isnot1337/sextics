@@ -1,0 +1,1 @@
+Three binary blocks leave fewer independent spectator directions than a single coupled block. The target links coordinates from all three, so a construction must retain control of its multiplier while differentiating the active block. This instance tests whether a low-degree rational divisor can survive that interaction.

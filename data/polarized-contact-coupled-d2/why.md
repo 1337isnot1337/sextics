@@ -1,0 +1,1 @@
+Polarizing two contact sextics produces an involution-compatible fourfold, but a genuinely mixed coupling can destroy the separate-copy construction. This target asks whether there is a coupling invisible to the contact fields. It is a test of preserving first integrals rather than preserving a separated polynomial presentation.

@@ -1,0 +1,1 @@
+A triangular shear can hide a simple product inside a sextic. The target in this instance is tied to the Jacobian of that shear, so one must track the coordinate change and its divergence carefully. This probes a construction based on a linear first jet rather than a contact conic or a diagonal block.

@@ -1,0 +1,1 @@
+After introducing a mixed polarized coupling, a further deformation tests whether the certificate can move with the target. The problem is no longer to preserve a fixed target term by term. It is to identify a controlled deformation law that keeps the pole and the vector field admissible.

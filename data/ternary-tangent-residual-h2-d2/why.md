@@ -1,0 +1,1 @@
+Passing from a binary block to a ternary cubic in squared coordinates introduces plane-curve contact geometry. This target probes whether a tangent line can supply a small polar divisor after pulling back to the original variables. The location and multiplicity of the remaining intersection point matter as much as tangency itself.

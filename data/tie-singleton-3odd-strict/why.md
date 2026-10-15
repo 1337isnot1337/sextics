@@ -1,0 +1,1 @@
+The single tie \(X_0^2X_1^2Y_1^2\) is paired here with a target involving three odd coordinates. Such a target cannot be understood merely by looking at the coupled block in isolation. The instance tests whether radial motion in the remaining coordinates can supply the divergence required by a strict field.

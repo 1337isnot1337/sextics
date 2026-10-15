@@ -1,0 +1,1 @@
+The single three-coordinate tie \(X_0^2X_1^2Y_0^2\) is a small deformation of Fermat that couples three square coordinates at once. The two-term target asks whether the deformation can be absorbed by a compatible target direction. It is an elementary test case for bringing plane-cubic geometry into the rational-field problem.

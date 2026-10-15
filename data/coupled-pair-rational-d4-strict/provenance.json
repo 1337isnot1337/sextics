@@ -1,0 +1,13 @@
+{
+  "instanceId": "coupled-pair-rational-d4-strict",
+  "variables": [
+    "X0",
+    "X1",
+    "X2",
+    "Y0",
+    "Y1",
+    "Y2"
+  ],
+  "statementSource": "instance.rec",
+  "acceptance": "A solution must be introduced by a checked and merged proposal."
+}

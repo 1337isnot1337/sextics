@@ -1,0 +1,128 @@
+# Immutable target and presentation; acceptance is derived from a checked, merged proposal.
+id: family-hesse-web
+title: Hesse web · t = −2
+q: 1
+F: X0**6 - 2*X0**2*X1**2*Y0**2 + X1**6 + 2*X2**6 + Y0**6 + 3*Y1**6 + 5*Y2**6
+A: X0**3*Y0**3
+render:
+  seed: 2070276287
+  resolution: 88
+  phaseSigns:
+  - 1
+  - -1
+  - -1
+  - 1
+  - 1
+  - -1
+  pairId: family-hesse-web
+  mesh: meshes/slice-4bc9bbe79084506e.json
+  planeMatrix:
+  - - 0.042661238802492285
+    - -0.8735215814809418
+    - -0.09802597859354018
+    - 0.009196964913185769
+  - - 0.43595163112436774
+    - 0.23495149633672016
+    - 0.17136260056640465
+    - -0.4084266378552432
+  - - 0.8706946817470319
+    - -0.10206487124478437
+    - -0.2691987669267223
+    - 0.15440733776261115
+  - - -0.13161391342399215
+    - 0.2364457475382401
+    - -0.9043251077528447
+    - -0.18951524369962597
+  - - 0.17967878494319658
+    - 0.2841260468496748
+    - 0.2572194008803443
+    - 0.0025877675442401602
+  - - -0.020255301425389484
+    - -0.18629654072637902
+    - 0.06776481263600176
+    - -0.8793968087480867
+  triangleCount: 89792
+  validated: true
+  camera:
+    yaw: 2.5337085965936677
+    pitch: -0.21669182984191082
+    distance: 2.58
+    center:
+    - 0
+    - 0
+    - 0
+visibility: navigation
+category: Challenge instances
+displayDefinitions:
+- F_0=X_0^6+X_1^6+X_2^6+Y_0^6+Y_1^6+Y_2^6
+slice: slices/family-hesse-web.json
+polynomialData:
+  F:
+    latex: F_0 - 2 X_{0}^{2} X_{1}^{2} Y_{0}^{2} + X_{2}^{6} + 2 Y_{1}^{6} + 4 Y_{2}^{6}
+    degree: 6
+    termCount: 7
+    terms:
+    - - '1'
+      - - 6
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+    - - '-2'
+      - - 2
+        - 2
+        - 0
+        - 2
+        - 0
+        - 0
+    - - '1'
+      - - 0
+        - 6
+        - 0
+        - 0
+        - 0
+        - 0
+    - - '2'
+      - - 0
+        - 0
+        - 6
+        - 0
+        - 0
+        - 0
+    - - '1'
+      - - 0
+        - 0
+        - 0
+        - 6
+        - 0
+        - 0
+    - - '3'
+      - - 0
+        - 0
+        - 0
+        - 0
+        - 6
+        - 0
+    - - '5'
+      - - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 6
+  A:
+    latex: X_{0}^{3} Y_{0}^{3}
+    degree: 6
+    termCount: 1
+    terms:
+    - - '1'
+      - - 3
+        - 0
+        - 0
+        - 3
+        - 0
+        - 0
+rationale: why.md
+provenanceFile: provenance.json
+formalStatus: unproved

@@ -1,0 +1,1 @@
+This target brings a passive square into a single-tie sextic. It asks whether such a multiplier can be carried through a low-degree construction without adding a new pole. The distinction between active variables and the passive factor is the main structural feature of the instance.

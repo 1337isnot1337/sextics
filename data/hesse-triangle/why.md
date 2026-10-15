@@ -1,0 +1,1 @@
+The cubic identity behind a triangle of quadrics suggests a controlled family of sextics with global logarithmic structure. This instance tests whether that structure can serve a specified odd monomial through a sextic polar divisor. It is a bridge from coordinate formulas to constructions using general quadratic maps.

@@ -1,0 +1,1 @@
+A coupled binary block at pole order two combines two sources of difficulty: the higher divisibility requirement and the loss of diagonal Euler symmetry. The two-term target is designed to test a compatibility relation rather than two independent monomials. This instance also reveals how a fixed-denominator linear system changes when the numerator degree increases.

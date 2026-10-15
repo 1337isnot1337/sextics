@@ -1,0 +1,1 @@
+A quadratic and a cubic sharing active variables can hide a much simpler weighted decomposition of a sextic. This instance asks whether that decomposition can serve a target carrying the map's Jacobian factor. The presence of a small target space makes it a useful test of a reusable construction rather than a single isolated identity.
