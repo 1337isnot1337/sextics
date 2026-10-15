@@ -629,15 +629,20 @@
     {
       "id": "klein-hesse",
       "title": "Klein–Hesse · κ = 2",
-      "status": "open",
-      "formalStatus": "unproved",
-      "evidenceKind": "none",
-      "certificateAvailable": false,
+      "status": "solved",
+      "formalStatus": "proved",
+      "evidenceKind": "explicit-certificate",
+      "certificateAvailable": true,
       "visibility": "navigation",
-      "draftDisplayStatus": "open",
+      "draftDisplayStatus": "solved",
       "category": "Challenge instances",
       "q": 1,
-      "path": "data/klein-hesse/record.json"
+      "path": "data/klein-hesse/record.json",
+      "credit": {
+        "githubLogin": "benediamond",
+        "origin": "contribution",
+        "awardedAt": "2026-10-15T16:53:35Z"
+      }
     },
     {
       "id": "hesse-triangle",
