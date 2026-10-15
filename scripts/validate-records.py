@@ -84,7 +84,7 @@ for summary in index['records']:
     mesh_path = (ROOT / 'assets' / mesh_relative).resolve()
     require(mesh_path.is_relative_to(ROOT / 'assets/meshes') and mesh_path.exists(), f'{rid}: missing local mesh')
     mesh = json.loads(mesh_path.read_text())
-    require(mesh.get('meta', {}).get('planeMatrix') == plane, f'{rid}: mesh does not match the saved plane')
+    require(mesh.get('meta', mesh if render.get('bakedHome') else {}).get('planeMatrix') == plane, f'{rid}: mesh does not match the saved plane')
     slice_data = json.loads((ROOT / 'slices' / f'{rid}.json').read_text())
     require(slice_data.get('planeMatrix') == plane and slice_data.get('camera') == camera, f'{rid}: slice export does not match the record')
     require(mesh.get('projectionBox', mesh.get('meta', {}).get('projectionBox')) == 10, f'{rid}: incorrect box')

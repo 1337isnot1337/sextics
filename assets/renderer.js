@@ -567,6 +567,11 @@ function create(canvas,options={}){
       if(!Number.isFinite(saved.yaw)||!Number.isFinite(saved.pitch)||!Number.isFinite(saved.distance)||saved.distance<minDistance||saved.distance>maxDistance||!Array.isArray(saved.center)||saved.center.length!==3||!saved.center.every(Number.isFinite))throw new Error('Invalid saved camera.');
       baseYaw=saved.yaw;basePitch=saved.pitch;baseDistance=saved.distance;baseCenter=saved.center.slice();
       homeOrientation=ScreenTrackball.fromYawPitch(baseYaw,basePitch);resetCamera();
+      if(r.bakedHome){
+        const mesh=await baked();if(id!==job||destroyed)return;
+        const shaded=await HodgeDivisor.apply(mesh,hasCertificate(selected)?r.divisorTerms:null,()=>id===job&&!destroyed);
+        if(id!==job||destroyed)return;busy=false;upload(shaded,selected);return;
+      }
       if(r.mesh){
         const response=await fetch(new URL(r.mesh,assetBase));if(!response.ok)throw new Error('Missing saved slice.');
         const manifest=await response.json(),root=new URL('.',new URL(r.mesh,assetBase));

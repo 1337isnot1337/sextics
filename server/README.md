@@ -1,0 +1,85 @@
+# GitHub sign-in and discussions
+
+The website remains usable as static files. GitHub sign-in requires this small Node.js service behind the same HTTPS origin as the website. The local service uses Node's standard library. The AWS Lambda adapter additionally uses the pinned AWS SDK packages in `server/package-lock.json`. Use Node 24 or newer. See [AWS deployment](../infra/aws/README.md) for production hosting.
+
+The GitHub App requests repository **Discussions: read and write** and **Metadata: read**. Install it only on `hodge-computer/sextics`. It does not request source-code write access, organization administration, or email addresses. User comments use the signed-in person's user token, so GitHub attributes them to that person. The installation token is used only to read public discussions; anonymous requests cannot expose a private repository's discussions.
+
+## Owner setup
+
+Creating or installing the GitHub App requires the owner's authorization. Prepare and test the service before doing so.
+
+1. Choose the HTTPS origin and an app-configuration file **outside the checkout and public web root**, in a directory accessible only to the service user.
+2. Set `HODGE_ORIGIN`, `HODGE_GITHUB_APP_CONFIG`, and a temporary random `HODGE_SETUP_TOKEN`. For owner registration from the same laptop, set `HODGE_SETUP_ORIGIN=http://127.0.0.1:8772` and open the setup page directly there; this keeps the private setup token out of the public tunnel. Optionally set `HODGE_SITE_ROOT` to a separate static checkout. `HODGE_PORT` defaults to `8772`; the listener binds only to `127.0.0.1`.
+3. Run `node server/server.mjs`. Route `/auth/` and `/api/` to it through the site's HTTPS gateway. The service can also serve the static website itself.
+4. Visit `/auth/setup?key=<the temporary token>`. The page shows the exact requested permissions and prepares an organization-owned GitHub App named **Sextics**. The owner reviews and creates it on GitHub. The callback saves credentials with mode `0600`, never into the checkout or the browser.
+5. Install the new app only on `hodge-computer/sextics`, then sign in through the website. Remove `HODGE_SETUP_TOKEN` and restart after setup. Registration routes automatically stop working once credentials exist.
+
+For a temporary preview, the callback points to the preview's HTTPS origin. Before launch, update the app's homepage and callback URLs to the final origin, update `HODGE_ORIGIN`, and install the service on the production host. A private preview app is not a repository-visibility change. Review the app's availability setting for public participation at launch.
+
+## Required production switch to hodge.computer
+
+The owner requires every public app URL to use `https://hodge.computer` at launch. The ngrok address is temporary preview configuration, not the production address. Complete these steps as one owner-authorized launch operation:
+
+1. Deploy the website and account backend behind HTTPS on `hodge.computer`, routing `/auth/` and `/api/` to the backend. Verify reachability before changing the active callback.
+2. In the existing **Sextics** GitHub App registration, set **Homepage URL** to `https://hodge.computer` and **Callback URL** to `https://hodge.computer/auth/github/callback`. Remove the temporary ngrok callback after production login is verified.
+3. The preview manifest included an **inactive** webhook URL. Clear that unused URL if GitHub allows it; otherwise set it to `https://hodge.computer/api/github-webhook` and leave delivery disabled. No webhook handler is currently implemented. Review any setup or other URL fields and remove temporary tunnel references.
+4. Start the production service with `HODGE_ORIGIN=https://hodge.computer`, the existing app credentials in private secret storage outside the checkout, and no `HODGE_SETUP_TOKEN`. Do not recreate the app. Do not deploy the temporary preview launcher, which deliberately reads the active ngrok origin.
+5. Test an actual sign-in, the returned GitHub identity, sign-out, and a return to the original instance page. Check the authorization screen identifies Sextics by Hodge Labs and that its website link reaches the canonical domain. Test discussion reads and posting after their integration is enabled, with permission for any test comment.
+6. Inspect GitHub App settings and deployed configuration for remaining ngrok URLs, confirm repository access remains restricted to `sextics`, and then retire the temporary preview tunnel.
+
+Changing the homepage alone is independent of the callback, but changing the active callback before its backend is reachable breaks login. The production domain, hosting, and DNS must be ready for the coordinated switch. Preview sessions belong to the preview domain; users will sign in again on the production domain.
+
+The loopback service stores short-lived login sessions in memory, so restarting it signs everyone out. The Lambda adapter instead stores sessions and one-use OAuth flows in DynamoDB, shared across invocations. It checks expiry itself; DynamoDB TTL only cleans up old records. Conditional writes prevent duplicate OAuth completion and concurrent posting from bypassing the session rate limit. Cookies are HttpOnly, SameSite=Lax, and Secure on HTTPS; GitHub access tokens stay on the server. OAuth uses state, a browser-binding cookie, and PKCE. Write requests require a session, the exact configured origin, and a CSRF token. No request URLs, OAuth codes, cookies, or tokens are logged. Keep app credentials in the host's private secret storage and back them up through the owner's approved process.
+
+## Native GitHub discussions
+
+The API uses `discussions/index.json` to map existing instance IDs to native GitHub discussions:
+
+```json
+{
+  "repository": "hodge-computer/sextics",
+  "instances": {
+    "example-instance": { "number": 123, "nodeId": "D_example" }
+  }
+}
+```
+
+Use actual GitHub discussion numbers and node IDs. Enabling Discussions, creating threads, and committing the mapping require separate owner-authorized operations. The service returns an unavailable response until a mapping exists; signing in does not create discussions or post anything. The website loads each conversation on demand and provides Markdown/KaTeX previews, comments, replies, and pagination. Refresh fetches new messages. Drafts survive navigation and sign-in within the same browser tab; they are cleared after a confirmed post. Editing, moderation, and subscriptions remain on GitHub. There is no comment cache or separate conversation database.
+
+Agents can participate directly through GitHub's Discussions API using their contributor's authorized GitHub CLI session. They must obtain permission before posting and must not impersonate another contributor. Website sign-in is not required for those direct API contributions. Discussion comments do not count as accepted solve PRs.
+
+## Connect the actual threads
+
+Prepare and review all opening posts without contacting GitHub:
+
+```sh
+python3 scripts/setup-discussions.py --plan /tmp/sextics-discussion-posts.json
+```
+
+The plan covers every current instance, open or solved. After explicit owner approval to enable Discussions and publish these posts, run:
+
+```sh
+python3 scripts/setup-discussions.py --plan /tmp/sextics-discussion-posts.json --apply --enable
+```
+
+This uses the currently authorized GitHub CLI account, the repository's General category, and immutable instance markers to resume after an interruption without creating duplicate threads. It stops on an unexpected or duplicate marker. It writes actual numbers and node IDs to `discussions/index.json` after each creation. It does not push that file or change repository visibility. If General is missing, create that category with owner approval before retrying. Review and commit the mapping through a separate authorized maintenance PR. Future catalogue additions can use a newly reviewed plan; existing threads are retained.
+
+Agent participation instructions are in [docs/discussions.md](../docs/discussions.md). Discussion posts use user access tokens; the app installation token remains read-only. GitHub enforces additional account permissions when a comment is submitted. Anonymous reads recheck repository visibility before each request; private conversations are not served anonymously.
+
+## Local validation
+
+```sh
+node --test server/*.test.mjs
+```
+
+The tests use local mock GitHub responses, disposable credentials, and loopback HTTP listeners. They exercise the OAuth callback, expiry and replay resistance, browser binding, CSRF, sign-out, app registration, credential-file permissions, and static-file boundaries. They make no GitHub changes.
+
+A disposable browser fixture exercises the real discussion components without any GitHub API calls:
+
+```sh
+node server/discussion-preview.mjs
+```
+
+Open `http://127.0.0.1:8773/`. It labels all content as local test data and binds only to loopback. Add `?signedout=1` to inspect the logged-out state. Stop the process to discard its comments. The fixture never loads real credentials and is not part of the production server.
+
+Bundled Markdown/sanitizer versions, licenses, and archive hashes are recorded in `assets/vendor/DISCUSSION-LIBRARIES.txt`. Raw HTML is escaped, Markdown output is sanitized before insertion, math uses KaTeX with `trust: false` and bounded expansion, and external images are links. No remote runtime scripts are loaded.

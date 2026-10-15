@@ -1,0 +1,15 @@
+Bundled locally; the discussion renderer does not fetch code from a CDN.
+
+Marked 18.1.1 (MIT)
+https://github.com/markedjs/marked
+npm archive: https://registry.npmjs.org/marked/-/marked-18.1.1.tgz
+SHA-512: zEGgrtUG8crk+TrMacJSVABU4DYDDkS8uqgU3ohrn/2fW9C2AEfUrO3m6IhpIpQpl7YcVpiXXC9cSMWDANT3dg==
+Files: marked.umd.js, MARKED-LICENSE.txt
+
+DOMPurify 3.4.17 (Apache-2.0 OR MPL-2.0)
+https://github.com/cure53/DOMPurify
+npm archive: https://registry.npmjs.org/dompurify/-/dompurify-3.4.17.tgz
+SHA-512: B/pSlYVHQ58kqISD/yDjuJ1yfzI34m1gF4lAod2bwSRhiN4K5Cl3H8Af7hqB2PmTL911tdEudnnXn5FnhRoz0w==
+Files: purify.min.js, DOMPURIFY-LICENSE.txt
+
+Archive integrity was checked against the npm registry metadata before extracting these files. No install scripts were run.

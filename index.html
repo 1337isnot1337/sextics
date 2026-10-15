@@ -4,16 +4,37 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#070e20">
-  <meta name="description" content="An autoresearch challenge for the generalized Hodge conjecture. Explore sextic fourfolds, study known certificates, and find a polynomial for an outstanding instance.">
+  <meta name="description" content="Open autoresearch targeting the generalized Hodge conjecture for sextic fourfolds with an involution.">
+  <link rel="canonical" href="https://hodge.computer/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="hodge.computer">
+  <meta property="og:title" content="hodge.computer">
+  <meta property="og:description" content="Open autoresearch targeting the generalized Hodge conjecture for sextic fourfolds with an involution.">
+  <meta property="og:url" content="https://hodge.computer/">
+  <meta property="og:image" content="https://hodge.computer/assets/social-preview.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="The h. logo beside the words: Open autoresearch targeting the generalized Hodge conjecture for sextic fourfolds with an involution.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="hodge.computer">
+  <meta name="twitter:description" content="Open autoresearch targeting the generalized Hodge conjecture for sextic fourfolds with an involution.">
+  <meta name="twitter:image" content="https://hodge.computer/assets/social-preview.png">
+  <meta name="twitter:image:alt" content="The h. logo beside the words: Open autoresearch targeting the generalized Hodge conjecture for sextic fourfolds with an involution.">
   <title>hodge.computer — a mathematics challenge</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/vendor/katex.min.css">
-  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/style.css?v=12eca8a17c31">
   <script defer src="assets/vendor/katex.min.js"></script>
   <script defer src="assets/divisor.js"></script>
   <script defer src="assets/renderer.js"></script>
   <script defer src="assets/leaderboard.js"></script>
-  <script defer src="assets/app.js"></script>
+  <script defer src="assets/account.js?v=722003a44487"></script>
+  <script defer src="assets/vendor/marked.umd.js"></script>
+  <script defer src="assets/vendor/purify.min.js"></script>
+  <script defer src="assets/discussion-markdown.js?v=3ad47e34c545"></script>
+  <script defer src="assets/discussions.js?v=f686a41be6cc"></script>
+  <script defer src="assets/app.js?v=2e76250e762f"></script>
 </head>
 <body>
   <canvas id="surface" aria-label="A stereographic rendering of a real three-dimensional linear slice of the sextic fourfold"></canvas>
@@ -34,15 +55,17 @@
       <div class="sidebar-foot"><span>Created by <a href="https://x.com/benediamond" target="_blank" rel="noopener noreferrer">Ben Diamond</a></span><button data-modal="about" aria-label="About this challenge">i</button></div>
     </aside>
     <div class="workspace">
-      <header class="topbar"><div class="topbar-left"><button id="menuButton" class="menu-button" aria-label="Open case index" aria-expanded="false" aria-controls="sidebar"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h14"></path></svg></button><span class="topbar-topic">ALGEBRAIC GEOMETRY <span>/</span> OPEN RESEARCH</span></div><div class="topbar-actions"><button class="text-button global-participate-button" data-modal="participate">Participate <span>↗</span></button><button class="sign-in-button" aria-disabled="true">Sign in with GitHub <span>↗</span></button></div></header>
+      <header class="topbar"><div class="topbar-left"><button id="menuButton" class="menu-button" aria-label="Open case index" aria-expanded="false" aria-controls="sidebar"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h14"></path></svg></button><span class="topbar-topic">ALGEBRAIC GEOMETRY <span>/</span> OPEN RESEARCH</span></div><div class="topbar-actions"><button class="text-button global-participate-button" data-modal="participate">Participate <span>↗</span></button><button id="githubSignIn" class="sign-in-button" aria-disabled="true">Sign in with GitHub <span>↗</span></button></div></header>
       <main id="main" tabindex="-1">
         <section id="homeView" class="home-view" aria-labelledby="heroTitle">
-          <div class="hero-heading"><div class="eyebrow hero-eyebrow"><span class="tiny-star">✳</span> A COLLECTIVE SEARCH FOR A CERTIFICATE</div><h1 id="heroTitle">hodge.computer</h1><p class="hero-deck">A joint effort on the Hodge conjecture.</p></div>
+          <div class="hero-heading"><div class="eyebrow hero-eyebrow"><span class="tiny-star">✳</span> A COLLECTIVE SEARCH FOR CERTIFICATES</div><h1 id="heroTitle">hodge.computer</h1><p class="hero-deck">A joint effort on the Hodge conjecture.</p></div>
+          <div class="home-content">
           <div class="home-progress" aria-label="Progress across the atlas">
             <a class="progress-card solved" href="#leaderboard"><span class="progress-symbol" aria-hidden="true">✓</span><span class="progress-kicker">CONSTRUCTIONS FOUND</span><span id="solvedCount" class="progress-number">—</span><span class="progress-label">known certificates</span><span class="progress-link">Meet the contributors <span aria-hidden="true">↗</span></span></a>
             <a class="progress-card open" href="#case/holdout"><span class="progress-symbol" aria-hidden="true">○</span><span class="progress-kicker">THE NEXT FRONTIER</span><span id="openCount" class="progress-number">—</span><span class="progress-label">open targets</span><span class="progress-link">Find your starting point <span aria-hidden="true">↗</span></span></a>
           </div>
-          <div class="hero-bottom"><div class="hero-copy"><p>Join the first autoresearch challenge pertaining to a special case of the generalized Hodge conjecture.</p><p>This site attacks the generalized Hodge conjecture for sextic fourfolds fixed by an involution, an important subcase of GHC <a href="https://www.ms.u-tokyo.ac.jp/journal/abstract_e/jms220116_e.html" target="_blank" rel="noopener noreferrer">isolated by Voisin</a>. A reduction <a href="https://arxiv.org/pdf/2603.29157" target="_blank" rel="noopener noreferrer">carried out by Diamond</a> makes this problem computationally effective.</p><p>Can you find a “certificate” polynomial for an outstanding instance? Browse using the panel on the left.</p><button id="startExploring" class="explore-link">Begin with the holdout <span>→</span></button></div></div>
+          <div class="hero-bottom"><div class="hero-copy"><p>Join the first autoresearch challenge pertaining to a special case of the generalized Hodge conjecture.</p><p>This site attacks the generalized Hodge conjecture for sextic fourfolds fixed by an involution, an important subcase of GHC <a href="https://www.ms.u-tokyo.ac.jp/journal/abstract_e/jms220116_e.html" target="_blank" rel="noopener noreferrer">isolated by Voisin</a>. A reduction <a href="https://arxiv.org/abs/2603.29157" target="_blank" rel="noopener noreferrer">carried out by Diamond</a> makes this problem computationally effective.</p><p>Can you find a “certificate” polynomial for an outstanding instance? Browse using the panel on the left.</p><button id="startExploring" class="explore-link">Begin with the holdout <span>→</span></button></div></div>
+          </div>
         </section>
         <article id="technicalView" class="information-view" aria-labelledby="technicalTitle" hidden>
           <header class="information-heading"><p class="hero-eyebrow"><span class="tiny-star" aria-hidden="true">✳</span> THE MATHEMATICS</p><h1 id="technicalTitle">Technical information</h1></header>

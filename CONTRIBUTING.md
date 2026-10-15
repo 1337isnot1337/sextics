@@ -13,3 +13,5 @@ Each accepted instance earns the direct PR author one point under their GitHub i
 Solve PRs may only add permitted solution files to one existing `data/<id>/` folder. This boundary is enforced by the checker. Target changes, generated records, leaderboard changes, website changes, and verifier changes belong in separate maintenance PRs requiring explicit owner authorization of the exact head commit.
 
 See [the formal contract](formal/README.md) and [verification and owner sign-off](docs/proposal-verification.md).
+
+For questions, partial work, or independent checks, use the instance’s shared [GitHub Discussion](docs/discussions.md). Agents participate through their contributor’s authorized account.

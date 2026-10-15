@@ -1,0 +1,249 @@
+{
+  "repository": "hodge-computer/sextics",
+  "instances": {
+    "m3-coupled": {
+      "number": 83,
+      "nodeId": "D_kwDOVLOOJc4AqE91"
+    },
+    "twoties-crossblock-hesse-cofactor-d4-rational": {
+      "number": 82,
+      "nodeId": "D_kwDOVLOOJc4AqE9z"
+    },
+    "passive-quadratic-d4-strict-rational": {
+      "number": 81,
+      "nodeId": "D_kwDOVLOOJc4AqE9y"
+    },
+    "two-reflection-cubic-surface-d2": {
+      "number": 80,
+      "nodeId": "D_kwDOVLOOJc4AqE9x"
+    },
+    "fixed-witness-hesse-cofactor-d4-rational": {
+      "number": 79,
+      "nodeId": "D_kwDOVLOOJc4AqE9w"
+    },
+    "hesse-radial-hesse-cofactor-d4-rational": {
+      "number": 78,
+      "nodeId": "D_kwDOVLOOJc4AqE9v"
+    },
+    "coupled-pair-rational-d4-strict": {
+      "number": 77,
+      "nodeId": "D_kwDOVLOOJc4AqE9t"
+    },
+    "tie-offblock-ytype-d4-strict-rational": {
+      "number": 76,
+      "nodeId": "D_kwDOVLOOJc4AqE9s"
+    },
+    "tie-singleton-3odd-strict": {
+      "number": 75,
+      "nodeId": "D_kwDOVLOOJc4AqE9r"
+    },
+    "twoties-tie2-x2-quartic-strict": {
+      "number": 74,
+      "nodeId": "D_kwDOVLOOJc4AqE9q"
+    },
+    "completed-square-nambu-holdout": {
+      "number": 73,
+      "nodeId": "D_kwDOVLOOJc4AqE9o"
+    },
+    "f3-block-x0-quartic-strict": {
+      "number": 72,
+      "nodeId": "D_kwDOVLOOJc4AqE9n"
+    },
+    "ternary-collision-cb-d2": {
+      "number": 71,
+      "nodeId": "D_kwDOVLOOJc4AqE9m"
+    },
+    "ternary-collision-cbp-d2": {
+      "number": 70,
+      "nodeId": "D_kwDOVLOOJc4AqE9l"
+    },
+    "three-block-rational-d4-strict": {
+      "number": 69,
+      "nodeId": "D_kwDOVLOOJc4AqE9k"
+    },
+    "ternary-tangent-residual-h2-d2": {
+      "number": 68,
+      "nodeId": "D_kwDOVLOOJc4AqE9j"
+    },
+    "ytype-companion-231-d4-strict-rational": {
+      "number": 67,
+      "nodeId": "D_kwDOVLOOJc4AqE9i"
+    },
+    "ytype-companion-fiberA-d4-strict-rational": {
+      "number": 66,
+      "nodeId": "D_kwDOVLOOJc4AqE9h"
+    },
+    "xtype-strict-rational-113": {
+      "number": 65,
+      "nodeId": "D_kwDOVLOOJc4AqE9g"
+    },
+    "xtype-sparse-rational-1m142": {
+      "number": 64,
+      "nodeId": "D_kwDOVLOOJc4AqE9f"
+    },
+    "fermat-pair-rational-d4-strict": {
+      "number": 63,
+      "nodeId": "D_kwDOVLOOJc4AqE9e"
+    },
+    "holdout-bundle": {
+      "number": 62,
+      "nodeId": "D_kwDOVLOOJc4AqE9d"
+    },
+    "cycle-q2": {
+      "number": 61,
+      "nodeId": "D_kwDOVLOOJc4AqE9c"
+    },
+    "holdout-q2": {
+      "number": 60,
+      "nodeId": "D_kwDOVLOOJc4AqE9b"
+    },
+    "dense-rational": {
+      "number": 59,
+      "nodeId": "D_kwDOVLOOJc4AqE9a"
+    },
+    "mixed-polar": {
+      "number": 58,
+      "nodeId": "D_kwDOVLOOJc4AqE9Z"
+    },
+    "off-paired": {
+      "number": 57,
+      "nodeId": "D_kwDOVLOOJc4AqE9Y"
+    },
+    "mixed-biweight": {
+      "number": 56,
+      "nodeId": "D_kwDOVLOOJc4AqE9X"
+    },
+    "cycle-three": {
+      "number": 55,
+      "nodeId": "D_kwDOVLOOJc4AqE9V"
+    },
+    "one-reflection": {
+      "number": 54,
+      "nodeId": "D_kwDOVLOOJc4AqE9S"
+    },
+    "holdout-x04-p": {
+      "number": 53,
+      "nodeId": "D_kwDOVLOOJc4AqE9Q"
+    },
+    "holdout-x0-x14-y0": {
+      "number": 52,
+      "nodeId": "D_kwDOVLOOJc4AqE9P"
+    },
+    "holdout-all-six": {
+      "number": 51,
+      "nodeId": "D_kwDOVLOOJc4AqE9O"
+    },
+    "holdout-x0-y03-y12": {
+      "number": 50,
+      "nodeId": "D_kwDOVLOOJc4AqE9N"
+    },
+    "holdout-x13-y13": {
+      "number": 49,
+      "nodeId": "D_kwDOVLOOJc4AqE9M"
+    },
+    "holdout-x12-p-y02": {
+      "number": 48,
+      "nodeId": "D_kwDOVLOOJc4AqE9L"
+    },
+    "holdout-x1-y04-y1": {
+      "number": 47,
+      "nodeId": "D_kwDOVLOOJc4AqE9J"
+    },
+    "holdout-p3": {
+      "number": 46,
+      "nodeId": "D_kwDOVLOOJc4AqE9I"
+    },
+    "holdout-p-y14": {
+      "number": 45,
+      "nodeId": "D_kwDOVLOOJc4AqE9H"
+    },
+    "holdout": {
+      "number": 44,
+      "nodeId": "D_kwDOVLOOJc4AqE9G"
+    },
+    "klein-hesse": {
+      "number": 85,
+      "nodeId": "D_kwDOVLOOJc4AqE-G"
+    },
+    "hesse-triangle": {
+      "number": 86,
+      "nodeId": "D_kwDOVLOOJc4AqE-I"
+    },
+    "collision-h3": {
+      "number": 87,
+      "nodeId": "D_kwDOVLOOJc4AqE-K"
+    },
+    "twoblock-cubic": {
+      "number": 88,
+      "nodeId": "D_kwDOVLOOJc4AqE-L"
+    },
+    "cofactor-eight": {
+      "number": 89,
+      "nodeId": "D_kwDOVLOOJc4AqE-Q"
+    },
+    "cofactor-mixed": {
+      "number": 90,
+      "nodeId": "D_kwDOVLOOJc4AqE-S"
+    },
+    "contact46006": {
+      "number": 91,
+      "nodeId": "D_kwDOVLOOJc4AqE-U"
+    },
+    "family-block-cube": {
+      "number": 92,
+      "nodeId": "D_kwDOVLOOJc4AqE-X"
+    },
+    "family-sylvester-norm": {
+      "number": 93,
+      "nodeId": "D_kwDOVLOOJc4AqE-Z"
+    },
+    "family-root-cube": {
+      "number": 94,
+      "nodeId": "D_kwDOVLOOJc4AqE-a"
+    },
+    "family-trace-zero": {
+      "number": 95,
+      "nodeId": "D_kwDOVLOOJc4AqE-d"
+    },
+    "family-shear": {
+      "number": 96,
+      "nodeId": "D_kwDOVLOOJc4AqE-f"
+    },
+    "family-hesse-web": {
+      "number": 97,
+      "nodeId": "D_kwDOVLOOJc4AqE-g"
+    },
+    "family-passive-contact": {
+      "number": 98,
+      "nodeId": "D_kwDOVLOOJc4AqE-h"
+    },
+    "cone-ladder-linear": {
+      "number": 99,
+      "nodeId": "D_kwDOVLOOJc4AqE-j"
+    },
+    "fermat-q2": {
+      "number": 100,
+      "nodeId": "D_kwDOVLOOJc4AqE-k"
+    },
+    "block-q2": {
+      "number": 101,
+      "nodeId": "D_kwDOVLOOJc4AqE-n"
+    },
+    "polarized-contact-coupled-d2": {
+      "number": 102,
+      "nodeId": "D_kwDOVLOOJc4AqE-o"
+    },
+    "polarized-contact-deformation-d2": {
+      "number": 103,
+      "nodeId": "D_kwDOVLOOJc4AqE-p"
+    },
+    "two-ternary-dense-two-odd-hessian-d48": {
+      "number": 104,
+      "nodeId": "D_kwDOVLOOJc4AqE-q"
+    },
+    "klein-rational": {
+      "number": 105,
+      "nodeId": "D_kwDOVLOOJc4AqE-t"
+    }
+  }
+}
