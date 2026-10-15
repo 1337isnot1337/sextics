@@ -413,15 +413,20 @@
     {
       "id": "f3-block-x0-quartic-strict",
       "title": "F₃ · quartic contact",
-      "status": "open",
-      "formalStatus": "unproved",
-      "evidenceKind": "none",
-      "certificateAvailable": false,
+      "status": "solved",
+      "formalStatus": "proved",
+      "evidenceKind": "explicit-certificate",
+      "certificateAvailable": true,
       "visibility": "navigation",
-      "draftDisplayStatus": "open",
+      "draftDisplayStatus": "solved",
       "category": "Challenge instances",
       "q": 1,
-      "path": "data/f3-block-x0-quartic-strict/record.json"
+      "path": "data/f3-block-x0-quartic-strict/record.json",
+      "credit": {
+        "githubLogin": "benediamond",
+        "origin": "contribution",
+        "awardedAt": "2026-10-15T16:53:12Z"
+      }
     },
     {
       "id": "completed-square-nambu-holdout",
