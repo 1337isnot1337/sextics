@@ -611,15 +611,20 @@
     {
       "id": "m3-coupled",
       "title": "M₃ · coupled conic",
-      "status": "open",
-      "formalStatus": "unproved",
-      "evidenceKind": "none",
-      "certificateAvailable": false,
+      "status": "solved",
+      "formalStatus": "proved",
+      "evidenceKind": "explicit-certificate",
+      "certificateAvailable": true,
       "visibility": "navigation",
-      "draftDisplayStatus": "open",
+      "draftDisplayStatus": "solved",
       "category": "Challenge instances",
       "q": 1,
-      "path": "data/m3-coupled/record.json"
+      "path": "data/m3-coupled/record.json",
+      "credit": {
+        "githubLogin": "benediamond",
+        "origin": "contribution",
+        "awardedAt": "2026-10-15T16:53:33Z"
+      }
     },
     {
       "id": "klein-hesse",
