@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 2,
+  "instanceId": "three-block-rational-d4-strict",
+  "theorem": "Submission.certificate",
+  "witnessTheorem": "Submission.witness"
+}
