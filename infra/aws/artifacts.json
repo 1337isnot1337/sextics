@@ -1,0 +1,45 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Private deployment packages for Sextics.",
+  "Resources": {
+    "Artifacts": {
+      "Type": "AWS::S3::Bucket",
+      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Retain",
+      "Properties": {
+        "BucketName": {
+          "Fn::Sub": "hodge-sextics-artifacts-${AWS::AccountId}-${AWS::Region}"
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true
+        },
+        "OwnershipControls": {
+          "Rules": [
+            {
+              "ObjectOwnership": "BucketOwnerEnforced"
+            }
+          ]
+        },
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "ArtifactBucket": {
+      "Value": {
+        "Ref": "Artifacts"
+      }
+    }
+  }
+}

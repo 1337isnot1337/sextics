@@ -1,0 +1,37 @@
+/* Bundled Markdown + KaTeX; raw HTML is text, and links are sanitized. */
+(()=>{
+  'use strict';
+  const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const math=(tex,display)=>`<span data-discussion-math="${escape(tex)}" data-display="${display?'yes':'no'}"></span>`;
+  const inlineRule=/^(?:\$`([^\n]*?)`\$|\\\(([\s\S]*?)\\\)|\$(?!\s|\$)((?:\\.|[^\n$\\])+?)(?<!\s)\$(?!\d))/;
+  const displayRule=/^ {0,3}(?:\$\$([\s\S]*?)\$\$|\\\[([\s\S]*?)\\\])(?:[ \t]*\n|$)/;
+  const parser=new marked.Marked({gfm:true,breaks:true,renderer:{
+    html({text}){return escape(text.replace(/<!--[\s\S]*?-->/g,''));},
+    code(token){if(token.lang?.trim()==='math')return math(token.text,true);return false;},
+    image({href,text}){return `<a href="${escape(href)}">${escape(text||'View image')} ↗</a>`;}
+  },extensions:[
+    {name:'discussionDisplayMath',level:'block',start(src){return src.search(/\$\$|\\\[/);},tokenizer(src){const m=displayRule.exec(src);if(m)return {type:'discussionDisplayMath',raw:m[0],text:m[1]??m[2]};},renderer(token){return math(token.text,true);}},
+    {name:'discussionInlineMath',level:'inline',start(src){return src.search(/\$|\\\(/);},tokenizer(src){const m=inlineRule.exec(src);if(m)return {type:'discussionInlineMath',raw:m[0],text:m[1]??m[2]??m[3]};},renderer(token){return math(token.text,false);}}
+  ]});
+  function render(target,source){
+    const fragment=DOMPurify.sanitize(parser.parse(String(source||'').slice(0,65536)),{
+      RETURN_DOM_FRAGMENT:true,ALLOW_DATA_ATTR:false,
+      ALLOWED_TAGS:['p','br','strong','em','del','a','ul','ol','li','blockquote','pre','code','h1','h2','h3','h4','h5','h6','hr','table','thead','tbody','tr','th','td','span','input'],
+      ALLOWED_ATTR:['href','title','start','type','checked','disabled','data-discussion-math','data-display']
+    });
+    for(const link of fragment.querySelectorAll('a')){
+      try{const href=link.getAttribute('href');if(!href)throw Error();const url=new URL(href,'https://github.com/hodge-computer/sextics/');if(!['https:','http:','mailto:'].includes(url.protocol))throw Error();link.href=url.href;link.target='_blank';link.rel='noopener noreferrer nofollow';}
+      catch{link.removeAttribute('href');}
+    }
+    for(const input of fragment.querySelectorAll('input')){if(input.type!=='checkbox')input.remove();else input.disabled=true;}
+    for(const node of fragment.querySelectorAll('[data-discussion-math]')){
+      const tex=node.getAttribute('data-discussion-math'),display=node.getAttribute('data-display')==='yes';
+      node.className=display?'discussion-math-display':'discussion-math-inline';
+      node.removeAttribute('data-discussion-math');node.removeAttribute('data-display');
+      try{if(tex.length>5000)throw Error();katex.render(tex,node,{displayMode:display,throwOnError:false,trust:false,strict:'ignore',maxExpand:200,maxSize:10,macros:{}});}
+      catch{node.textContent=tex;}
+    }
+    target.replaceChildren(fragment);
+  }
+  window.HodgeDiscussionMarkdown={render};
+})();

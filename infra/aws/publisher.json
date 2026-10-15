@@ -1,0 +1,91 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Optional GitHub Actions publishing identity for Sextics static content only.",
+  "Resources": {
+    "GitHubIdentity": {
+      "Type": "AWS::IAM::OIDCProvider",
+      "Properties": {
+        "Url": "https://token.actions.githubusercontent.com",
+        "ClientIdList": [
+          "sts.amazonaws.com"
+        ]
+      }
+    },
+    "Publisher": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": "sextics-publish",
+        "Description": "Publish reviewed sextics main content; no access to app credentials, sessions, Lambda, or IAM.",
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": {
+                  "Ref": "GitHubIdentity"
+                }
+              },
+              "Action": "sts:AssumeRoleWithWebIdentity",
+              "Condition": {
+                "StringEquals": {
+                  "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
+                  "token.actions.githubusercontent.com:sub": "repo:hodge-computer@342503550/sextics@1421053477:ref:refs/heads/main"
+                }
+              }
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": "publish-static-website",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "s3:ListBucket",
+                    "s3:GetBucketLocation"
+                  ],
+                  "Resource": {
+                    "Fn::Sub": "arn:${AWS::Partition}:s3:::hodge-sextics-site-${AWS::AccountId}-us-east-1"
+                  }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "s3:GetObject",
+                    "s3:PutObject"
+                  ],
+                  "Resource": {
+                    "Fn::Sub": "arn:${AWS::Partition}:s3:::hodge-sextics-site-${AWS::AccountId}-us-east-1/*"
+                  }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "cloudfront:CreateInvalidation"
+                  ],
+                  "Resource": {
+                    "Fn::Sub": "arn:${AWS::Partition}:cloudfront::${AWS::AccountId}:distribution/E2D78CDNFUIIQG"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "Outputs": {
+    "PublisherRole": {
+      "Value": {
+        "Fn::GetAtt": [
+          "Publisher",
+          "Arn"
+        ]
+      }
+    }
+  }
+}
