@@ -377,15 +377,20 @@
     {
       "id": "ternary-collision-cbp-d2",
       "title": "Ternary collision · second character",
-      "status": "open",
-      "formalStatus": "unproved",
-      "evidenceKind": "none",
-      "certificateAvailable": false,
+      "status": "solved",
+      "formalStatus": "proved",
+      "evidenceKind": "explicit-certificate",
+      "certificateAvailable": true,
       "visibility": "navigation",
-      "draftDisplayStatus": "open",
+      "draftDisplayStatus": "solved",
       "category": "Challenge instances",
       "q": 1,
-      "path": "data/ternary-collision-cbp-d2/record.json"
+      "path": "data/ternary-collision-cbp-d2/record.json",
+      "credit": {
+        "githubLogin": "benediamond",
+        "origin": "contribution",
+        "awardedAt": "2026-10-15T16:53:09Z"
+      }
     },
     {
       "id": "ternary-collision-cb-d2",
