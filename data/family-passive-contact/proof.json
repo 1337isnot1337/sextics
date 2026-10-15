@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 2,
+  "instanceId": "family-passive-contact",
+  "theorem": "Submission.certificate",
+  "witnessTheorem": "Submission.witness"
+}
