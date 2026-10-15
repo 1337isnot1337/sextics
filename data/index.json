@@ -521,15 +521,20 @@
     {
       "id": "hesse-radial-hesse-cofactor-d4-rational",
       "title": "Hesse · radial quartic",
-      "status": "open",
-      "formalStatus": "unproved",
-      "evidenceKind": "none",
-      "certificateAvailable": false,
+      "status": "solved",
+      "formalStatus": "proved",
+      "evidenceKind": "explicit-certificate",
+      "certificateAvailable": true,
       "visibility": "navigation",
-      "draftDisplayStatus": "open",
+      "draftDisplayStatus": "solved",
       "category": "Challenge instances",
       "q": 1,
-      "path": "data/hesse-radial-hesse-cofactor-d4-rational/record.json"
+      "path": "data/hesse-radial-hesse-cofactor-d4-rational/record.json",
+      "credit": {
+        "githubLogin": "benediamond",
+        "origin": "contribution",
+        "awardedAt": "2026-10-15T16:53:23Z"
+      }
     },
     {
       "id": "fixed-witness-hesse-cofactor-d4-rational",

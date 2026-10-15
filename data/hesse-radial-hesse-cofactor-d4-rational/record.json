@@ -290,7 +290,75 @@
         0,
         0
       ]
-    }
+    },
+    "divisorTerms": [
+      [
+        1.0,
+        [
+          4,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      [
+        -1.0,
+        [
+          2,
+          0,
+          2,
+          0,
+          0,
+          0
+        ]
+      ],
+      [
+        0.3333333333333333,
+        [
+          2,
+          0,
+          0,
+          0,
+          0,
+          2
+        ]
+      ],
+      [
+        1.0,
+        [
+          0,
+          0,
+          4,
+          0,
+          0,
+          0
+        ]
+      ],
+      [
+        0.3333333333333333,
+        [
+          0,
+          0,
+          2,
+          0,
+          0,
+          2
+        ]
+      ],
+      [
+        0.1111111111111111,
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          4
+        ]
+      ]
+    ]
   },
   "visibility": "navigation",
   "category": "Challenge instances",
@@ -300,13 +368,120 @@
   "slice": "slices/hesse-radial-hesse-cofactor-d4-rational.json",
   "rationale": "why.md",
   "provenanceFile": "provenance.json",
-  "formalStatus": "unproved",
-  "status": "open",
-  "evidenceKind": "none",
-  "certificateAvailable": false,
+  "formalStatus": "proved",
+  "status": "solved",
+  "evidenceKind": "explicit-certificate",
+  "certificateAvailable": true,
   "content": {
-    "why": "data/hesse-radial-hesse-cofactor-d4-rational/why.html"
+    "why": "data/hesse-radial-hesse-cofactor-d4-rational/why.html",
+    "solution": "data/hesse-radial-hesse-cofactor-d4-rational/solution.html"
   },
-  "witnessAvailability": "missing",
-  "draftDisplayStatus": "open"
+  "pullRequest": {
+    "number": 16,
+    "url": "https://github.com/hodge-computer/sextics/pull/16",
+    "headCommit": "bef74cb596772ce7a0be1dee9a1615ace8c49dd1",
+    "baseCommit": "df63e2e87495ae7ef8e87ebcf2e4b45bdb74c7c9",
+    "mergeCommit": "e5c620eb9430fe00f008b32c28eab3ee259b184e"
+  },
+  "certificate": {
+    "N": [
+      "X1*X2**3*Y1/6 + X1*X2*Y1*Y2**2/18",
+      "0",
+      "-X0**3*X1*Y1/6 + X0*X1*X2**2*Y1/6",
+      "0",
+      "0",
+      "0"
+    ],
+    "C": "0",
+    "strict": true
+  },
+  "D": {
+    "expression": "X0**4 - X0**2*X2**2 + X0**2*Y2**2/3 + X2**4 + X2**2*Y2**2/3 + Y2**4/9",
+    "degree": 4,
+    "terms": [
+      [
+        "1",
+        [
+          4,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      [
+        "-1",
+        [
+          2,
+          0,
+          2,
+          0,
+          0,
+          0
+        ]
+      ],
+      [
+        "1/3",
+        [
+          2,
+          0,
+          0,
+          0,
+          0,
+          2
+        ]
+      ],
+      [
+        "1",
+        [
+          0,
+          0,
+          4,
+          0,
+          0,
+          0
+        ]
+      ],
+      [
+        "1/3",
+        [
+          0,
+          0,
+          2,
+          0,
+          0,
+          2
+        ]
+      ],
+      [
+        "1/9",
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          4
+        ]
+      ]
+    ],
+    "termCount": 6,
+    "latex": "X_{0}^{4} - X_{0}^{2} X_{2}^{2} + \\frac{X_{0}^{2} Y_{2}^{2}}{3} + X_{2}^{4} + \\frac{X_{2}^{2} Y_{2}^{2}}{3} + \\frac{Y_{2}^{4}}{9}"
+  },
+  "witnessAvailability": "literal",
+  "leanVerification": {
+    "formalStatus": "proved",
+    "status": "accepted",
+    "proofFile": "data/hesse-radial-hesse-cofactor-d4-rational/Solution.lean",
+    "receipt": "data/hesse-radial-hesse-cofactor-d4-rational/acceptance.json",
+    "theorem": "Submission.certificate",
+    "checker": "Lean (version 4.33.0, x86_64-unknown-linux-gnu, commit d8b18978322de05a8f3dba51ef03cf5461676c17, Release)"
+  },
+  "credit": {
+    "githubLogin": "benediamond",
+    "origin": "contribution",
+    "awardedAt": "2026-10-15T16:53:23Z"
+  },
+  "draftDisplayStatus": "solved"
 }
