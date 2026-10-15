@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 2,
+  "instanceId": "twoties-tie2-x2-quartic-strict",
+  "theorem": "Submission.certificate",
+  "witnessTheorem": "Submission.witness"
+}
