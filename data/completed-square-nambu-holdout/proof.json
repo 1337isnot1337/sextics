@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 2,
+  "instanceId": "completed-square-nambu-holdout",
+  "theorem": "Submission.certificate",
+  "witnessTheorem": "Submission.witness"
+}
