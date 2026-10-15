@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 2,
+  "instanceId": "f3-block-x0-quartic-strict",
+  "theorem": "Submission.certificate",
+  "witnessTheorem": "Submission.witness"
+}
