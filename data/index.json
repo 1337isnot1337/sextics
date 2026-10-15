@@ -251,15 +251,20 @@
     {
       "id": "fermat-pair-rational-d4-strict",
       "title": "Fermat · quartic cofactor",
-      "status": "open",
-      "formalStatus": "unproved",
-      "evidenceKind": "none",
-      "certificateAvailable": false,
+      "status": "solved",
+      "formalStatus": "proved",
+      "evidenceKind": "explicit-certificate",
+      "certificateAvailable": true,
       "visibility": "navigation",
-      "draftDisplayStatus": "open",
+      "draftDisplayStatus": "solved",
       "category": "Challenge instances",
       "q": 1,
-      "path": "data/fermat-pair-rational-d4-strict/record.json"
+      "path": "data/fermat-pair-rational-d4-strict/record.json",
+      "credit": {
+        "githubLogin": "benediamond",
+        "origin": "contribution",
+        "awardedAt": "2026-10-15T16:52:57Z"
+      }
     },
     {
       "id": "xtype-sparse-rational-1m142",

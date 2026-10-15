@@ -1,5 +1,12 @@
 {
   "schemaVersion": 2,
   "basis": "accepted-proofs",
-  "credits": []
+  "credits": [
+    {
+      "instanceId": "fermat-pair-rational-d4-strict",
+      "githubLogin": "benediamond",
+      "origin": "contribution",
+      "awardedAt": "2026-10-15T16:52:57Z"
+    }
+  ]
 }
