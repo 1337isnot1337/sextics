@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 2,
+  "instanceId": "passive-quadratic-d4-strict-rational",
+  "theorem": "Submission.certificate",
+  "witnessTheorem": "Submission.witness"
+}
