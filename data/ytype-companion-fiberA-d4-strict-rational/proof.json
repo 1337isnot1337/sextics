@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 2,
+  "instanceId": "ytype-companion-fiberA-d4-strict-rational",
+  "theorem": "Submission.certificate",
+  "witnessTheorem": "Submission.witness"
+}
