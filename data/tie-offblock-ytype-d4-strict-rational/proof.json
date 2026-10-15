@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 2,
+  "instanceId": "tie-offblock-ytype-d4-strict-rational",
+  "theorem": "Submission.certificate",
+  "witnessTheorem": "Submission.witness"
+}
