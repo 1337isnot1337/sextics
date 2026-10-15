@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 2,
+  "instanceId": "cofactor-eight",
+  "theorem": "Submission.certificate",
+  "witnessTheorem": "Submission.witness"
+}
