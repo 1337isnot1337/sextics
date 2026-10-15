@@ -539,15 +539,20 @@
     {
       "id": "fixed-witness-hesse-cofactor-d4-rational",
       "title": "Hesse · fixed-target quartic",
-      "status": "open",
-      "formalStatus": "unproved",
-      "evidenceKind": "none",
-      "certificateAvailable": false,
+      "status": "solved",
+      "formalStatus": "proved",
+      "evidenceKind": "explicit-certificate",
+      "certificateAvailable": true,
       "visibility": "navigation",
-      "draftDisplayStatus": "open",
+      "draftDisplayStatus": "solved",
       "category": "Challenge instances",
       "q": 1,
-      "path": "data/fixed-witness-hesse-cofactor-d4-rational/record.json"
+      "path": "data/fixed-witness-hesse-cofactor-d4-rational/record.json",
+      "credit": {
+        "githubLogin": "benediamond",
+        "origin": "contribution",
+        "awardedAt": "2026-10-15T16:53:25Z"
+      }
     },
     {
       "id": "two-reflection-cubic-surface-d2",
