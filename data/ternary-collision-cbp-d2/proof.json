@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 2,
+  "instanceId": "ternary-collision-cbp-d2",
+  "theorem": "Submission.certificate",
+  "witnessTheorem": "Submission.witness"
+}
