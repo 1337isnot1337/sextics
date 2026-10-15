@@ -287,15 +287,20 @@
     {
       "id": "xtype-strict-rational-113",
       "title": "X-type · logarithmic interpolation",
-      "status": "open",
-      "formalStatus": "unproved",
-      "evidenceKind": "none",
-      "certificateAvailable": false,
+      "status": "solved",
+      "formalStatus": "proved",
+      "evidenceKind": "explicit-certificate",
+      "certificateAvailable": true,
       "visibility": "navigation",
-      "draftDisplayStatus": "open",
+      "draftDisplayStatus": "solved",
       "category": "Challenge instances",
       "q": 1,
-      "path": "data/xtype-strict-rational-113/record.json"
+      "path": "data/xtype-strict-rational-113/record.json",
+      "credit": {
+        "githubLogin": "benediamond",
+        "origin": "contribution",
+        "awardedAt": "2026-10-15T16:53:00Z"
+      }
     },
     {
       "id": "ytype-companion-fiberA-d4-strict-rational",
