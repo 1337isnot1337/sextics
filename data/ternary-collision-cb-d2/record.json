@@ -411,7 +411,42 @@
         0,
         0
       ]
-    }
+    },
+    "divisorTerms": [
+      [
+        1.0,
+        [
+          2,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      [
+        -1.0,
+        [
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      [
+        -1.0,
+        [
+          0,
+          0,
+          0,
+          2,
+          0,
+          0
+        ]
+      ]
+    ]
   },
   "visibility": "navigation",
   "category": "Challenge instances",
@@ -421,13 +456,87 @@
   "slice": "slices/ternary-collision-cb-d2.json",
   "rationale": "why.md",
   "provenanceFile": "provenance.json",
-  "formalStatus": "unproved",
-  "status": "open",
-  "evidenceKind": "none",
-  "certificateAvailable": false,
+  "formalStatus": "proved",
+  "status": "solved",
+  "evidenceKind": "explicit-certificate",
+  "certificateAvailable": true,
   "content": {
-    "why": "data/ternary-collision-cb-d2/why.html"
+    "why": "data/ternary-collision-cb-d2/why.html",
+    "solution": "data/ternary-collision-cb-d2/solution.html"
   },
-  "witnessAvailability": "missing",
-  "draftDisplayStatus": "open"
+  "pullRequest": {
+    "number": 9,
+    "url": "https://github.com/hodge-computer/sextics/pull/9",
+    "headCommit": "428d255ed72e08a2774baf961fae243d98b7bca5",
+    "baseCommit": "73912b3cd96df6805243f5c5707c3934f0470024",
+    "mergeCommit": "29e1f4627c3572c6de6897803cf5e2ac5200c2c9"
+  },
+  "certificate": {
+    "N": [
+      "X0**2*Y0/2 - X1**2*Y0/10 - Y0**3/2",
+      "0",
+      "0",
+      "X0**3 - 3*X0*X1**2/5 - X0*Y0**2",
+      "0",
+      "0"
+    ],
+    "C": "0",
+    "strict": true
+  },
+  "D": {
+    "expression": "X0**2 - X1**2 - Y0**2",
+    "degree": 2,
+    "terms": [
+      [
+        "1",
+        [
+          2,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      [
+        "-1",
+        [
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      [
+        "-1",
+        [
+          0,
+          0,
+          0,
+          2,
+          0,
+          0
+        ]
+      ]
+    ],
+    "termCount": 3,
+    "latex": "X_{0}^{2} - X_{1}^{2} - Y_{0}^{2}"
+  },
+  "witnessAvailability": "literal",
+  "leanVerification": {
+    "formalStatus": "proved",
+    "status": "accepted",
+    "proofFile": "data/ternary-collision-cb-d2/Solution.lean",
+    "receipt": "data/ternary-collision-cb-d2/acceptance.json",
+    "theorem": "Submission.certificate",
+    "checker": "Lean (version 4.33.0, x86_64-unknown-linux-gnu, commit d8b18978322de05a8f3dba51ef03cf5461676c17, Release)"
+  },
+  "credit": {
+    "githubLogin": "benediamond",
+    "origin": "contribution",
+    "awardedAt": "2026-10-15T16:53:11Z"
+  },
+  "draftDisplayStatus": "solved"
 }
