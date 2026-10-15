@@ -305,15 +305,20 @@
     {
       "id": "ytype-companion-fiberA-d4-strict-rational",
       "title": "Y-type · quartic companion",
-      "status": "open",
-      "formalStatus": "unproved",
-      "evidenceKind": "none",
-      "certificateAvailable": false,
+      "status": "solved",
+      "formalStatus": "proved",
+      "evidenceKind": "explicit-certificate",
+      "certificateAvailable": true,
       "visibility": "navigation",
-      "draftDisplayStatus": "open",
+      "draftDisplayStatus": "solved",
       "category": "Challenge instances",
       "q": 1,
-      "path": "data/ytype-companion-fiberA-d4-strict-rational/record.json"
+      "path": "data/ytype-companion-fiberA-d4-strict-rational/record.json",
+      "credit": {
+        "githubLogin": "benediamond",
+        "origin": "contribution",
+        "awardedAt": "2026-10-15T16:53:02Z"
+      }
     },
     {
       "id": "ytype-companion-231-d4-strict-rational",
