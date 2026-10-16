@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 2,
+  "instanceId": "family-hesse-web",
+  "theorem": "Submission.certificate",
+  "witnessTheorem": "Submission.witness"
+}
