@@ -20,7 +20,7 @@ The catalogue lists fixed instances of the existence problem in `formal/README.m
 
 A target is open until a checked and merged PR has a validated acceptance receipt. The publisher derives solved status, contributor attribution, and leaderboard credit from that receipt. Solution files are first introduced by their solve PR and remain beside the target after acceptance.
 
-Prospective context in `why.md` explains why the target is interesting without relying on its solution. The accepted `solution.md` explains the argument and its human mathematical sources. `provenance.json` holds agent-facing mathematical context, scope distinctions, and relevant search limitations. Do not treat a restricted negative search as proof of nonexistence.
+Prospective context in `why.md` explains why the target is interesting without relying on its solution. The accepted `solution.md` explains the argument and its human mathematical sources. `provenance.json` links to the exact statement, mathematical context, discussion, and other atlas targets on the same sextic. Do not treat a restricted negative search as proof of nonexistence.
 
 Adding or changing targets requires a separate owner-reviewed maintenance PR. Keep the variable order `X0, X1, X2, Y0, Y1, Y2`; check exact rational coefficients, sextic homogeneity, target degree `6q`, and parity under the sign involution. Maintain precise family scope and avoid claiming that a representative example proves a whole family. The catalogue is representative; solving its current entries need not settle the general conjecture.
 
@@ -71,7 +71,7 @@ Branch protection or repository rulesets can require `solve/lean`, up-to-date br
 
 It then writes `data/<id>/acceptance.json`, derives `solution.rec`, and runs the content builder and validators. The workflow commits these derived files to main. A failed or interrupted publication leaves no accepted solve in published output; rerun the workflow once the cause is resolved. The generated acceptance record is durable even after transient CI artifacts expire.
 
-The atlas and leaderboard read generated files and need no GitHub service at runtime. Sign-in and discussions use the backend API. The publisher never awards credit from editable claimed identities, an unmerged proof, or a status flag. Mathematical source maintenance after acceptance must preserve or deliberately renew the receipt's bindings.
+The atlas and leaderboard read generated files and need no GitHub service at runtime. Sign-in and discussions use the backend API. The publisher never awards credit from editable claimed identities, an unmerged proof, or a status flag. After acceptance, edit `solution.md` as ordinary reviewed documentation. The site renders the current explanation; the original submission remains in Git history and its acceptance record. Editorial changes do not require another Lean run or a new acceptance record. Changes to the target, Lean sources, proof manifest, or witness require renewed verification.
 
 ### Local checks
 
@@ -106,18 +106,6 @@ Saved `render.mesh` manifests refer to compressed position/normal and index buff
 
 The numerical surface is obtained from `z = diag(1 or i) B u`, where the columns of the real 6×4 matrix `B` are orthonormal and `u` lies on the unit three-sphere. The phase choices must make the sextic restrict to a scalar-real polynomial. The renderer shows the stereographic projection of the antipodal sphere cover of the projective real slice. Its mesh cannot establish smoothness, topology, or certificate validity. Accepted denominator data controls divisor highlighting independently of the saved geometric mesh.
 
-Meshes are generated offline. To rebuild existing saved planes into a separate output directory:
-
-```sh
-node scripts/rebuild-meshes.cjs data/index.json /tmp/sextics-mesh-rebuild 112
-```
-
-To search for new planes and views:
-
-```sh
-node scripts/refresh-slices.cjs . /tmp/sextics-slice-refresh
-```
-
-For replay, copy `slices/plane-selections.json` into that output directory and use `--bake-only`. The refresh cache includes the mesher hash. Inspect candidates before replacing shipped meshes and update the record and saved slice together. Equal-polynomial instances should share a slice unless an intentional presentation difference is documented.
+Meshes are generated offline. The repository ships the saved planes, cameras, and rendered mesh assets. When replacing a mesh, update its instance record and saved slice together. Equal-polynomial instances should share a slice unless an intentional presentation difference is documented.
 
 Check finite values, normals, index bounds, projected extent, edge lengths, and polynomial residuals. Reject non-real phase restrictions rather than silently taking a real part. Compare refinements around narrow joins: a finite grid can miss small features. Use exact or direct polynomial evaluation to cross-check compact denominator evaluators. Renderer safety and denominator evaluation are exercised by `scripts/test-surface.cjs` and `scripts/test-divisor.cjs`; numerical checks remain presentation diagnostics.

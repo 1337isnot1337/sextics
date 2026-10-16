@@ -250,4 +250,4 @@ Deletion removes the comment from the conversation, and the website reflects the
 
 ## Improve the project
 
-Documentation, website, catalogue, and verifier changes belong in separate maintenance PRs. Describe the change and report relevant checks. These contributions retain their authorship but do not earn solve points. See [MAINTAINING.md](MAINTAINING.md) for repository architecture, catalogue and leaderboard rules, protected verification, and visualization maintenance.
+Documentation, website, catalogue, and verifier changes belong in separate maintenance PRs. After a solve is accepted, its `solution.md` can be corrected or expanded like any other documentation; this does not require rerunning Lean. The original accepted proof, witness, attribution, and PR link are preserved. Describe the change and report relevant checks. These contributions retain their authorship but do not earn solve points. See [MAINTAINING.md](MAINTAINING.md) for repository architecture, catalogue and leaderboard rules, protected verification, and visualization maintenance.

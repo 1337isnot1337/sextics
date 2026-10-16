@@ -43,6 +43,6 @@ For \(v=N/D\), clearing denominators gives
 A-q\cdot\mathrm dF(v)+F\cdot\operatorname{div}v
 =\frac{D\cdot(A\cdot D-q\cdot N(F))+F\cdot\bigl(D\cdot\operatorname{div}N-N(D)\bigr)}{D^2}.
 \]
-Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The exact algebraic checks are evidence for the construction; no Lean theorem has yet been checked for this instance.
+Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The accepted Lean proof checks the certificate identity, homogeneous degrees, nonzero denominator, and coprimality over \(\mathbb C\).
 
 The [exact witness](data/fermat-q2/witness.json) gives the denominator, all six numerators, and the quotient. The [Lean proof](data/fermat-q2/Solution.lean) checks the certificate and its side conditions.

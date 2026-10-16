@@ -10,12 +10,12 @@ u^3+v^3+w^3-3\cdot u\cdot v\cdot w=(u+v+w)Q.
 Thus a Hesse factorization becomes available after a nontrivial quadratic substitution. In the original coordinates it is easy to miss this structure among the expanded mixed terms.
 
 ## Transport the field, including its density
-The source uses Piola transport through the quadratic coordinate map. This is the adjugate-Jacobian version of pulling back a vector field: the Jacobian determinant supplies the density needed to transport divergence correctly. A naive substitution of vector components would not preserve the second certificate equation.
+Use Piola transport through the quadratic coordinate map. This is the adjugate-Jacobian version of pulling back a vector field: the Jacobian determinant supplies the density needed to transport divergence correctly. A naive substitution of vector components would not preserve the second certificate equation.
 
 The resulting numerator has nonzero components only in the three \(X\) slots. It realizes the fixed target \(X_0\cdot X_1\cdot X_2^3\cdot Y_1\), and satisfies \(N(F)=A\cdot D\), \(D\cdot\operatorname{div}N=N(D)\). The exact tuple is retained below, so the transport argument can be replaced by direct polynomial differentiation at this fiber.
 
 ## Two useful denominators, one displayed witness
-Subtracting \((u+v+w)9\cdot D\) from \(F\) exposes a complementary sextic denominator used in an alternative construction. That alternative helps explain the family but is not the displayed quartic witness. The record deliberately retains the quartic construction for this fixed target. The source's lower-degree calculations establish its minimum in the strict normalized problem, not a universal denominator bound for the whole quadratic-map family.
+Subtracting \((u+v+w)9\cdot D\) from \(F\) exposes a complementary sextic denominator used in an alternative construction. That alternative helps explain the family but is not the displayed quartic witness. The record deliberately retains the quartic construction for this fixed target. The quartic witness establishes existence for this target; it does not give a universal denominator bound for the quadratic-map family.
 
 ## The retained numerator
 
@@ -36,6 +36,6 @@ For \(v=N/D\), clearing denominators gives
 A-q\cdot\mathrm dF(v)+F\cdot\operatorname{div}v
 =\frac{D\cdot(A\cdot D-q\cdot N(F))+F\cdot\bigl(D\cdot\operatorname{div}N-N(D)\bigr)}{D^2}.
 \]
-Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The exact algebraic checks are evidence for the construction; no Lean theorem has yet been checked for this instance.
+Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The accepted Lean proof checks the certificate identity, homogeneous degrees, nonzero denominator, and coprimality over \(\mathbb C\).
 
 The [exact witness](data/fixed-witness-hesse-cofactor-d4-rational/witness.json) gives the denominator, all six numerators, and the quotient. The [Lean proof](data/fixed-witness-hesse-cofactor-d4-rational/Solution.lean) checks the certificate and its side conditions.

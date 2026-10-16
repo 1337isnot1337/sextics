@@ -16,7 +16,7 @@ Since it differentiates none of the variables in the first block, that block con
 ## Why this is a separate instance
 The construction survives an additional deformation because the second tie is disjoint from the active coordinates. This is a precise stability mechanism, not a general claim that extra mixed terms are harmless. A term crossing the two active blocks could contribute to \(N(F)\) and destroy the equality.
 
-The first-equation rank screens in lower denominator degrees exclude smaller strict normalized fields for this target. The resulting quartic is therefore a minimum in that strict setting. The explicit tuple records both the active-block mechanism and its exact boundary of applicability.
+The resulting quartic supplies a strict certificate for this target. The explicit tuple records both the active-block mechanism and its exact boundary of applicability.
 
 ## The retained numerator
 
@@ -37,6 +37,6 @@ For \(v=N/D\), clearing denominators gives
 A-q\cdot\mathrm dF(v)+F\cdot\operatorname{div}v
 =\frac{D\cdot(A\cdot D-q\cdot N(F))+F\cdot\bigl(D\cdot\operatorname{div}N-N(D)\bigr)}{D^2}.
 \]
-Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The exact algebraic checks are evidence for the construction; no Lean theorem has yet been checked for this instance.
+Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The accepted Lean proof checks the certificate identity, homogeneous degrees, nonzero denominator, and coprimality over \(\mathbb C\).
 
 The [exact witness](data/twoties-tie2-x2-quartic-strict/witness.json) gives the denominator, all six numerators, and the quotient. The [Lean proof](data/twoties-tie2-x2-quartic-strict/Solution.lean) checks the certificate and its side conditions.

@@ -81,10 +81,7 @@ def publish(number):
     require(rid in json.loads((ROOT/'data/catalogue.json').read_text())['instanceIds'], 'Unknown instance')
     instance=yaml.safe_load((ROOT/'data'/rid/'instance.rec').read_text())
     require(statement_hash(instance)==report['statementSha256'], 'Target changed after checking')
-    # Validate every source before writing any accepted state.
     folder=ROOT/'data'/rid
-    require(accepted_sources(folder)==report['sourceHashes'],
-            'Merged proposal differs from the checked sources')
     receipt={'schemaVersion':1,'formalAcceptance':True,'repository':REPOSITORY,'instanceId':rid,
              'githubLogin':pr['user']['login'],'submittedAt':pr['created_at'],'acceptedAt':pr['merged_at'],
              'publishedAt':datetime.now(timezone.utc).isoformat(),
@@ -99,6 +96,11 @@ def publish(number):
         # A previous build may have stopped after writing the receipt. Regenerate
         # and validate the complete output before declaring a retry successful.
         receipt=previous
+    else:
+        # First acceptance must match the entire reviewed submission. Later
+        # editorial changes are allowed by read_acceptance, including on retry.
+        require(accepted_sources(folder)==report['sourceHashes'],
+                'Merged proposal differs from the checked sources')
     solution=solution_record(ROOT,receipt)
     path.parent.mkdir(exist_ok=True)
     path.write_text(json.dumps(receipt,indent=2)+'\n')

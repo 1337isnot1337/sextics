@@ -9,5 +9,19 @@
     "Y2"
   ],
   "statementSource": "instance.rec",
-  "acceptance": "A solution must be introduced by a checked and merged proposal."
+  "contextSource": "why.md",
+  "discussionUrl": "https://github.com/hodge-computer/sextics/discussions/62",
+  "sameVarietyInstances": [
+    "holdout",
+    "holdout-all-six",
+    "holdout-p-y14",
+    "holdout-p3",
+    "holdout-q2",
+    "holdout-x0-x14-y0",
+    "holdout-x0-y03-y12",
+    "holdout-x04-p",
+    "holdout-x1-y04-y1",
+    "holdout-x12-p-y02",
+    "holdout-x13-y13"
+  ]
 }

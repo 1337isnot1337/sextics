@@ -10,12 +10,12 @@ D=L^2-\frac12\cdot L\cdot Y_1^2+\frac14\cdot Y_1^4.
 It is a rational quadratic norm in the two degree-two quantities \(L\) and \(Y_1^2\). Its two conjugate quadratic factors are easier to interpret geometrically than the expanded quartic; their product is defined over \(\mathbb Q\).
 
 ## Finding a numerator and checking both equations
-The retained calculation first solves the normalized equation \(N(F)=A\cdot D\) over the full degree-compatible ansatz. At degree four this gives a 25-dimensional first-equation kernel and a 16-dimensional image in denominator space. The second equation, \(D\cdot\operatorname{div}N-N(D)=0\), then selects the admissible strict fields. This second screen is essential: a solution of the first equation alone need not be a certificate.
+To find a numerator, solve the normalized equation \(N(F)=A\cdot D\) over the degree-compatible ansatz. The second equation, \(D\cdot\operatorname{div}N-N(D)=0\), then selects the admissible strict fields. This second screen is essential: a solution of the first equation alone need not be a certificate.
 
 The displayed rational point survives both screens and yields the three nonzero components recorded below. Their degree is five, as required by \(\deg N_i=4+6-5\). Differentiating the exact tuple establishes both identities, with no residual multiple of \(F\).
 
 ## What the degree statement means
-The source's lower-degree screen establishes a minimum strict denominator degree of four for this target. An older sextic denominator is an alternative construction, not the polar divisor shown here. The quartic result concerns the stated specialization and the strict normalized problem; it does not rule out other non-strict mechanisms in a broader problem.
+The displayed witness has a quartic denominator and certifies the fixed target. The quartic result concerns the stated specialization and the strict normalized problem; it does not rule out other non-strict mechanisms in a broader problem.
 
 ## The retained numerator
 
@@ -36,6 +36,6 @@ For \(v=N/D\), clearing denominators gives
 A-q\cdot\mathrm dF(v)+F\cdot\operatorname{div}v
 =\frac{D\cdot(A\cdot D-q\cdot N(F))+F\cdot\bigl(D\cdot\operatorname{div}N-N(D)\bigr)}{D^2}.
 \]
-Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The exact algebraic checks are evidence for the construction; no Lean theorem has yet been checked for this instance.
+Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The accepted Lean proof checks the certificate identity, homogeneous degrees, nonzero denominator, and coprimality over \(\mathbb C\).
 
 The [exact witness](data/ytype-companion-fiberA-d4-strict-rational/witness.json) gives the denominator, all six numerators, and the quotient. The [Lean proof](data/ytype-companion-fiberA-d4-strict-rational/Solution.lean) checks the certificate and its side conditions.

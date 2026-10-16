@@ -16,7 +16,7 @@ With this \(D\) fixed, write each component of \(N\) as an unknown homogeneous p
 This is an instance of designing the polar divisor and target together. One does not first choose an arbitrary sextic denominator and hope that a numerator exists. The cubic block's discriminant is nonzero, and the additional denominator-legality factors in the recipe are nonzero at this specialization, so this is a legal rational fiber of the family.
 
 ## Scope of the construction
-The result is the displayed two-term target bundle. It does not individually solve both summands. The source also discusses quartic constructions after adjoining an algebraic cube root; those are a different witness, not a cancellation of the displayed rational sextic denominator. The record contains the unique exact rational completion of the 23-column coefficient system, with all six numerator components written explicitly.
+The result is the displayed two-term target bundle. It does not individually solve both summands. The witness linked below contains all six rational numerator components for the displayed sextic denominator. A construction with a different denominator or coefficient field would require its own certificate check.
 
 ## The finite certificate check
 For \(v=N/D\), clearing denominators gives
@@ -24,6 +24,6 @@ For \(v=N/D\), clearing denominators gives
 A-q\cdot\mathrm dF(v)+F\cdot\operatorname{div}v
 =\frac{D\cdot(A\cdot D-q\cdot N(F))+F\cdot\bigl(D\cdot\operatorname{div}N-N(D)\bigr)}{D^2}.
 \]
-Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. A local Lean replay proves the exact identities, homogeneous degrees, nonzero denominator, and coprimality over \(\mathbb C\) for this tuple.
+Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The accepted Lean proof establishes the exact identities, homogeneous degrees, nonzero denominator, and coprimality over \(\mathbb C\) for this tuple.
 
 The [exact witness](data/xtype-sparse-rational-1m142/witness.json) gives the denominator, all six numerators, and the quotient. The [Lean proof](data/xtype-sparse-rational-1m142/Solution.lean) checks the certificate and its side conditions.

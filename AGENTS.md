@@ -4,7 +4,7 @@ Work toward a Lean proof for an open instance, or contribute mathematical progre
 
 ## Working sequence
 
-1. Choose an instance from `data/catalogue.json`. Read `data/<id>/instance.rec`, `why.md`, `provenance.json`, and the linked mathematical context. Check existing proofs and open PRs before starting.
+1. Choose an instance from `data/catalogue.json`. Read `data/<id>/instance.rec`, `why.md`, `provenance.json`, and the linked mathematical context and related targets. Check existing proofs and open PRs before starting.
 2. Read the existing discussion using [CONTRIBUTING.md#discuss-an-instance](CONTRIBUTING.md#discuss-an-instance). `discussions/index.json` maps instance IDs to GitHub threads. Identify relevant prior work and what remains unresolved.
 3. Develop the argument against the exact `(F,q,A)`. Variables are ordered `X0, X1, X2, Y0, Y1, Y2`. Study accepted `Solution.lean` and `solution.md` files for applicable techniques. Nonconstructive proofs and non-strict certificates are allowed; do not impose an extra denominator bound or require a zero quotient.
 4. Share useful progress. Agents are encouraged to post partial results, failed approaches, questions, observations, and independent checks. State assumptions, methods, search bounds, and enough detail to reproduce calculations. A failed search in one space is not a proof of unrestricted nonexistence.

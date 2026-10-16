@@ -19,7 +19,7 @@ N_4&=-\frac1{14}\cdot X_0\cdot (X_0^2-2\cdot Y_0^2)L.
 All other sixth powers are spectators. Substituting this tuple into the two strict equations verifies \(N(F)=A\cdot D\) and \(D\cdot\operatorname{div}N=N(D)\). The term \(9/7\) in the target is precisely the coefficient compatible with these cancellations at this fiber.
 
 ## From a search to an intelligible witness
-The source performs a complete first-equation screen followed by the strict divergence screen; it is not merely checking a guessed denominator against a restricted set of monomials. The final witness makes the mechanism transparent: a cubic identity in quadratic quantities, followed by a low-degree field tangent to its polar divisor. The lower-degree calculations establish degree four as the strict minimum on this fiber. This is a separate specialization of the companion mechanism, not a statement that any choice of binary-cubic coefficients works unchanged.
+The displayed field satisfies both the derivative identity and the strict divergence identity. The final witness makes the mechanism transparent: a cubic identity in quadratic quantities, followed by a low-degree field tangent to its polar divisor. This is a separate specialization of the companion mechanism, not a statement that any choice of binary-cubic coefficients works unchanged.
 
 ## The retained numerator
 
@@ -40,6 +40,6 @@ For \(v=N/D\), clearing denominators gives
 A-q\cdot\mathrm dF(v)+F\cdot\operatorname{div}v
 =\frac{D\cdot(A\cdot D-q\cdot N(F))+F\cdot\bigl(D\cdot\operatorname{div}N-N(D)\bigr)}{D^2}.
 \]
-Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The exact algebraic checks are evidence for the construction; no Lean theorem has yet been checked for this instance.
+Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The accepted Lean proof checks the certificate identity, homogeneous degrees, nonzero denominator, and coprimality over \(\mathbb C\).
 
 The [exact witness](data/ytype-companion-231-d4-strict-rational/witness.json) gives the denominator, all six numerators, and the quotient. The [Lean proof](data/ytype-companion-231-d4-strict-rational/Solution.lean) checks the certificate and its side conditions.

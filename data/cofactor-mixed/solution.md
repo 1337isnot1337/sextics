@@ -19,7 +19,7 @@ N_2=\frac16\cdot A\cdot X_2.
 The cofactor pair preserves \(C\), and \(N(r)=A\cdot r/2\). Consequently \(N(H)=0\), \(N(D)=A\cdot D\), and \(N(F)=A\cdot D\). The density and radial weights also give \(\operatorname{div}N=A\), so the rational field is divergence-free.
 
 ## Why this survives mixed blocks
-The method uses an adapted-coordinate first integral \(C\), not an assumption that \(C\) contains only \(X\)-variables. Its dependence on \(Y_1,Y_2\) is harmless because those coordinates remain fixed by the field. The source provides two target directions, obtained with passive factor \(Y_1\) or \(Y_2\); this card chooses the first. Arbitrary new active dependence in \(H\) would require checking the invariant condition again.
+The method uses an adapted-coordinate first integral \(C\), not an assumption that \(C\) contains only \(X\)-variables. Its dependence on \(Y_1,Y_2\) is harmless because those coordinates remain fixed by the field. The passive factors \(Y_1\) and \(Y_2\) give two target directions; this instance uses the first. Arbitrary new active dependence in \(H\) would require checking the invariant condition again.
 
 ## The retained numerator
 
@@ -40,6 +40,6 @@ For \(v=N/D\), clearing denominators gives
 A-q\cdot\mathrm dF(v)+F\cdot\operatorname{div}v
 =\frac{D\cdot(A\cdot D-q\cdot N(F))+F\cdot\bigl(D\cdot\operatorname{div}N-N(D)\bigr)}{D^2}.
 \]
-Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The exact algebraic checks are evidence for the construction; no Lean theorem has yet been checked for this instance.
+Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The accepted Lean proof checks the certificate identity, homogeneous degrees, nonzero denominator, and coprimality over \(\mathbb C\).
 
 The [exact witness](data/cofactor-mixed/witness.json) gives the denominator, all six numerators, and the quotient. The [Lean proof](data/cofactor-mixed/Solution.lean) checks the certificate and its side conditions.

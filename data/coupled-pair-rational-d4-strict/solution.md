@@ -24,7 +24,7 @@ Neither \(N\) nor \(D\) has changed, so their logarithmic divergence identity su
 More generally, a term \(D\cdot W\) with \(N(W)=0\) produces a controlled target change \(W\operatorname{div}N\). The condition on \(W\) is essential; otherwise an additional \(D N(W)\) term enters the numerator equation.
 
 ## Significance and limits
-The retained tuple makes this a direct transport argument. The source also supplies the strict lower-degree obstruction for the chosen fiber. The construction supports this compatible deformation and target; it does not turn arbitrary deformations of Fermat into solved instances.
+The retained tuple makes this a direct transport argument. The construction supports this compatible deformation and target; it does not turn arbitrary deformations of Fermat into solved instances.
 
 ## The retained numerator
 
@@ -44,6 +44,6 @@ For \(v=N/D\), clearing denominators gives
 A-q\cdot\mathrm dF(v)+F\cdot\operatorname{div}v
 =\frac{D\cdot(A\cdot D-q\cdot N(F))+F\cdot\bigl(D\cdot\operatorname{div}N-N(D)\bigr)}{D^2}.
 \]
-Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The exact algebraic checks are evidence for the construction; no Lean theorem has yet been checked for this instance.
+Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The accepted Lean proof checks the certificate identity, homogeneous degrees, nonzero denominator, and coprimality over \(\mathbb C\).
 
 The [exact witness](data/coupled-pair-rational-d4-strict/witness.json) gives the denominator, all six numerators, and the quotient. The [Lean proof](data/coupled-pair-rational-d4-strict/Solution.lean) checks the certificate and its side conditions.

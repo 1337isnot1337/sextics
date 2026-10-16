@@ -1,4 +1,4 @@
-/* Extracted from hodge-numerics/visualizer.html for hodge.computer. */
+/* WebGL surface renderer used by the visualization worker. */
 (()=>{
 "use strict";
 function shader(gl, type, source) {

@@ -11,14 +11,14 @@ Conjugate choices of residues make \(v\) rational over \(\mathbb Q\). The logari
 ## Divergence is built into the mechanism
 Hamiltonian fields in two variables have zero divergence because mixed partial derivatives commute. The multiplier \(B\) is independent of the active variables, so it preserves that property. Clearing the common denominator gives \(D\cdot\operatorname{div}N=N(D)\). The residues are selected so that \(v(F)=A\), equivalently \(N(F)=A\cdot D\).
 
-The exact computation provides a second route to the same result. Its degree-four strict system has a five-dimensional intermediate space, and the remaining equations reduce to
+A coefficient-system approach imposes both strict equations on a degree-four denominator. For the displayed specialization, the following parameter relations hold:
 \[
 t_2-\frac{t_3^2}{3}=0,\qquad t_3^3+1=0.
 \]
 The rational projective point is \((t_2,t_3,1)=(1/3,-1,1)\); the other two points are conjugate over \(\mathbb Q(\sqrt{-3})\).
 
 ## What is special about this fiber
-The displayed target uses the selected parameter pair \((4,5)\) in the source family. The construction explains a rational quartic on that fiber, while the exact lower-degree screen establishes the strict minimum. Neither the projective solution count nor the parameter choice is a claim about all passive quadratics and all targets.
+The displayed target uses the selected parameter pair \((4,5)\) in this family. The construction gives a rational quartic on that fiber. Neither the projective solution count nor the parameter choice is a claim about all passive quadratics and all targets.
 
 ## The retained numerator
 
@@ -38,6 +38,6 @@ For \(v=N/D\), clearing denominators gives
 A-q\cdot\mathrm dF(v)+F\cdot\operatorname{div}v
 =\frac{D\cdot(A\cdot D-q\cdot N(F))+F\cdot\bigl(D\cdot\operatorname{div}N-N(D)\bigr)}{D^2}.
 \]
-Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The exact algebraic checks are evidence for the construction; no Lean theorem has yet been checked for this instance.
+Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The accepted Lean proof checks the certificate identity, homogeneous degrees, nonzero denominator, and coprimality over \(\mathbb C\).
 
 The [exact witness](data/passive-quadratic-d4-strict-rational/witness.json) gives the denominator, all six numerators, and the quotient. The [Lean proof](data/passive-quadratic-d4-strict-rational/Solution.lean) checks the certificate and its side conditions.

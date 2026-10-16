@@ -1,5 +1,5 @@
 ## A weighted split rather than a separated sum
-In adapted binary coordinates \(R,S\), the cubic block has the root-cube form \(\alpha\cdot R^3+\kappa\cdot R\cdot S^2\). The source arranges the full sextic as \(F=C+D\) so that the weighted derivation
+In adapted binary coordinates \(R,S\), the cubic block has the root-cube form \(\alpha\cdot R^3+\kappa\cdot R\cdot S^2\). Write the full sextic as \(F=C+D\) so that the weighted derivation
 \[
 W=\frac16\cdot (2\cdot R\partial_R-S\partial_S+z\partial_z+w\partial_w)
 \]
@@ -17,7 +17,7 @@ N_2=\frac16\cdot A\cdot X_2,\qquad N_5=\frac16\cdot A\cdot Y_2.
 Although the expanded sextic and denominator have many rational terms, this tuple remains short. Its derivatives satisfy \(N(F)=A\cdot D\) and \(N(D)=D\cdot\operatorname{div}N\). The exact expanded denominator is retained in the solution record, so there is no ambiguity about which weighted specialization is being used.
 
 ## The constraint behind the flexibility
-The numerous crossed terms are not arbitrary perturbations. Their weights make the complementary part invariant and the denominator an eigenfunction of the adapted field. This is the hypothesis that must survive when extending the family. The source establishes a proper family of sextics and compatible targets, not a construction on a general even sextic or a universal minimum denominator degree.
+The numerous crossed terms are not arbitrary perturbations. Their weights make the complementary part invariant and the denominator an eigenfunction of the adapted field. This is the hypothesis that must survive when extending the family. The argument applies to sextics and targets satisfying these weight identities; it supplies no universal denominator-degree bound.
 
 ## The retained numerator
 
@@ -39,6 +39,6 @@ For \(v=N/D\), clearing denominators gives
 A-q\cdot\mathrm dF(v)+F\cdot\operatorname{div}v
 =\frac{D\cdot(A\cdot D-q\cdot N(F))+F\cdot\bigl(D\cdot\operatorname{div}N-N(D)\bigr)}{D^2}.
 \]
-Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The exact algebraic checks are evidence for the construction; no Lean theorem has yet been checked for this instance.
+Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The accepted Lean proof checks the certificate identity, homogeneous degrees, nonzero denominator, and coprimality over \(\mathbb C\).
 
 The [exact witness](data/family-root-cube/witness.json) gives the denominator, all six numerators, and the quotient. The [Lean proof](data/family-root-cube/Solution.lean) checks the certificate and its side conditions.

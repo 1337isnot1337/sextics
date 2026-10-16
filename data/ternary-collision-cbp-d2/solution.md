@@ -21,9 +21,9 @@ N(D)=-\frac{25}{17}\cdot X_1\cdot Y_0\cdot D,
 The logarithmic condition is therefore visible without expanding the sextic. The other strict equation, \(N(F)=A\cdot D\), follows by differentiating the exact ternary block in the record.
 
 ## What the collision accomplishes
-The source constructs this quadric from a degenerating contact configuration of the underlying ternary cubic. The collision makes a low-degree polar divisor available, while the choice of character decides which numerator slots and target sector it reaches. This is why it is recorded separately from the first-character collision.
+This quadric arises from a degenerating contact configuration of the underlying ternary cubic. The collision makes a low-degree polar divisor available, while the choice of character decides which numerator slots and target sector it reaches. This is why it is recorded separately from the first-character collision.
 
-The exact degree-three tuple and quadratic denominator give a strict rational certificate. The source's lower-degree screen establishes degree two as the strict minimum. The result concerns the displayed collision fiber and target, not all ternary cubics or all characters of this one.
+The exact degree-three tuple and quadratic denominator give a strict rational certificate. The result concerns the displayed collision fiber and target, not all ternary cubics or all characters of this one.
 
 ## The retained numerator
 
@@ -43,6 +43,6 @@ For \(v=N/D\), clearing denominators gives
 A-q\cdot\mathrm dF(v)+F\cdot\operatorname{div}v
 =\frac{D\cdot(A\cdot D-q\cdot N(F))+F\cdot\bigl(D\cdot\operatorname{div}N-N(D)\bigr)}{D^2}.
 \]
-Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The exact algebraic checks are evidence for the construction; no Lean theorem has yet been checked for this instance.
+Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The accepted Lean proof checks the certificate identity, homogeneous degrees, nonzero denominator, and coprimality over \(\mathbb C\).
 
 The [exact witness](data/ternary-collision-cbp-d2/witness.json) gives the denominator, all six numerators, and the quotient. The [Lean proof](data/ternary-collision-cbp-d2/Solution.lean) checks the certificate and its side conditions.

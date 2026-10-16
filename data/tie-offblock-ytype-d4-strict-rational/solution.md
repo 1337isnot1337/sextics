@@ -24,7 +24,7 @@ Every other component is zero. The multiplier \(Y_0^2\) is passive: neither acti
 The Hesse cofactor identity organizes the verification of \(N(F)=A\cdot D\). A second direct calculation gives \(N(D)=D\cdot\operatorname{div}N\), establishing the strict rational certificate. Both numerator components have degree five.
 
 ## Scope
-The retained exact lower-degree screen gives a strict minimum of four. The construction shows how a passive factor can extend an active target direction. It does not say that an arbitrary multiplier is passive, or that multiplying by a coordinate differentiated by the field would preserve the same equations.
+The construction shows how a passive factor can extend an active target direction. It does not say that an arbitrary multiplier is passive, or that multiplying by a coordinate differentiated by the field would preserve the same equations.
 
 ## The retained numerator
 
@@ -44,6 +44,6 @@ For \(v=N/D\), clearing denominators gives
 A-q\cdot\mathrm dF(v)+F\cdot\operatorname{div}v
 =\frac{D\cdot(A\cdot D-q\cdot N(F))+F\cdot\bigl(D\cdot\operatorname{div}N-N(D)\bigr)}{D^2}.
 \]
-Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The exact algebraic checks are evidence for the construction; no Lean theorem has yet been checked for this instance.
+Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The accepted Lean proof checks the certificate identity, homogeneous degrees, nonzero denominator, and coprimality over \(\mathbb C\).
 
 The [exact witness](data/tie-offblock-ytype-d4-strict-rational/witness.json) gives the denominator, all six numerators, and the quotient. The [Lean proof](data/tie-offblock-ytype-d4-strict-rational/Solution.lean) checks the certificate and its side conditions.

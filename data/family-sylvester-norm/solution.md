@@ -8,7 +8,7 @@ Its discriminant is \(\Delta_H=-3\operatorname{disc}(p)\). Over the correspondin
 ## Construct a field upstairs, then trace the field
 In the adapted coordinates, one groups \(\alpha\cdot R^3\) with one passive binary sextic \(H\), and \(\beta\cdot S^3\) with the other. A weighted partial Euler field scales the first group and annihilates the second. Multiplication by the prescribed density and Piola transport realize the target \(X_0\cdot X_1^2\cdot X_2^2\cdot Y_0\).
 
-The conjugate construction serves the same rational target. Averaging the rational vector fields therefore preserves the certificate equation. Clearing their conjugate denominators produces their norm. With the source's normalization, the rational degree-twelve denominator is
+The conjugate construction serves the same rational target. Averaging the rational vector fields therefore preserves the certificate equation. Clearing their conjugate denominators produces their norm. With this normalization, the rational degree-twelve denominator is
 \[
 D=H^2+p\cdot H+\frac{H_p^3}{9\cdot\Delta_H},
 \]
@@ -25,6 +25,6 @@ For \(v=N/D\), clearing denominators gives
 A-q\cdot\mathrm dF(v)+F\cdot\operatorname{div}v
 =\frac{D\cdot(A\cdot D-q\cdot N(F))+F\cdot\bigl(D\cdot\operatorname{div}N-N(D)\bigr)}{D^2}.
 \]
-Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. A local Lean replay proves the exact identities, homogeneous degrees, nonzero denominator, and coprimality over \(\mathbb C\) for this tuple.
+Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The accepted Lean proof establishes the exact identities, homogeneous degrees, nonzero denominator, and coprimality over \(\mathbb C\) for this tuple.
 
 The [exact witness](data/family-sylvester-norm/witness.json) gives the denominator, all six numerators, and the quotient. The [Lean proof](data/family-sylvester-norm/Solution.lean) checks the certificate and its side conditions.

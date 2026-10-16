@@ -8,20 +8,18 @@ credentials. No Lean builds run in AWS.
 
 GitHub's `main` branch is the source of truth for the website. Make content and
 code changes through reviewed commits; the static publishing workflow builds
-from that branch and uploads its public artifact. The repository can stay
-private while CloudFront serves the website publicly. Do not edit the hosted
+from that branch and uploads its public artifact. Do not edit the hosted
 files independently of the repository.
 
 `template.json` describes the website infrastructure. `artifacts.json` creates
 the separate private bucket used for Lambda deployment packages. The
 CloudFormation service role is named `sextics`; the Lambda runtime role has only
 the permissions needed for its session table, app secret, and log stream.
-Provisioning or changing these resources requires the owner's authorization.
+These roles are administered by the repository maintainers.
 
 ## Build a release
 
-Use a reviewed checkout containing the current accepted records. Do not deploy
-an old migration baseline or a contributor's unchecked branch.
+Build releases from current `main`, including its accepted records.
 
 ```sh
 python3 scripts/build-content.py
@@ -71,11 +69,11 @@ with a configuration/code update, because each environment caches the secret.
 Infrastructure and backend releases are owner-operated. To activate
 `.github/workflows/deploy-website.yml`, install the
 `publisher.json` stack and set the repository variable `AWS_WEBSITE_ROLE` to its
-role output after merging the workflow. This separate role can upload static
+role output. This separate role can upload static
 files and invalidate this distribution; it cannot read app secrets, sessions,
 or change Lambda or IAM. It trusts only this repository's `main` identity,
 including the immutable organization and repository IDs in the current GitHub
-OIDC subject format. Recheck that identity if the repository is ever recreated.
+OIDC subject format. Recheck that identity when changing the publishing repository.
 
 A GitHub-token push from the acceptance publisher does not itself start another
 push workflow. The deployment workflow therefore handles successful
@@ -86,16 +84,10 @@ discussion mappings require an owner-operated backend deployment separately.
 
 ## Domain and email
 
-The domain remains registered at Hover. Its Route 53 hosted zone must preserve
-Titan's MX, SPF, and DKIM records. Take a complete record inventory before any
-nameserver change and compare all new authoritative nameservers with the old
-mail records. DNS TTL expiry and certificate validation can delay cutover.
-
-After the certificate is issued, attach it and the domain alias to CloudFront,
-then point the apex A and AAAA alias records at that distribution. Confirm HTTPS
-and the API before switching the existing GitHub App's homepage and callback to
-the production URLs listed in [the service instructions](../../server/README.md).
-Keep the old preview callback until the production sign-in test succeeds.
+The domain is registered at Hover and uses a Route 53 hosted zone. The apex A
+and AAAA alias records point to CloudFront, with its ACM certificate in
+`us-east-1`. Titan handles email; preserve its MX, SPF, and DKIM records when
+changing DNS. Website infrastructure changes must not alter email routing.
 
 ## Verification and operations
 

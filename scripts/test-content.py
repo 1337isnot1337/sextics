@@ -5,6 +5,7 @@ Synthetic receipts below are not proof evidence and never enter the atlas.
 The protected Lean runner and GitHub publisher are tested separately.
 """
 import copy
+import io
 import json
 from pathlib import Path
 import shutil
@@ -12,12 +13,16 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from types import SimpleNamespace
+from unittest.mock import patch
+import zipfile
 
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/'scripts/proposals'))
 from acceptance import accepted_sources, solution_record, statement_hash
+import publish as publisher
 
 RID = 'test-example'
 
@@ -115,7 +120,7 @@ class ContentUpdates(unittest.TestCase):
     def test_changed_binding_is_rejected_without_publishing_partial_output(self):
         self.receipt_fixture(); self.run_build()
         protected=self.root/'data'/RID
-        mutations={'Solution.lean':'-- altered proof', 'solution.md':'Altered explanation',
+        mutations={'Solution.lean':'-- altered proof', 'proof.json':'{}',
                    'witness.json':'{}', 'instance.rec':(protected/'instance.rec').read_text().replace('q: 1','q: 2')}
         before={p:p.read_bytes() for p in self.root.rglob('*') if p.suffix in ('.json','.html') and p.name!='witness.json'}
         for name,content in mutations.items():
@@ -124,6 +129,77 @@ class ContentUpdates(unittest.TestCase):
                 self.assertIn('has changed',self.run_build(success=False).stderr)
                 path.write_bytes(original)
                 self.assertEqual(before,{p:p.read_bytes() for p in before})
+
+    def test_explanation_edits_preserve_acceptance_and_update_the_site(self):
+        self.receipt_fixture(); self.run_build()
+        folder=self.root/'data'/RID
+        receipt=(folder/'acceptance.json').read_bytes()
+        credits=self.read('leaderboard/credits.json')
+        record=self.read(f'data/{RID}/record.json')
+        revision=self.read('data/revision.json')
+        self.write(f'data/{RID}/solution.md', r'Corrected explanation with \(D=\frac14\).')
+        self.run_build()
+        self.assertIn('Corrected explanation', (folder/'solution.html').read_text())
+        self.assertEqual((folder/'acceptance.json').read_bytes(),receipt)
+        self.assertEqual(self.read('leaderboard/credits.json'),credits)
+        self.assertEqual(self.read(f'data/{RID}/record.json'),record)
+        self.assertNotEqual(self.read('data/revision.json'),revision)
+        self.run_build(check=True)
+
+    def test_explanation_is_still_required(self):
+        self.receipt_fixture()
+        self.write(f'data/{RID}/solution.md','  \n')
+        self.assertIn('Missing solution explanation', self.run_build(success=False).stderr)
+        (self.root/'data'/RID/'solution.md').unlink()
+        self.run_build(success=False)
+
+    def test_added_proof_helper_requires_reverification(self):
+        self.receipt_fixture()
+        self.write(f'data/{RID}/Helper.lean','-- new proof dependency')
+        self.assertIn('has changed',self.run_build(success=False).stderr)
+
+    def test_publisher_checks_initial_prose_but_allows_edited_prose_on_retry(self):
+        receipt=self.receipt_fixture()
+        folder=self.root/'data'/RID
+        pr=receipt['pullRequest']
+        report=receipt['verification']
+        self.write('.github/solve-policy.json',json.dumps({'mode':'live'}))
+        archive=io.BytesIO()
+        with zipfile.ZipFile(archive,'w') as bundle:
+            bundle.writestr('report.json',json.dumps(report))
+        responses={
+            'pulls/123':{'merged':True,'merge_commit_sha':pr['mergeCommit'],
+                         'head':{'sha':pr['headCommit']},'user':{'login':receipt['githubLogin']},
+                         'created_at':receipt['submittedAt'],'merged_at':'2026-10-15T00:01:00Z',
+                         'html_url':pr['url']},
+            'commits/'+pr['mergeCommit']:{},
+            'commits/'+pr['headCommit']+'/statuses?per_page=100':[
+                {'context':'solve/lean','state':'success','creator':{'login':'github-actions[bot]'},
+                 'target_url':'https://github.com/hodge-computer/sextics/actions/runs/123'}],
+            'actions/runs/123':{'path':'.github/workflows/solve-proposal.yml'},
+            'actions/runs/123/artifacts?per_page=100':{'artifacts':[
+                {'name':'solve-123-'+pr['headCommit'],'expired':False,'size_in_bytes':1000,'id':1}]},
+            'actions/artifacts/1/zip':archive.getvalue(),
+        }
+        def api(path,**kwargs):
+            return responses[path.removeprefix('repos/hodge-computer/sextics/')]
+        # GitHub report authentication is independent of this content-boundary
+        # test; only API responses and process execution are replaced here.
+        with patch.object(publisher,'ROOT',self.root),patch.object(publisher,'api',api), \
+             patch.object(publisher,'git',return_value=f'data/{RID}/proof.json\n'.encode()), \
+             patch.object(publisher,'validate_report'), \
+             patch.object(publisher.subprocess,'run',return_value=SimpleNamespace(returncode=0)):
+            (folder/'acceptance.json').unlink()
+            self.write(f'data/{RID}/solution.md','Changed since the proposal check.')
+            with self.assertRaisesRegex(ValueError,'differs from the checked sources'):
+                publisher.publish(123)
+            self.assertFalse((folder/'acceptance.json').exists())
+            self.write(f'data/{RID}/acceptance.json',json.dumps(receipt))
+            publisher.publish(123)
+            self.assertEqual(self.read(f'data/{RID}/acceptance.json'),receipt)
+            self.write(f'data/{RID}/Solution.lean','-- changed proof')
+            with self.assertRaisesRegex(ValueError,'proof or witness has changed'):
+                publisher.publish(123)
 
     def test_invalid_receipt_and_claimed_identity_cannot_publish(self):
         original=self.receipt_fixture()

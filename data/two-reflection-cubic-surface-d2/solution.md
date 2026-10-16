@@ -19,7 +19,7 @@ N(F)=2\cdot X_0\cdot Y_0\cdot X_1^2\cdot (F_w-F_u)
 Since both divergence and the normal derivative of \(D\) vanish, the field \(N/D\) gives a strict certificate immediately.
 
 ## Why the example is informative
-The proof depends on a rotation identity and two reflection symmetries, not on invariance under all individual coordinate sign changes. The retained source separately certifies smoothness by reduction modulo five and certifies that the target is primitive. Those are independent of the displayed real slice and independent of the short vector-field calculation.
+The proof depends on a rotation identity and two reflection symmetries, not on invariance under all individual coordinate sign changes. Smoothness and primitivity of the target are independent of the displayed real slice and of the short vector-field calculation.
 
 The small quadric is a genuine legal polar divisor, not a factor extracted from the sextic. Its usefulness comes from being a first integral of the chosen field. The calculation establishes this particular target; it does not solve all targets in the two-reflection sector.
 
@@ -41,6 +41,6 @@ For \(v=N/D\), clearing denominators gives
 A-q\cdot\mathrm dF(v)+F\cdot\operatorname{div}v
 =\frac{D\cdot(A\cdot D-q\cdot N(F))+F\cdot\bigl(D\cdot\operatorname{div}N-N(D)\bigr)}{D^2}.
 \]
-Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The exact algebraic checks are evidence for the construction; no Lean theorem has yet been checked for this instance.
+Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The accepted Lean proof checks the certificate identity, homogeneous degrees, nonzero denominator, and coprimality over \(\mathbb C\).
 
 The [exact witness](data/two-reflection-cubic-surface-d2/witness.json) gives the denominator, all six numerators, and the quotient. The [Lean proof](data/two-reflection-cubic-surface-d2/Solution.lean) checks the certificate and its side conditions.

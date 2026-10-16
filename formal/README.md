@@ -19,7 +19,7 @@ E = A D² − q D Σᵢ Nᵢ ∂ᵢF
     + F (D Σᵢ ∂ᵢNᵢ − Σᵢ Nᵢ ∂ᵢD).
 ```
 
-Since `D` is invertible in the relevant localization, a witness for the equation is the exact polynomial identity `E = F^(q+1) Q`. A strict certificate has `E=0`. This cleared identity, together with homogeneity and denominator admissibility, is the intended constructive checker interface. The bridge from these finite identities to the rational-vector-field statement should be proved once.
+Since `D` is invertible in the relevant localization, a witness for the equation is the exact polynomial identity `E = F^(q+1) Q`. A strict certificate has `E=0`. This cleared identity, together with homogeneity and denominator admissibility, is the constructive checker interface. The theorem `localization_identity` in `HodgeComputer/Verify.lean` establishes the bridge to the rational-vector-field statement.
 
 ## Protected verification
 

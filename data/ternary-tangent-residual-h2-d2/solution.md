@@ -15,7 +15,7 @@ Pulling \(\ell\) back gives a degree-two denominator. The construction supplies 
 The first identity realizes the requested target; the second removes the extra term created when differentiating \(N/D\). Contact geometry suggests the divisor, but these algebraic equalities are what establish the certificate.
 
 ## Extent of the result
-The source's first-equation systems in denominator degrees zero and one have full column rank, ruling out nonzero normalized solutions there. Hence degree two is minimal for the strict construction problem. The special tangent/residual configuration is a genuine hypothesis; an arbitrary tangent to an arbitrary ternary cubic need not give this same field.
+The special tangent/residual configuration is a genuine hypothesis; an arbitrary tangent to an arbitrary ternary cubic need not give this same field.
 
 ## The retained numerator
 
@@ -36,6 +36,6 @@ For \(v=N/D\), clearing denominators gives
 A-q\cdot\mathrm dF(v)+F\cdot\operatorname{div}v
 =\frac{D\cdot(A\cdot D-q\cdot N(F))+F\cdot\bigl(D\cdot\operatorname{div}N-N(D)\bigr)}{D^2}.
 \]
-Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The exact algebraic checks are evidence for the construction; no Lean theorem has yet been checked for this instance.
+Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The accepted Lean proof checks the certificate identity, homogeneous degrees, nonzero denominator, and coprimality over \(\mathbb C\).
 
 The [exact witness](data/ternary-tangent-residual-h2-d2/witness.json) gives the denominator, all six numerators, and the quotient. The [Lean proof](data/ternary-tangent-residual-h2-d2/Solution.lean) checks the certificate and its side conditions.

@@ -9,5 +9,9 @@
     "Y2"
   ],
   "statementSource": "instance.rec",
-  "acceptance": "A solution must be introduced by a checked and merged proposal."
+  "contextSource": "why.md",
+  "discussionUrl": "https://github.com/hodge-computer/sextics/discussions/100",
+  "sameVarietyInstances": [
+    "fermat-pair-rational-d4-strict"
+  ]
 }

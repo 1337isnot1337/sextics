@@ -17,7 +17,7 @@ Thus \(N/D\) is divergence-free. Applying it to the sextic gives the displayed t
 ## The geometric input and the algebraic conclusion
 The original sextic is organized as a ternary cubic in \(X_0^2,Y_0^2,X_1^2\), with passive sixth powers. A special collision of the contact configuration identifies the line whose pullback is \(D\). After that discovery, no geometric existence theorem is needed for this witness: the two polynomial identities are a complete direct verification of the field equation.
 
-The other collision character uses different active slots and a different target, which is why it has its own atlas entry. The retained rank calculations exclude smaller denominators for the normalized strict problem. This establishes a strict degree-two minimum on this fiber without claiming a classification of every possible rational field on a general ternary sextic.
+The other collision character uses different active slots and a different target, which is why it has its own atlas entry. This field establishes a strict degree-two certificate on the displayed fiber. The contact configuration is specific to this cubic and does not classify rational fields on a general ternary sextic.
 
 ## The retained numerator
 
@@ -37,6 +37,6 @@ For \(v=N/D\), clearing denominators gives
 A-q\cdot\mathrm dF(v)+F\cdot\operatorname{div}v
 =\frac{D\cdot(A\cdot D-q\cdot N(F))+F\cdot\bigl(D\cdot\operatorname{div}N-N(D)\bigr)}{D^2}.
 \]
-Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The exact algebraic checks are evidence for the construction; no Lean theorem has yet been checked for this instance.
+Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The accepted Lean proof checks the certificate identity, homogeneous degrees, nonzero denominator, and coprimality over \(\mathbb C\).
 
 The [exact witness](data/ternary-collision-cb-d2/witness.json) gives the denominator, all six numerators, and the quotient. The [Lean proof](data/ternary-collision-cb-d2/Solution.lean) checks the certificate and its side conditions.

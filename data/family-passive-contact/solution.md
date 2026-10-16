@@ -15,7 +15,7 @@ The target is \(A=X_0^3\cdot X_1\cdot X_2\cdot Y_1\). The factor \(X_2\cdot Y_1\
 The passive quadratic \(R\) enters the factorization algebraically, but its variables are not differentiated by the active part. This is why a mixed term such as \(Y_0\cdot Y_2\) can be included without forcing a new denominator shape.
 
 ## Keep the constituent distinct from the whole bundle
-The source develops a larger three-target construction with further Piola constituents. Combining all those directions can require product denominators of higher degree, and some constituents are non-strict. This card selects only the strict linear-contact constituent, with the other target coefficient set to zero. Its degree-six denominator must not be presented as a certificate for the entire larger bundle.
+This instance uses the strict linear-contact field for the displayed target. Combining it with other Piola fields generally requires a common denominator, and those fields can have nonzero quotients. The degree-six denominator here certifies the stated target; extending the target space requires additional fields satisfying both certificate equations.
 
 ## The finite certificate check
 For \(v=N/D\), clearing denominators gives
@@ -23,6 +23,6 @@ For \(v=N/D\), clearing denominators gives
 A-q\cdot\mathrm dF(v)+F\cdot\operatorname{div}v
 =\frac{D\cdot(A\cdot D-q\cdot N(F))+F\cdot\bigl(D\cdot\operatorname{div}N-N(D)\bigr)}{D^2}.
 \]
-Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. A local Lean replay proves the exact identities, homogeneous degrees, nonzero denominator, and coprimality over \(\mathbb C\) for this tuple.
+Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The accepted Lean proof establishes the exact identities, homogeneous degrees, nonzero denominator, and coprimality over \(\mathbb C\) for this tuple.
 
 The [exact witness](data/family-passive-contact/witness.json) gives the denominator, all six numerators, and the quotient. The [Lean proof](data/family-passive-contact/Solution.lean) checks the certificate and its side conditions.

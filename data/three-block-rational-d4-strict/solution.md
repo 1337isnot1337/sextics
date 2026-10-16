@@ -20,7 +20,7 @@ Its coefficients are compatible with the same quadratic quantity \(L\). Differen
 ## Why the rational field works
 Direct differentiation of the quartic yields \(N(D)=D\cdot\operatorname{div}N\). This cancels the denominator derivative in the divergence of \(N/D\), so the normalized equation is already the complete certificate. Each numerator has degree five, and the field has total degree one as required at \(q=1\).
 
-The retained source establishes a strict degree-four minimum. In particular, the smaller quadratic candidate space is obstructed by the second equation: satisfying the derivative equation alone does not resolve the divergence condition. This illustrates why the norm of two conjugate factors is useful even when individual quadratic divisors first look promising.
+The norm combines the conjugate factors into a rational quartic denominator. Both certificate equations must be checked after combining the fields: satisfying the derivative equation alone does not resolve the divergence condition.
 
 ## The retained numerator
 
@@ -41,6 +41,6 @@ For \(v=N/D\), clearing denominators gives
 A-q\cdot\mathrm dF(v)+F\cdot\operatorname{div}v
 =\frac{D\cdot(A\cdot D-q\cdot N(F))+F\cdot\bigl(D\cdot\operatorname{div}N-N(D)\bigr)}{D^2}.
 \]
-Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The exact algebraic checks are evidence for the construction; no Lean theorem has yet been checked for this instance.
+Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The accepted Lean proof checks the certificate identity, homogeneous degrees, nonzero denominator, and coprimality over \(\mathbb C\).
 
 The [exact witness](data/three-block-rational-d4-strict/witness.json) gives the denominator, all six numerators, and the quotient. The [Lean proof](data/three-block-rational-d4-strict/Solution.lean) checks the certificate and its side conditions.

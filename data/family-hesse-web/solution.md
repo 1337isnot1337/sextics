@@ -10,7 +10,7 @@ The product of the three corresponding linear forms is rational:
 It has degree six after returning to the original coordinates.
 
 ## Contact conics explain the parameters
-The associated conics have parameter \(\kappa=2/C\), satisfying \(\kappa^3+t\kappa=2\). Under their parametrization the cubic restricts to a square \((s^3+r^3)^2\). This contact identity gives logarithmic fields over the cubic coefficient algebra. The source combines the three ordinary tangent channels through \((-1:1:0)\); the fourth, flex channel has zero coefficient in the selected solution.
+The associated conics have parameter \(\kappa=2/C\), satisfying \(\kappa^3+t\kappa=2\). Under their parametrization the cubic restricts to a square \((s^3+r^3)^2\). This contact identity gives logarithmic fields over the cubic coefficient algebra. The construction combines the three ordinary tangent channels through \((-1:1:0)\); the fourth, flex channel has zero coefficient in the selected solution.
 
 Tracing the resulting rational fields gives a field over \(\mathbb Q\) for the target \(A=X_0^3\cdot Y_0^3\). Clearing the common norm denominator yields the literal degree-seven tuple retained in the record. It satisfies \(N(F)=A\cdot D\) and \(D\cdot\operatorname{div}N=N(D)\).
 
@@ -36,6 +36,6 @@ For \(v=N/D\), clearing denominators gives
 A-q\cdot\mathrm dF(v)+F\cdot\operatorname{div}v
 =\frac{D\cdot(A\cdot D-q\cdot N(F))+F\cdot\bigl(D\cdot\operatorname{div}N-N(D)\bigr)}{D^2}.
 \]
-Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The exact algebraic checks are evidence for the construction; no Lean theorem has yet been checked for this instance.
+Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The accepted Lean proof checks the certificate identity, homogeneous degrees, nonzero denominator, and coprimality over \(\mathbb C\).
 
 The [exact witness](data/family-hesse-web/witness.json) gives the denominator, all six numerators, and the quotient. The [Lean proof](data/family-hesse-web/Solution.lean) checks the certificate and its side conditions.

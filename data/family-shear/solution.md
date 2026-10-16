@@ -20,7 +20,7 @@ The complementary denominator is an eigenfunction with \(P(D)=R\cdot D\), while 
 Piola's identity gives \(\operatorname{div}N=A\), and the chain rule gives \(N(F)=N(D)=A\cdot D\). This yields a strict certificate with the recorded sextic denominator.
 
 ## Why the first jet matters
-The triangular map makes the polynomial dependence on \(T\) linear in the complement's missing direction. The large shear polynomial therefore does not require solving a general six-variable equation: its Jacobian cofactors perform the transport exactly. The source serves three compatible target directions, obtained from the allowed passive densities. This selected density is one of them; arbitrary changes to the product structure or target do not follow automatically.
+The triangular map makes the polynomial dependence on \(T\) linear in the complement's missing direction. The large shear polynomial therefore does not require solving a general six-variable equation: its Jacobian cofactors perform the transport exactly. Other passive densities may give compatible target directions by the same transport identity. Each choice must satisfy the displayed invariance conditions; arbitrary changes to the product structure or target do not follow automatically.
 
 ## The retained numerator
 
@@ -44,6 +44,6 @@ For \(v=N/D\), clearing denominators gives
 A-q\cdot\mathrm dF(v)+F\cdot\operatorname{div}v
 =\frac{D\cdot(A\cdot D-q\cdot N(F))+F\cdot\bigl(D\cdot\operatorname{div}N-N(D)\bigr)}{D^2}.
 \]
-Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The exact algebraic checks are evidence for the construction; no Lean theorem has yet been checked for this instance.
+Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The accepted Lean proof checks the certificate identity, homogeneous degrees, nonzero denominator, and coprimality over \(\mathbb C\).
 
 The [exact witness](data/family-shear/witness.json) gives the denominator, all six numerators, and the quotient. The [Lean proof](data/family-shear/Solution.lean) checks the certificate and its side conditions.

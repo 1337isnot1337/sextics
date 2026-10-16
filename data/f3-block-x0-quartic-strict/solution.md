@@ -17,8 +17,8 @@ N_3=-\frac13\cdot X_0^3\cdot X_1^2.
 \]
 The coefficient \(-5/3\) is dictated by the contact construction. It is the target combination for which differentiating the sextic factors through \(D\). Direct expansion gives \(N(F)=A\cdot D\), and differentiating the denominator gives \(N(D)=D\cdot\operatorname{div}N\). These are strict equalities, not congruences modulo \(F\).
 
-## What has and has not been minimized
-The source places this example in the Hesse contact-conic family and establishes degree four as the minimum strict denominator degree for this specialization. The square restriction explains the divisor; the rational numerator certifies the particular target. Neither statement says that each monomial in the bundle is separately solved by this same construction, or that every Hesse parameter has this rational contact conic.
+## Scope of the construction
+This example belongs to the Hesse contact-conic family and supplies a degree-four denominator for the stated target. The square restriction explains the divisor; the rational numerator certifies the particular target. Neither statement says that each monomial in the bundle is separately solved by this same construction, or that every Hesse parameter has this rational contact conic.
 
 ## The retained numerator
 
@@ -39,6 +39,6 @@ For \(v=N/D\), clearing denominators gives
 A-q\cdot\mathrm dF(v)+F\cdot\operatorname{div}v
 =\frac{D\cdot(A\cdot D-q\cdot N(F))+F\cdot\bigl(D\cdot\operatorname{div}N-N(D)\bigr)}{D^2}.
 \]
-Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The exact algebraic checks are evidence for the construction; no Lean theorem has yet been checked for this instance.
+Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The accepted Lean proof checks the certificate identity, homogeneous degrees, nonzero denominator, and coprimality over \(\mathbb C\).
 
 The [exact witness](data/f3-block-x0-quartic-strict/witness.json) gives the denominator, all six numerators, and the quotient. The [Lean proof](data/f3-block-x0-quartic-strict/Solution.lean) checks the certificate and its side conditions.

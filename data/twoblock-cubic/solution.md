@@ -13,7 +13,7 @@ With \(D\) fixed, impose the two equations
 \[
 N(F)=A\cdot D,\qquad D\cdot\operatorname{div}N-N(D)=F\cdot C
 \]
-on the degree-seven character supports. Reducing the second equation modulo \(F\) gives an exact system with 25 numerator unknowns and rank 24. Setting the one free parameter to zero gives the literal tuple now stored in the solution record. In this completion \(N_2=N_5=0\), and, for example,
+on the degree-seven character supports. Reducing the second equation modulo \(F\) gives a linear system for the numerator coefficients. The witness linked below supplies a solution. In this completion \(N_2=N_5=0\), and, for example,
 \[
 N_1=-\frac1{34}\cdot X_0\cdot X_1\cdot Y_1\cdot (X_0^2-8\cdot Y_0^2)\cdot (4\cdot X_0^2-17\cdot Y_0^2),
 \]
@@ -31,7 +31,7 @@ A-\mathrm dF(v)+F\cdot\operatorname{div}v=\frac{F^2\cdot C}{D^2},\qquad v=N/D.
 Since \(D\) is coprime to \(F\), the quotient \(C/D^2\) belongs to the relevant localization. Thus a nonzero \(C\) is fully allowed by the challenge. Strictness is only the special case \(C=0\), not an additional acceptance requirement.
 
 ## What transport preserves
-The second binary block enters in a direction that the retained reconstruction can accommodate; the source gives the exact specialization and compatibility calculation. That is a statement about the chosen companion target and denominator shape. Replacing its multiplier by a different coordinate can fail the same fixed-denominator system, but such a failure says nothing about all possible denominators for the altered target.
+The exact witness accommodates the second binary block in the displayed companion target. That is a statement about the chosen companion target and denominator shape. Replacing its multiplier by a different coordinate can fail the same fixed-denominator system, but such a failure says nothing about all possible denominators for the altered target.
 
 The record contains all six exact rational numerator polynomials and the quotient \(C=0\), together with the reproducible linear-completion procedure.
 
@@ -41,6 +41,6 @@ For \(v=N/D\), clearing denominators gives
 A-q\cdot\mathrm dF(v)+F\cdot\operatorname{div}v
 =\frac{D\cdot(A\cdot D-q\cdot N(F))+F\cdot\bigl(D\cdot\operatorname{div}N-N(D)\bigr)}{D^2}.
 \]
-Here the normalized first equation vanishes and the second numerator is \(F\cdot C\), so the right-hand side is divisible by \(F^2\) in the localization away from \(F\). A local Lean replay proves the exact identities, homogeneous degrees, nonzero denominator, and coprimality over \(\mathbb C\) for this tuple.
+Here the normalized first equation vanishes and the second numerator is \(F\cdot C\), so the right-hand side is divisible by \(F^2\) in the localization away from \(F\). The accepted Lean proof establishes the exact identities, homogeneous degrees, nonzero denominator, and coprimality over \(\mathbb C\) for this tuple.
 
 The [exact witness](data/twoblock-cubic/witness.json) gives the denominator, all six numerators, and the quotient. The [Lean proof](data/twoblock-cubic/Solution.lean) checks the certificate and its side conditions.

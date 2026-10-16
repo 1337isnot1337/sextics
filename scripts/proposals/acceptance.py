@@ -90,7 +90,13 @@ def read_acceptance(root, instance_id):
     require(statement_hash(instance) == proof['statementSha256'], 'Accepted target has changed')
     folder = root/'data'/instance_id
     actual = accepted_sources(folder)
-    require(actual == proof['sourceHashes'], 'Accepted proof, witness, or explanation has changed')
+    # The receipt records the original submission. Prose can be edited after
+    # acceptance without changing the theorem that Lean checked.
+    checked = proof['sourceHashes']
+    require({n:h for n,h in actual.items() if n != 'solution.md'} ==
+            {n:h for n,h in checked.items() if n != 'solution.md'},
+            'Accepted proof or witness has changed')
+    require((folder/'solution.md').read_text().strip(), 'Missing solution explanation')
     manifest = json.loads((folder/'proof.json').read_text())
     require(manifest['schemaVersion'] == 2 and manifest['instanceId'] == instance_id and
             manifest['theorem'] == proof['theorem'], 'Accepted theorem identity mismatch')

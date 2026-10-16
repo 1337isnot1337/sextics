@@ -14,9 +14,9 @@ D=Q^3+9\cdot (U+V+W)^3\cdot P,
 which has degree thirty in the original variables.
 
 ## Fourier channels and rational descent
-The source diagonalizes the cyclic structure using a primitive cube root of unity. It constructs logarithmic fields in the resulting Fourier coordinates, then transports them through the monomial map by the rational Piola formula. The two conjugate fields are combined by a normalized trace, giving coefficients in \(\mathbb Q\).
+The construction diagonalizes the cyclic structure using a primitive cube root of unity. It constructs logarithmic fields in the resulting Fourier coordinates, then transports them through the monomial map by the rational Piola formula. The two conjugate fields are combined by a normalized trace, giving coefficients in \(\mathbb Q\).
 
-After simplification, only the three active \(X\)-components remain. Each is a rational polynomial expression with 31 terms in the adapted monomials; the source records the exact transport matrix and normalization. Their total degree is 31. The multiplier \(Y_0\) is passive, so it does not introduce an extra derivative in the active field.
+After simplification, only the three active \(X\)-components remain. The exact rational expressions are supplied in the witness linked below. Their total degree is 31. The multiplier \(Y_0\) is passive, so it does not introduce an extra derivative in the active field.
 
 The descended tuple satisfies \(N(F)=A\cdot D\) and \(D\cdot\operatorname{div}N=N(D)\). These identities establish the strict certificate; the denominator norm by itself would not.
 
@@ -29,6 +29,6 @@ For \(v=N/D\), clearing denominators gives
 A-q\cdot\mathrm dF(v)+F\cdot\operatorname{div}v
 =\frac{D\cdot(A\cdot D-q\cdot N(F))+F\cdot\bigl(D\cdot\operatorname{div}N-N(D)\bigr)}{D^2}.
 \]
-Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. A local Lean replay proves the exact identities, homogeneous degrees, nonzero denominator, and coprimality over \(\mathbb C\) for this tuple.
+Here both bracketed expressions vanish, so the residual is identically zero. The degree condition, nonzero denominator, and coprimality with \(F\) are separate side conditions retained with the exact record. The accepted Lean proof establishes the exact identities, homogeneous degrees, nonzero denominator, and coprimality over \(\mathbb C\) for this tuple.
 
 The [exact witness](data/klein-rational/witness.json) gives the denominator, all six numerators, and the quotient. The [Lean proof](data/klein-rational/Solution.lean) checks the certificate and its side conditions.
