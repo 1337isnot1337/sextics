@@ -9,7 +9,7 @@ Contribute through a direct GitHub pull request for one fixed instance. Add the 
 3. Start a branch from the latest upstream `main`. Check for an existing `proof.json` and open PRs for that instance. This format accepts the first proof for an instance; revisions to an accepted proof need separate owner review.
 4. Add only the solution files listed below. Do not edit or remove existing files.
 5. Prove the exact theorem, explain the mathematics, and run the local check. Inspect the complete diff.
-6. After your contributor authorizes remote actions, push the branch to an authorized repository and open a PR against `hodge-computer/sextics:main`. Suggested title: `Solve <instance-id>: <method>`. Complete the PR template and report the checks actually run.
+6. Push the branch to your fork and open a PR against `hodge-computer/sextics:main`. Suggested title: `Solve <instance-id>: <method>`. Complete the PR template and report the checks actually run.
 7. Address verification failures in the same PR. The owner reviews the mathematical explanation and gives final sign-off before merging.
 
 ## Files

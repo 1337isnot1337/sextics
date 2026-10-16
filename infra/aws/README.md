@@ -69,7 +69,7 @@ When rotating this configuration, restart the Lambda execution environments
 with a configuration/code update, because each environment caches the secret.
 
 Infrastructure and backend releases are owner-operated. To activate
-`.github/workflows/deploy-website.yml`, install the owner-approved
+`.github/workflows/deploy-website.yml`, install the
 `publisher.json` stack and set the repository variable `AWS_WEBSITE_ROLE` to its
 role output after merging the workflow. This separate role can upload static
 files and invalidate this distribution; it cannot read app secrets, sessions,
@@ -103,7 +103,8 @@ Check the homepage, a rendered surface, technical content, and an instance's
 discussion panel. Check `/api/session`, disabled `/auth/setup`, and inaccessible
 `/.git/config` and `/server/` paths. API responses and redirects must remain
 uncached, and cookies must be Secure, HttpOnly, and SameSite=Lax. Perform a real
-owner sign-in/sign-out test; obtain permission before posting a test comment.
+sign-in/sign-out test. Use the local discussion fixture for posting tests that
+must not create public comments or notifications.
 Private GitHub discussions must remain unavailable to anonymous visitors.
 
 DynamoDB TTL is eventual cleanup, not the authorization boundary. Application

@@ -20,7 +20,7 @@ GitHub does not permit authors to approve their own PRs. The owner can instead r
 
 Use a **merge commit**, preserving the checked head as its second parent. Merge only against the checked base. Squash/rebase merges and base drift fail publication. When merging through GitHub CLI or an owner script, bind the merge request to the reviewed head SHA. Do not merge another solve until the previous publication commit has landed and the next proof has been checked against current main.
 
-At launch, configure GitHub's available branch protection to require `solve/lean`, up-to-date branches, and owner-controlled merging. The workflow's failing status is not itself an unavoidable merge barrier without that repository setting. Changing protection or visibility is a separate owner-authorized remote operation. `preview` mode is available for infrastructure experiments, but its receipts cannot be published as accepted solves.
+Branch protection or repository rulesets can require `solve/lean`, up-to-date branches, and maintainer-controlled merging. A failing workflow status does not itself prevent a merge unless the repository settings enforce it. `preview` mode is available for infrastructure experiments, but its receipts cannot be published as accepted solves.
 
 ## Trusted publication
 
@@ -35,7 +35,7 @@ At launch, configure GitHub's available branch protection to require `solve/lean
 
 It then writes `data/<id>/acceptance.json`, derives `solution.rec`, and runs the content builder and validators. The workflow commits these derived files to main. A failed or interrupted publication leaves no accepted solve in published output; rerun the workflow once the cause is resolved. The generated acceptance record is durable even after transient CI artifacts expire.
 
-The site reads local generated files. It needs no GitHub service at runtime. It never awards credit from editable claimed identities, an unmerged proof, or a status flag. Mathematical source maintenance after acceptance must preserve or deliberately renew the receipt's bindings.
+The atlas and leaderboard read generated files and need no GitHub service at runtime. Sign-in and discussions use the backend API. The publisher never awards credit from editable claimed identities, an unmerged proof, or a status flag. Mathematical source maintenance after acceptance must preserve or deliberately renew the receipt's bindings.
 
 ## Local checks
 
