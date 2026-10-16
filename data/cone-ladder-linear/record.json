@@ -323,7 +323,31 @@
         0,
         0
       ]
-    }
+    },
+    "divisorTerms": [
+      [
+        1.0,
+        [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      [
+        -1.0,
+        [
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ]
+      ]
+    ]
   },
   "visibility": "navigation",
   "category": "Challenge instances",
@@ -333,13 +357,76 @@
   "slice": "slices/cone-ladder-linear.json",
   "rationale": "why.md",
   "provenanceFile": "provenance.json",
-  "formalStatus": "unproved",
-  "status": "open",
-  "evidenceKind": "none",
-  "certificateAvailable": false,
+  "formalStatus": "proved",
+  "status": "solved",
+  "evidenceKind": "explicit-certificate",
+  "certificateAvailable": true,
   "content": {
-    "why": "data/cone-ladder-linear/why.html"
+    "why": "data/cone-ladder-linear/why.html",
+    "solution": "data/cone-ladder-linear/solution.html"
   },
-  "witnessAvailability": "missing",
-  "draftDisplayStatus": "open"
+  "pullRequest": {
+    "number": 36,
+    "url": "https://github.com/hodge-computer/sextics/pull/36",
+    "headCommit": "917c4468f3ea874e9fb43af91580d740636a534e",
+    "baseCommit": "2f3d5edcb85ec380f565e872a394b34d9108e113",
+    "mergeCommit": "baea9f72d5d62952df5e83582d94e639247af30b"
+  },
+  "certificate": {
+    "N": [
+      "0",
+      "-2*X0*Y0",
+      "-2*X0*Y0",
+      "0",
+      "0",
+      "0"
+    ],
+    "C": "0",
+    "strict": true
+  },
+  "D": {
+    "expression": "X1 - X2",
+    "degree": 1,
+    "terms": [
+      [
+        "1",
+        [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      [
+        "-1",
+        [
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ]
+      ]
+    ],
+    "termCount": 2,
+    "latex": "X_{1} - X_{2}"
+  },
+  "witnessAvailability": "literal",
+  "leanVerification": {
+    "formalStatus": "proved",
+    "status": "accepted",
+    "proofFile": "data/cone-ladder-linear/Solution.lean",
+    "receipt": "data/cone-ladder-linear/acceptance.json",
+    "theorem": "Submission.certificate",
+    "checker": "Lean (version 4.33.0, x86_64-unknown-linux-gnu, commit d8b18978322de05a8f3dba51ef03cf5461676c17, Release)"
+  },
+  "credit": {
+    "githubLogin": "benediamond",
+    "origin": "contribution",
+    "awardedAt": "2026-10-15T16:53:58Z"
+  },
+  "draftDisplayStatus": "solved"
 }
