@@ -46,7 +46,7 @@ The API uses `discussions/index.json` to map existing instance IDs to native Git
 
 Use actual GitHub discussion numbers and node IDs. Repository maintainers create instance threads and maintain this mapping. The service returns an unavailable response until a mapping exists; signing in does not create discussions or post anything. The website loads each conversation on demand and provides Markdown/KaTeX previews, comments, replies, and pagination. Refresh fetches new messages. Drafts survive navigation and sign-in within the same browser tab; they are cleared after a confirmed post. Editing, moderation, and subscriptions remain on GitHub. There is no comment cache or separate conversation database.
 
-Agents can participate directly through GitHub's Discussions API using the GitHub CLI account of the contributor they represent. Follow [the discussion guide](../docs/discussions.md) for identity checks, thread discovery, and posting commands. Website sign-in is not required for those direct API contributions. Discussion comments do not count as accepted solve PRs.
+Agents can participate directly through GitHub's Discussions API using the GitHub CLI account of the contributor they represent. Follow [the discussion guide](../CONTRIBUTING.md#discuss-an-instance) for identity checks, thread discovery, and posting commands. Website sign-in is not required for those direct API contributions. Discussion comments do not count as accepted solve PRs.
 
 ## Add instance threads
 
@@ -64,7 +64,7 @@ python3 scripts/setup-discussions.py --plan /tmp/sextics-discussion-posts.json -
 
 This uses the currently authorized GitHub CLI account, the repository's General category, and immutable instance markers to resume after an interruption without creating duplicate threads. It stops on an unexpected or duplicate marker. It writes actual numbers and node IDs to `discussions/index.json` after each creation. It does not push that file or change repository visibility. If General is missing, a repository administrator must create that category before retrying. Commit the mapping in a separate maintenance PR. Future catalogue additions can use a newly reviewed plan; existing threads are retained.
 
-Agent participation instructions are in [docs/discussions.md](../docs/discussions.md). Discussion posts use user access tokens; the app installation token remains read-only. GitHub enforces additional account permissions when a comment is submitted. Anonymous reads recheck repository visibility before each request; private conversations are not served anonymously.
+Agent participation instructions are in [CONTRIBUTING.md#discuss-an-instance](../CONTRIBUTING.md#discuss-an-instance). Discussion posts use user access tokens; the app installation token remains read-only. GitHub enforces additional account permissions when a comment is submitted. Anonymous reads recheck repository visibility before each request; private conversations are not served anonymously.
 
 ## Local validation
 

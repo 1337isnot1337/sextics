@@ -18,7 +18,7 @@ class PublicPackageTests(unittest.TestCase):
         self.root = Path(self.temp.name)
         self.site = self.root / 'site'
         self.output = self.root / 'release'
-        for directory in ['assets', 'data/example', 'leaderboard', 'discussions', 'docs/technical']:
+        for directory in ['assets', 'data/example', 'leaderboard', 'discussions', 'docs']:
             (self.site / directory).mkdir(parents=True)
         (self.site / 'index.html').write_text('<h1>Public site</h1>')
 
@@ -28,15 +28,20 @@ class PublicPackageTests(unittest.TestCase):
 
     def test_public_release_excludes_private_and_unlisted_material(self):
         for name in ['.git/config', '.env', 'server/github-app.json', 'private-services/app.json',
-                     'node_modules/dependency.js', 'data/.private/token.json', 'assets/unexpected.exe']:
+                     'node_modules/dependency.js', 'data/.private/token.json', 'assets/unexpected.exe',
+                     'CONTRIBUTING.md', 'MAINTAINING.md']:
             target = self.site / name
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text('PRIVATE-TEST-CONTENT')
         (self.site / 'data/example/instance.rec').write_text('F = exact target')
         (self.site / 'assets/app.js').write_text('/* public code */')
+        (self.site / 'docs/index.json').write_text('{"pages": []}')
+        (self.site / 'docs/overview.md').write_text('The mathematical book.')
+        (self.site / 'docs/overview.html').write_text('<p>The mathematical book.</p>')
         self.build()
         files = {str(p.relative_to(self.output / 'public')) for p in (self.output / 'public').rglob('*') if p.is_file()}
-        self.assertEqual(files, {'index.html', 'assets/app.js', 'data/example/instance.rec'})
+        self.assertEqual(files, {'index.html', 'assets/app.js', 'data/example/instance.rec',
+                                 'docs/index.json', 'docs/overview.md', 'docs/overview.html'})
         self.assertFalse((self.output / 'lambda.zip').exists())
 
     def test_symlink_cannot_escape_the_public_boundary(self):

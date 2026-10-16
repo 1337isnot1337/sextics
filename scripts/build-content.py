@@ -163,7 +163,7 @@ for rid in catalogue['instanceIds']:
 dump(ROOT / 'data/index.json', {'schemaVersion': 2, 'records': summaries})
 dump(ROOT / 'leaderboard/credits.json', {'schemaVersion': 2, 'basis': 'accepted-proofs', 'credits': credits})
 
-doc_index = json.loads((ROOT / 'docs/technical/index.json').read_text())
+doc_index = json.loads((ROOT / 'docs/index.json').read_text())
 for page in doc_index['pages']:
     source = prose(local_path(page['source']))
     # The page shell supplies the title; retain all other chapter content.
@@ -178,11 +178,11 @@ digest = hashlib.sha256()
 for path in sorted(outputs):
     digest.update(str(path.relative_to(ROOT)).encode())
     digest.update(outputs[path].encode())
-for path in sorted({ROOT / 'index.html', ROOT / 'docs/technical/index.json', ROOT / 'leaderboard/accounts.json', *ROOT.glob('assets/*.js'), *ROOT.glob('assets/*.css'), *ROOT.glob('data/*/witness.json'), *ROOT.glob('data/*/provenance.json')}):
+for path in sorted({ROOT / 'index.html', ROOT / 'docs/index.json', ROOT / 'leaderboard/accounts.json', *ROOT.glob('assets/*.js'), *ROOT.glob('assets/*.css'), *ROOT.glob('data/*/witness.json'), *ROOT.glob('data/*/provenance.json')}):
     digest.update(path.read_bytes())
 # Delete only known generated exports, after every source has passed the build.
 # Removing a solution must also retire its old downloadable explanation.
-generated = [*ROOT.glob('data/*/record.json'), *ROOT.glob('data/*/solution.json'), *ROOT.glob('data/*/why.html'), *ROOT.glob('data/*/solution.html'), *ROOT.glob('docs/technical/*.html')]
+generated = [*ROOT.glob('data/*/record.json'), *ROOT.glob('data/*/solution.json'), *ROOT.glob('data/*/why.html'), *ROOT.glob('data/*/solution.html'), *ROOT.glob('docs/*.html')]
 for path in generated:
     if path not in outputs:
         if args.check:

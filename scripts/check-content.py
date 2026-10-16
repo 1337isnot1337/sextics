@@ -23,9 +23,9 @@ class Content(HTMLParser):
     def handle_data(self,text):
         if self.current is not None: self.current.append(text)
 
-index=json.loads((ROOT/'docs/technical/index.json').read_text())
+index=json.loads((ROOT/'docs/index.json').read_text())
 pages={p['id']:p for p in index['pages']}
-files=list((ROOT/'data').glob('*/*.html'))+list((ROOT/'docs/technical').glob('*.html'))+[ROOT/'index.html']
+files=list((ROOT/'data').glob('*/*.html'))+list((ROOT/'docs').glob('*.html'))+[ROOT/'index.html']
 contents={}
 for p in files:
     c=Content(p);c.feed(p.read_text());contents[p]=c
@@ -33,7 +33,7 @@ errors=[];math=[]
 for p,c in contents.items():
     math.extend(c.math)
     for link in c.links:
-        if p.parent == ROOT/'docs/technical' and link and not link.startswith('#'):
+        if p.parent == ROOT/'docs' and link and not link.startswith('#'):
             url = urlsplit(link)
             suffix = Path(unquote(url.path)).suffix.lower()
             if (not url.scheme or url.hostname == 'raw.githubusercontent.com'

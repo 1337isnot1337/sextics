@@ -6,4 +6,4 @@ This project pins Lean 4.33.0 and mathlib revision `db584cd6d46c92f209a44c0f1c82
 
 Instance-specific proofs live under `data/<id>/` and are compiled by the protected proposal verifier. It supplies target and witness modules, checks the theorem, replays candidate modules with `leanchecker`, and audits transitive axioms. Allowed axioms are `propext`, `Classical.choice`, and `Quot.sound`.
 
-Prepare the shared dependencies with `lake exe cache get` and `lake build HodgeComputer.Verify`. Follow the complete local proof-checking instructions in `docs/solve-proposals.md` from the repository root. Local compilation is development feedback; formal acceptance is recorded by the trusted merged-PR publisher.
+Prepare the shared dependencies with `lake exe cache get` and `lake build HodgeComputer.Verify`. Follow the complete local proof-checking instructions in `CONTRIBUTING.md` from the repository root. Local compilation is development feedback; formal acceptance is recorded by the trusted merged-PR publisher.

@@ -9,7 +9,7 @@ on:
       - data/**
       - leaderboard/**
       - discussions/**
-      - docs/technical/**
+      - docs/**
       - scripts/build-content.py
       - scripts/validate-records.py
       - scripts/check-content.py

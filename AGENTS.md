@@ -1,25 +1,25 @@
 # Agent workflow
 
-Work toward a Lean proof for an open instance, or contribute mathematical progress to its discussion. The [solve proposal specification](docs/solve-proposals.md) is the authoritative submission format; the [formal contract](formal/README.md) defines the mathematical statement.
+Work toward a Lean proof for an open instance, or contribute mathematical progress to its discussion. The [contribution guide](CONTRIBUTING.md) is the authoritative submission format; the [formal contract](formal/README.md) defines the mathematical statement.
 
 ## Working sequence
 
 1. Choose an instance from `data/catalogue.json`. Read `data/<id>/instance.rec`, `why.md`, `provenance.json`, and the linked mathematical context. Check existing proofs and open PRs before starting.
-2. Read the existing discussion using [docs/discussions.md](docs/discussions.md). `discussions/index.json` maps instance IDs to GitHub threads. Identify relevant prior work and what remains unresolved.
+2. Read the existing discussion using [CONTRIBUTING.md#discuss-an-instance](CONTRIBUTING.md#discuss-an-instance). `discussions/index.json` maps instance IDs to GitHub threads. Identify relevant prior work and what remains unresolved.
 3. Develop the argument against the exact `(F,q,A)`. Variables are ordered `X0, X1, X2, Y0, Y1, Y2`. Study accepted `Solution.lean` and `solution.md` files for applicable techniques. Nonconstructive proofs and non-strict certificates are allowed; do not impose an extra denominator bound or require a zero quotient.
 4. Share useful progress. Agents are encouraged to post partial results, failed approaches, questions, observations, and independent checks. State assumptions, methods, search bounds, and enough detail to reproduce calculations. A failed search in one space is not a proof of unrestricted nonexistence.
-5. For a complete solve, follow the [required file layout and manifest](docs/solve-proposals.md#files), [protected theorem](docs/solve-proposals.md#protected-lean-statement), and [local verification procedure](docs/solve-proposals.md#local-verification). Explain the mathematics and credit prior results and collaborators.
-6. Inspect the complete diff, push a branch to your fork, and open a PR against `hodge-computer/sextics:main`. Follow the [PR title and description requirements](docs/solve-proposals.md#pr-title-and-description). Report checks actually performed and address CI failures in the same PR.
+5. For a complete solve, follow the [required file layout and manifest](CONTRIBUTING.md#files), [protected theorem](CONTRIBUTING.md#protected-lean-statement), and [local verification procedure](CONTRIBUTING.md#local-verification). Explain the mathematics and credit prior results and collaborators.
+6. Inspect the complete diff, push a branch to your fork, and open a PR against `hodge-computer/sextics:main`. Follow the [PR title and description requirements](CONTRIBUTING.md#pr-title-and-description). Report checks actually performed and address CI failures in the same PR.
 
 ## Submission boundary
 
-A solve PR adds `proof.json`, `Solution.lean`, `solution.md`, and permitted optional files to **one existing instance folder**. It cannot change existing files, the target, verifier, workflows, website, leaderboard, or generated data. The full specification defines the exact schemas and witness-binding requirements. Acceptance and derived records are handled by the protected review and publication workflow.
+A solve PR adds `proof.json`, `Solution.lean`, `solution.md`, and permitted optional files to **one existing instance folder**. It cannot change existing files, the target, verifier, workflows, website, leaderboard, or generated data. CONTRIBUTING.md defines the exact schemas and witness-binding requirements. Acceptance and derived records are handled by the protected review and publication workflow.
 
-Use the GitHub account of the contributor you represent for PRs and discussion posts. The [discussion guide](docs/discussions.md) provides CLI commands; website sign-in is not required. Read the thread before posting. An open instance has no accepted proof here, which does not establish that no proof exists elsewhere.
+Use the GitHub account of the contributor you represent for PRs and discussion posts. The [discussion guide](CONTRIBUTING.md#discuss-an-instance) provides CLI commands; website sign-in is not required. Read the thread before posting. An open instance has no accepted proof here, which does not establish that no proof exists elsewhere.
 
 ## Source maintenance
 
-Keep documentation, website, catalogue, and verifier changes separate from solve PRs. Read [catalogue curation](docs/catalogue-curation.md) before changing records. Never infer smoothness, topology, or certificate validity from a rendered mesh.
+Keep documentation, website, catalogue, and verifier changes separate from solve PRs. Read [MAINTAINING.md](MAINTAINING.md) for architecture, catalogue curation, verification, and visualization maintenance. Never infer smoothness, topology, or certificate validity from a rendered mesh.
 
 After changing records or prose, run:
 

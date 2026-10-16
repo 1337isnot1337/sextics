@@ -56,7 +56,10 @@ test('write requests require session, exact origin, CSRF token, and JSON',()=>{
 test('real HTTP OAuth callback, session, sign out, static boundaries, and catalogue schema',async()=>{
  const root=await mkdtemp(path.join(tmpdir(),'hodge-auth-test-'));
  const outside=await mkdtemp(path.join(tmpdir(),'hodge-auth-config-'));
- await mkdir(path.join(root,'data'));await mkdir(path.join(root,'assets'));
+ await mkdir(path.join(root,'data'));await mkdir(path.join(root,'assets'));await mkdir(path.join(root,'docs'));
+ await writeFile(path.join(root,'docs/index.json'),JSON.stringify({pages:[]}));
+ await writeFile(path.join(root,'docs/overview.html'),'<p>The mathematical book.</p>');
+ await writeFile(path.join(root,'MAINTAINING.md'),'Repository operations');
  await writeFile(path.join(root,'data/catalogue.json'),JSON.stringify({schemaVersion:2,instanceIds:['holdout']}));
  await writeFile(path.join(root,'index.html'),'<h1>Test</h1>');await writeFile(path.join(outside,'secret.txt'),'not public');
  await symlink(path.join(outside,'secret.txt'),path.join(root,'assets/leak.md'));
@@ -75,7 +78,9 @@ test('real HTTP OAuth callback, session, sign out, static boundaries, and catalo
   assert.equal((await fetch(base+'/api/sign-out',{method:'POST',headers:{cookie:sessionCookie,'Content-Type':'application/json'},body:'{}'})).status,403);
   assert.equal((await fetch(base+'/api/sign-out',{method:'POST',headers:{cookie:sessionCookie,Origin:origin,'Content-Type':'application/json','X-CSRF-Token':data.csrf},body:'{}'})).status,200);
   assert.equal((await (await fetch(base+'/api/session',{headers:{cookie:sessionCookie}})).json()).user,null);
-  for(const url of ['/server/auth.mjs','/.git/config','/assets/leak.md','/auth/setup'])assert.equal((await fetch(base+url)).status,404);
+  assert.deepEqual(await (await fetch(base+'/docs/index.json')).json(),{pages:[]});
+  assert.equal(await (await fetch(base+'/docs/overview.html')).text(),'<p>The mathematical book.</p>');
+  for(const url of ['/server/auth.mjs','/.git/config','/assets/leak.md','/auth/setup','/MAINTAINING.md'])assert.equal((await fetch(base+url)).status,404);
   assert.equal((await fetch(base+'/api/discussions/holdout')).status,503);
   assert.equal((await fetch(base+'/api/discussions/unknown')).status,404);
  }finally{await new Promise(resolve=>service.server.close(resolve));await rm(root,{recursive:true,force:true});await rm(outside,{recursive:true,force:true});}

@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "overview": {
-    "source": "docs/technical/overview.md",
-    "content": "docs/technical/overview.html"
+    "source": "docs/overview.md",
+    "content": "docs/overview.html"
   },
   "pages": [
     {
@@ -11,8 +11,8 @@
       "title": "Sextic fourfolds with an involution",
       "shortTitle": "Reading guide",
       "description": "The problem, notation, and how the chapters fit together.",
-      "source": "docs/technical/README.md",
-      "content": "docs/technical/introduction.html"
+      "source": "docs/README.md",
+      "content": "docs/introduction.html"
     },
     {
       "id": "certificates",
@@ -20,8 +20,8 @@
       "title": "1. From invariant cohomology to rational certificates",
       "shortTitle": "Rational certificates",
       "description": "From invariant cohomology to the key equation, normalization, and support.",
-      "source": "docs/technical/01-certificates.md",
-      "content": "docs/technical/certificates.html"
+      "source": "docs/01-certificates.md",
+      "content": "docs/certificates.html"
     },
     {
       "id": "explicit-constructions",
@@ -29,8 +29,8 @@
       "title": "2. Explicit constructions: transport, contact, and algebraic cycles",
       "shortTitle": "Explicit constructions",
       "description": "Euler, Nambu, cofactor and Piola fields; contact and target spanning.",
-      "source": "docs/technical/02-explicit-constructions.md",
-      "content": "docs/technical/explicit-constructions.html"
+      "source": "docs/02-explicit-constructions.md",
+      "content": "docs/explicit-constructions.html"
     },
     {
       "id": "binary-blocks",
@@ -38,8 +38,8 @@
       "title": "2a. Binary blocks: finite contact covers and target spanning",
       "shortTitle": "Binary blocks",
       "description": "Finite contact covers and all-target constructions for binary blocks.",
-      "source": "docs/technical/02a-binary-blocks.md",
-      "content": "docs/technical/binary-blocks.html"
+      "source": "docs/02a-binary-blocks.md",
+      "content": "docs/binary-blocks.html"
     },
     {
       "id": "geometric-support",
@@ -47,8 +47,8 @@
       "title": "3. Geometric support and Fano correspondences",
       "shortTitle": "Geometric support",
       "description": "Gysin maps, quotient transfer, reflection quotients and Fano maps.",
-      "source": "docs/technical/03-geometric-support.md",
-      "content": "docs/technical/geometric-support.html"
+      "source": "docs/03-geometric-support.md",
+      "content": "docs/geometric-support.html"
     },
     {
       "id": "split-and-k3",
@@ -56,8 +56,8 @@
       "title": "3A. Split sextics, elliptic contraction and the K3 remainder",
       "shortTitle": "Split sextics & K3 surfaces",
       "description": "Elliptic companions, quotient resolutions, and Kuga\u2013Satake support.",
-      "source": "docs/technical/03a-split-and-k3.md",
-      "content": "docs/technical/split-and-k3.html"
+      "source": "docs/03a-split-and-k3.md",
+      "content": "docs/split-and-k3.html"
     },
     {
       "id": "known-locus",
@@ -65,8 +65,8 @@
       "title": "4. The known locus and the open frontier",
       "shortTitle": "The open frontier",
       "description": "Coverage, generic targets, and the unresolved paired-sign holdout.",
-      "source": "docs/technical/04-known-locus-and-frontier.md",
-      "content": "docs/technical/known-locus.html"
+      "source": "docs/04-known-locus-and-frontier.md",
+      "content": "docs/known-locus.html"
     },
     {
       "id": "computation",
@@ -74,8 +74,8 @@
       "title": "5. Computing and checking certificates",
       "shortTitle": "Computing certificates",
       "description": "Complete coefficient systems, exactification, and the limits of numerical evidence.",
-      "source": "docs/technical/05-computation.md",
-      "content": "docs/technical/computation.html"
+      "source": "docs/05-computation.md",
+      "content": "docs/computation.html"
     }
   ]
 }

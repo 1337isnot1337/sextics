@@ -1,6 +1,6 @@
 ## Contribution
 
-Is this a solve or maintenance? For a solve, name the exact instance and theorem. Follow the [proposal specification](https://github.com/hodge-computer/sextics/blob/main/docs/solve-proposals.md).
+Is this a solve or maintenance? For a solve, name the exact instance and theorem. Follow the [proposal specification](https://github.com/hodge-computer/sextics/blob/main/CONTRIBUTING.md).
 
 ## Mathematics
 

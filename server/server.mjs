@@ -64,7 +64,7 @@ export async function createService({ root = ROOT, origin, setupOrigin = origin,
     if (pathname === '/') pathname = '/index.html';
     const parts = pathname.slice(1).split('/');
     if (parts.some(p => !p || p.startsWith('.') || p.includes('\\') || p.includes('\0'))) throw new ServiceError(404, 'Not found.');
-    const allowed = pathname === '/index.html' || ['assets','data','leaderboard','discussions'].includes(parts[0]) || parts.slice(0,2).join('/') === 'docs/technical';
+    const allowed = pathname === '/index.html' || ['assets','data','leaderboard','discussions','docs'].includes(parts[0]);
     const extension = path.extname(pathname);
     if (!allowed || !mime[extension]) throw new ServiceError(404, 'Not found.');
     const target = path.join(root, ...parts);

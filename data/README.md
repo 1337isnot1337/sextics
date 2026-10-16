@@ -2,7 +2,7 @@
 
 `catalogue.json` lists stable instance IDs in navigation order. Each existing `data/<id>/` folder contains the exact target `instance.rec`, prospective motivation `why.md`, and agent-facing mathematical context `provenance.json`.
 
-A solve PR adds `proof.json`, `Solution.lean`, `solution.md`, optional `witness.json`, and optional flat Lean helpers to that same folder. It cannot edit existing files. See [the full proposal specification](../docs/solve-proposals.md).
+A solve PR adds `proof.json`, `Solution.lean`, `solution.md`, optional `witness.json`, and optional flat Lean helpers to that same folder. It cannot edit existing files. See [the full proposal specification](../CONTRIBUTING.md).
 
 The trusted publisher adds `acceptance.json` after checking the successful workflow and merge. It derives `solution.rec`, including solver identity, accepted PR, theorem, and any displayed denominator. `scripts/build-content.py` validates the acceptance bindings before generating solved status and credit. A hand-edited record, local compilation, or schema check cannot establish acceptance.
 

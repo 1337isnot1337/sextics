@@ -33,9 +33,9 @@ class ContentUpdates(unittest.TestCase):
         self.write(f'data/{RID}/instance.rec', yaml.safe_dump(instance))
         self.write(f'data/{RID}/why.md', 'A prospective reason.')
         self.write('data/catalogue.json', json.dumps({'schemaVersion':2,'instanceIds':[RID]}))
-        self.write('docs/technical/index.json', json.dumps({'schemaVersion':1,'pages':[],
-            'overview':{'source':'docs/technical/overview.md','content':'docs/technical/overview.html'}}))
-        self.write('docs/technical/overview.md', r'An overview with \(F^{q+1}\).')
+        self.write('docs/index.json', json.dumps({'schemaVersion':1,'pages':[],
+            'overview':{'source':'docs/overview.md','content':'docs/overview.html'}}))
+        self.write('docs/overview.md', r'An overview with \(F^{q+1}\).')
         self.write('leaderboard/accounts.json', '{"accounts": []}')
         self.write('index.html', '<main></main>')
         self.write('assets/renderer.js', '// Renderer fixture')
@@ -158,8 +158,8 @@ class ContentUpdates(unittest.TestCase):
     def test_math_heading_links_remain_stable(self):
         heading=r'## Solving \(E_1\) and \(E_2\)'+'\n'
         for preceding in ('',r'An earlier formula \(F^2\).'+'\n\n'):
-            self.write('docs/technical/overview.md',preceding+heading);self.run_build()
-            rendered=(self.root/'docs/technical/overview.html').read_text()
+            self.write('docs/overview.md',preceding+heading);self.run_build()
+            rendered=(self.root/'docs/overview.html').read_text()
             self.assertIn('id="solving-e_1-and-e_2"',rendered)
             self.assertNotIn('hodgemathtoken',rendered.lower())
 

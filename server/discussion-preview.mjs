@@ -26,7 +26,7 @@ const github={config:{repository:'hodge-computer/sextics'},readToken:async()=> '
 const service=await createService({root,origin,github});service.config.client_id='local-fixture';
 const signed=service.auth.create({access_token:'local-token'},{login:'local-tester',name:'Local test account',url:'https://github.com/local-tester',avatar:'/assets/favicon.svg'});
 // Use the actual page shell so nested scrolling and fixed controls are tested too.
-for(const name of ['data','docs/technical','leaderboard'])await cp(path.join(source,name),path.join(root,name),{recursive:true});
+for(const name of ['data','docs','leaderboard'])await cp(path.join(source,name),path.join(root,name),{recursive:true});
 for(const name of ['app.js','leaderboard.js'])await cp(path.join(source,'assets',name),path.join(root,'assets',name));
 let html=await readFile(path.join(source,'index.html'),'utf8');
 html=html.replace('<script defer src="assets/surface.js"></script>','<script>window.HodgeRenderer={create:()=>null};</script>').replace('<script defer src="assets/divisor.js"></script>','');

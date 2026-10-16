@@ -9,7 +9,7 @@ def package(source, site, output, static_only=False):
     if public.exists(): shutil.rmtree(public)
     public.mkdir()
     allowed={'.html','.js','.css','.json','.md','.rec','.lean','.svg','.png','.jpg','.jpeg','.webp','.ico','.woff','.woff2','.ttf','.gz','.txt'}
-    for top in ['index.html','assets','data','leaderboard','discussions','docs/technical']:
+    for top in ['index.html','assets','data','leaderboard','discussions','docs']:
         item=site/top
         if not item.exists(): raise ValueError(f'Missing public content: {top}')
         for file in ([item] if item.is_file() else sorted(item.rglob('*'))):
