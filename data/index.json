@@ -917,15 +917,20 @@
     {
       "id": "block-q2",
       "title": "One block · pole-order-two bundle",
-      "status": "open",
-      "formalStatus": "unproved",
-      "evidenceKind": "none",
-      "certificateAvailable": false,
+      "status": "solved",
+      "formalStatus": "proved",
+      "evidenceKind": "explicit-certificate",
+      "certificateAvailable": true,
       "visibility": "navigation",
-      "draftDisplayStatus": "open",
+      "draftDisplayStatus": "solved",
       "category": "Challenge instances",
       "q": 2,
-      "path": "data/block-q2/record.json"
+      "path": "data/block-q2/record.json",
+      "credit": {
+        "githubLogin": "benediamond",
+        "origin": "contribution",
+        "awardedAt": "2026-10-15T16:54:01Z"
+      }
     },
     {
       "id": "polarized-contact-coupled-d2",
