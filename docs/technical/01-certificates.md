@@ -213,6 +213,35 @@ This also proves the claimed necessity of certificates for an arbitrary divisor 
 
 At **\(q=1\)**, therefore, existence over \(D\) is equivalent to existence over any \(D^{m}\). An exact failure of the full fixed-\(D\) linear system excludes every higher power of that \(D\). At **\(q=2\)**, the definitive test on its support uses \(D^{2}\). Failure over \(D\) alone need not exclude support.
 
+The distinction is sharp. Set
+
+\[
+\begin{gathered}
+D=X_{0}^{6}+X_{1}^{6}+X_{2}^{6},       E=Y_{0}^{6}+Y_{1}^{6}+Y_{2}^{6},       F=D+E,\\
+A=X_{0}^{3}\cdot X_{1}^{3}\cdot X_{2}^{3}\cdot Y_{0}\cdot Y_{1}\cdot Y_{2},       q=2.
+\end{gathered}
+\]
+
+Writing \(\epsilon _X\) and \(\epsilon _Y\) for the two block Euler fields, the strict certificate is
+
+\[
+\begin{gathered}
+v=A(F\epsilon _X-D\cdot \epsilon _Y)/(12\cdot D^{2}).
+\end{gathered}
+\]
+
+For the numerator \(N_{2}=A(F\epsilon _X-D\cdot \epsilon _Y)/12\), direct blockwise differentiation gives
+
+\[
+\begin{gathered}
+2\cdot N_{2}(F)=A\cdot D^{2},       \operatorname{div} N_{2}=A\cdot F,       N_{2}(D^{2})=A\cdot F\cdot D^{2}.
+\end{gathered}
+\]
+
+These identities prove both normalized equations, with \(E_{2}\) identically zero. The field has degree seven and the required parities. Fermat smoothness is immediate from its partial derivatives, and \(D\) is coprime to \(F\) because \(D\) and \(E\) involve disjoint variables and have no common factor.
+
+There is no numerator over \(D\). To prove this without an ansatz, normalize \(E_{1}\) and average a hypothetical numerator over the six independent sixth-root coordinate scalings, projecting onto the character of \(A\). Both \(F\) and \(D\) are invariant, so this operation preserves the fixed denominator and the two equations. The retained monomials in \(N_{i}\) have exponent vector congruent modulo six to \((3,3,3,1,1,1)+e_{i}\). These six residues are all less than six and already sum to the required numerator degree thirteen. Thus \(N_{i}=c_{i}AZ_{i}\) is the entire surviving space, not a selected family. \(E_{1}\) forces \(c_{0}=c_{1}=c_{2}=1/12\) and \(c_{3}=c_{4}=c_{5}=0\). For this numerator, \(\operatorname{div} N=A\) and \(N(D)=A\cdot D/2\), so \(E_{2}\) is \(A\cdot D/2\). It is not divisible even by \(F\). This excludes every original numerator because normalization and averaging preserve existence.
+
 These bounds leave the central search problem untouched: they do not bound the degree of the reduced support that must be found.
 
 ## Combining certificates and descending coefficients
