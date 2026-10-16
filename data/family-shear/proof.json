@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 2,
+  "instanceId": "family-shear",
+  "theorem": "Submission.certificate",
+  "witnessTheorem": "Submission.witness"
+}
