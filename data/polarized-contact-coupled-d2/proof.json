@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 2,
+  "instanceId": "polarized-contact-coupled-d2",
+  "theorem": "Submission.certificate",
+  "witnessTheorem": "Submission.witness"
+}
