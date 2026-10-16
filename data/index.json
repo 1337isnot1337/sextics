@@ -953,15 +953,20 @@
     {
       "id": "polarized-contact-deformation-d2",
       "title": "Polarized contact · moving target",
-      "status": "open",
-      "formalStatus": "unproved",
-      "evidenceKind": "none",
-      "certificateAvailable": false,
+      "status": "solved",
+      "formalStatus": "proved",
+      "evidenceKind": "explicit-certificate",
+      "certificateAvailable": true,
       "visibility": "navigation",
-      "draftDisplayStatus": "open",
+      "draftDisplayStatus": "solved",
       "category": "Challenge instances",
       "q": 1,
-      "path": "data/polarized-contact-deformation-d2/record.json"
+      "path": "data/polarized-contact-deformation-d2/record.json",
+      "credit": {
+        "githubLogin": "benediamond",
+        "origin": "contribution",
+        "awardedAt": "2026-10-15T16:54:05Z"
+      }
     },
     {
       "id": "two-ternary-dense-two-odd-hessian-d48",
