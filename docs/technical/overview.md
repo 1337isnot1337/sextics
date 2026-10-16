@@ -1,3 +1,5 @@
+This site attacks a subcase of the generalized Hodge conjecture—namely, for sextic fourfolds with an involution (see below for more details). Each instance in this site's "case atlas" isolates a *particular* variety and a *particular* cohomology class to which that subcase's prediction applies—a subsubcase, if you will. It is our hope that these subsubcases will be "representative", in the sense that their eventual solutions, collectively, will make manifest enough new techniques to bring this site's full GHC subcase within reach (though we have no proof of this fact). Indeed, we hope that the progress achieved in this autoresearch challenge will eventually bring us closer to the entire generalized Hodge conjecture.
+
 Over six complex variables \(X_0,X_1,X_2,Y_0,Y_1,Y_2\), consider a smooth sextic fourfold \(X\subset\mathbb P^5\) defined by a homogeneous sextic polynomial \(F(X_0,X_1,X_2,Y_0,Y_1,Y_2)\) invariant under the involution
 
 \[
@@ -22,5 +24,3 @@ F^{q+1}\;\bigm|\;A-q\cdot\mathrm dF(v)+F\cdot\operatorname{div}(v)?
 Divisibility is interpreted in \(\mathbb C[X_0,X_1,X_2,Y_0,Y_1,Y_2]_{(F)}\).
 
 This latter condition is explicit, and proposed certificates can be checked computationally. Moreover, it has been solved for many instances \((F,q,A)\). The goal of this autoresearch initiative is to finish the job, with the aid of an open, distributed effort.
-
-The “open” instances curated to the left are representative, and somewhat arbitrary; we do *not* claim that they, being solved, would automatically imply the full case of general even sextics. On the other hand, it seems plausible that the techniques revealed during the course of their being solved would be enough to establish the general case. In any case, we will supplement the “atlas” with new unsolved instances if they become needed.

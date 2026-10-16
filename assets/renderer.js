@@ -509,7 +509,7 @@ function create(canvas,options={}){
   gl.useProgram(p);gl.uniformMatrix4fv(U.Model,false,mat4Identity());
   let activeVao=null,activeBuffers=[],activeCount=0,activeMeta=null,record=null;
   let job=0,busy=false,destroyed=false,contextLost=false,graphicsFault=false,needsDraw=true;
-  let depthPeeler=null,depthPeelerFailed=false,frameFence=null,frameId=0,fenceStarted=0,frameJob=0,awaitingFirstFrame=false;
+  let depthPeeler=null,depthPeelerFailed=false,frameFence=null,frameId=0,fenceStarted=0,frameJob=0,awaitingFirstFrame=false,lastFrameTick=performance.now();
   const listeners=[];
   const FOV=42*Math.PI/180,minDistance=.035,maxDistance=12;
   let baseYaw=.710,basePitch=.455,baseDistance=3.22,baseCenter=[0,0,0];
@@ -525,7 +525,8 @@ function create(canvas,options={}){
     if(graphicsFault||destroyed)return;
     graphicsFault=true;cancel();cancelAnimationFrame(frameId);
     // Never delete or reuse handles from a lost/restored context. The owner
-    // terminates the worker and discards this canvas instead of auto-retrying.
+    // terminates the worker and discards this canvas. Any background recovery
+    // starts a fresh worker and context, with none of these handles.
     activeVao=null;activeBuffers=[];activeCount=0;frameFence=null;depthPeeler=null;
     status('error',message);options.onFatal?.(message);
   }
@@ -647,9 +648,13 @@ function create(canvas,options={}){
   listen(window,'keydown',e=>{if(e.textInput)return;if(e.key==='Escape'&&cameraMode==='free')setMode('parallax');if((e.key==='r'||e.key==='R')&&cameraMode==='free'&&!e.metaKey&&!e.ctrlKey)resetCamera();});
   listen(canvas,'webglcontextlost',()=>{contextLost=true;stop('The graphics context was lost.');});
   function resize(){if(!usable())return;const w0=Math.max(1,canvas.clientWidth),h0=Math.max(1,canvas.clientHeight),budget=window.innerWidth<760?1_500_000:3_000_000,dpr=Math.min(window.devicePixelRatio||1,2,Math.sqrt(budget/(w0*h0))),w=Math.max(1,Math.floor(w0*dpr)),h=Math.max(1,Math.floor(h0*dpr));if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h;gl.viewport(0,0,w,h);needsDraw=true;}}
-  listen(window,'resize',resize,{passive:true});listen(document,'visibilitychange',()=>{needsDraw=true;fenceStarted=performance.now();});resize();
+  listen(window,'resize',resize,{passive:true});listen(document,'visibilitychange',()=>{needsDraw=true;lastFrameTick=fenceStarted=performance.now();});resize();
   function frame(now){
+    const delayed=now-lastFrameTick>5000;lastFrameTick=now;
     if(!usable())return;frameId=requestAnimationFrame(frame);if(document.hidden)return;
+    // Animation callbacks can resume before the forwarded visibility event.
+    // Sleep/background time must not consume the GPU's response deadline.
+    if(delayed)fenceStarted=now;
     if(now-lastDraw<(busy?180:33.34)&&!needsDraw)return;
     if(frameFence){
       const state=gl.clientWaitSync(frameFence,0,0);

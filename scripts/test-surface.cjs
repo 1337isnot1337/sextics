@@ -47,15 +47,19 @@ function core() {
   };
 }
 
-function controller({supported = true, transferThrows = false} = {}) {
+function controller({supported = true, transferThrows = false, hidden = false} = {}) {
   let now = 0, timer, replacement = 0;
-  const workers = [], states = [];
-  const canvas = Object.assign(new EventTarget(), {clientWidth:800, clientHeight:600,
-    style:{}, classList:{toggle(){}, remove(){}}, setAttribute(){},
-    cloneNode:() => ({style:{}, classList:{remove(){}}}), replaceWith:() => replacement++});
-  if (supported) canvas.transferControlToOffscreen = () => {if (transferThrows) throw Error('Transfer failed'); return {};};
+  const workers = [], states = [], canvases = [];
+  function makeCanvas() {
+    const canvas = Object.assign(new EventTarget(), {clientWidth:800, clientHeight:600,
+      style:{}, classList:{toggle(){}, remove(){}}, setAttribute(){},
+      cloneNode:makeCanvas, replaceWith:() => replacement++});
+    if (supported) canvas.transferControlToOffscreen = () => {if (transferThrows) throw Error('Transfer failed'); return {};};
+    canvases.push(canvas); return canvas;
+  }
+  const canvas = makeCanvas();
   const window = new EventTarget(), document = Object.assign(new EventTarget(), {
-    hidden:false, currentScript:{src:'http://localhost/assets/surface.js'}});
+    hidden, currentScript:{src:'http://localhost/assets/surface.js'}});
   class Worker {
     constructor() {this.messages=[]; workers.push(this);}
     postMessage(message) {this.messages.push(message);}
@@ -67,8 +71,9 @@ function controller({supported = true, transferThrows = false} = {}) {
     performance:{now:() => now}, setInterval:fn => (timer = fn, 1), clearInterval:() => {timer=null;}};
   vm.runInNewContext(source('surface.js'), context);
   const api = window.HodgeRenderer.create(canvas, {onStatus:s => states.push(s)});
-  return {api, states, workers, document, replacement:() => replacement,
-    tick(time) {now=time; timer?.();}, pulse() {workers[0].emit('pulse');}};
+  return {api, states, workers, canvases, window, document, replacement:() => replacement,
+    tick(time) {now=time; timer?.();}, time(time) {now=time;}, pulse() {workers.at(-1).emit('pulse');},
+    hidden(value) {document.hidden=value; event(document,'visibilitychange');}};
 }
 
 (async () => {
@@ -104,9 +109,17 @@ function controller({supported = true, transferThrows = false} = {}) {
   c.page.hidden=true; c.frame(10000); c.page.hidden=false; event(c.page,'visibilitychange');
   c.frame(10001); assert.equal(c.failures.length, 0);
 
+  // A suspended animation can resume before the visibility message arrives.
+  // That scheduling gap grants a fresh deadline, not an immediate GPU timeout.
+  c = core(); await c.renderer.setCase(c.record); c.wait(true); c.frame(100);
+  c.frame(30000); assert.equal(c.failures.length, 0);
+  c.frame(34999); assert.equal(c.failures.length, 0);
+  c.frame(35001); assert.match(c.failures[0], /stopped responding/);
+
   // A blocked worker cannot block this watchdog; subsequent navigation sends
   // nothing to it and cannot overwrite the error with an eternal spinner.
-  let h = controller(); await h.api.setCase({id:'a'}); h.tick(5001);
+  let h = controller(); await h.api.setCase({id:'a'});
+  for (let time=500; time<=5500; time+=500) h.tick(time);
   assert.equal(h.workers[0].terminated, true); assert.equal(h.replacement(), 1);
   const sent = h.workers[0].messages.length;
   await h.api.setCase({id:'b'}); h.api.setMode('free'); h.api.destroy();
@@ -115,11 +128,68 @@ function controller({supported = true, transferThrows = false} = {}) {
   // Slow network while the worker remains responsive is not a graphics hang.
   h = controller(); for (let time=1000; time<15000; time+=1000) {h.pulse(); h.tick(time);}
   assert.equal(h.workers[0].terminated, undefined);
-  h.document.hidden=true; h.tick(40000); h.document.hidden=false; event(h.document,'visibilitychange');
+  h.hidden(true); h.tick(40000); h.hidden(false);
   h.tick(40001); assert.equal(h.workers[0].terminated, undefined);
-  h.workers[0].emit('fatal','Context lost'); assert.equal(h.workers[0].terminated,true);
+
+  // Background context loss defers a fresh canvas/worker until foregrounded.
+  // The latest selection and camera mode survive; old GPU handles do not.
+  h = controller(); await h.api.setCase({id:'a'}); h.api.setMode('free');
+  h.hidden(true); h.workers[0].emit('fatal','Context lost');
+  assert.equal(h.workers[0].terminated,true); assert.equal(h.workers.length,1);
+  assert.equal(h.states.at(-1).state,'loading');
+  await h.api.setCase({id:'b'}); h.time(30000); h.hidden(false);
+  assert.equal(h.workers.length,2); assert.equal(h.replacement(),1);
+  assert.equal(h.workers[1].messages.find(m=>m.type==='case').record.id,'b');
+  assert.equal(h.workers[1].messages.find(m=>m.type==='mode').mode,'free');
+  assert.equal(h.canvases[1].style.touchAction,'none');
+  h.workers[1].emit('status',{state:'ready',meta:{id:'b'}});
+  const messages = h.workers[1].messages.length;
+  event(h.canvases[0],'pointerdown',{pointerId:1});
+  assert.equal(h.workers[1].messages.length,messages);
+  event(h.canvases[1],'pointerdown',{pointerId:1});
+  assert.equal(h.workers[1].messages.length,messages+1);
+  h.workers[0].emit('fatal','Stale failure'); h.workers[0].emit('status',{state:'error'});
+  h.workers[0].emit('mode','parallax');
+  assert.equal(h.states.at(-1).state,'ready'); assert.equal(h.api.getMeta().id,'b');
+  assert.equal(h.api.getMode(),'free'); assert.equal(h.workers[1].terminated,undefined);
+
+  // Only one attempt per return: a broken replacement stops permanently.
+  h.workers[1].emit('fatal','Still broken');
+  assert.equal(h.workers.length,2); assert.equal(h.workers[1].terminated,true);
+  await h.api.setCase({id:'c'}); h.hidden(true); h.hidden(false);
+  assert.equal(h.states.at(-1).state,'error'); assert.equal(h.workers.length,2);
+
+  // Browsers may deliver context loss just after visibility changes back.
+  h = controller(); h.hidden(true); h.time(30000); h.hidden(false);
+  h.workers[0].emit('fatal','Late context loss');
+  assert.equal(h.workers.length,2); assert.equal(h.workers[0].terminated,true);
+
+  // A worker that never resumes is also retried once; the fresh worker still
+  // has its own bounded timeout if graphics remain unresponsive.
+  h = controller(); h.hidden(true); h.time(30000); h.hidden(false);
+  for (let time=30500; time<=35500; time+=500) h.tick(time);
+  assert.equal(h.workers.length,2);
+  for (let time=36000; time<=41000; time+=500) h.tick(time);
+  assert.equal(h.workers.length,2); assert.equal(h.states.at(-1).state,'error');
+
+  // A delayed main-page timer must not mistake whole-page suspension for a
+  // worker hang. Subsequent regular ticks still enforce the five-second limit.
+  h = controller(); h.tick(30000);
+  assert.equal(h.workers[0].terminated,undefined);
+  for (let time=30500; time<=35500; time+=500) h.tick(time);
+  assert.equal(h.workers[0].terminated,true);
+
+  // Do not start GPU work in an initially hidden tab; replay its selection on
+  // first visibility. Destroying a deferred recovery removes its listeners.
+  h = controller({hidden:true}); await h.api.setCase({id:'a'});
+  assert.equal(h.workers.length,0); h.hidden(false);
+  assert.equal(h.workers.length,1);
+  assert.equal(h.workers[0].messages.find(m=>m.type==='case').record.id,'a');
+  h.hidden(true); h.workers[0].emit('fatal','Context lost'); h.api.destroy();
+  h.hidden(false); event(h.window,'resize');
+  assert.equal(h.workers.length,1);
 
   h = controller({supported:false}); assert.equal(h.workers.length,0); assert.equal(h.states.at(-1).state,'error');
   h = controller({transferThrows:true}); assert.equal(h.workers[0].terminated,true);
-  console.log('Surface resilience: first-frame readiness, context loss/restoration, late loads, GPU and worker timeouts, background tabs, slow network, unsupported browsers passed.');
+  console.log('Surface resilience: first-frame readiness, context loss/restoration, background recovery, retry limit, stale events, late loads, GPU and worker timeouts, suspension grace, slow network, unsupported browsers passed.');
 })().catch(error => {console.error(error); process.exitCode=1;});

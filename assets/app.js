@@ -10,6 +10,7 @@ const hasCertificate=r=>r.evidenceKind==='explicit-certificate'||r.certificateSt
 const isProved=r=>r.formalStatus==='proved';
 const group=r=>(isProved(r)||hasCertificate(r))?'solved':'open';
 const groupNames={open:'Open',solved:'Solved'};
+const groupOrder=['open','solved'];
 function math(tex,display=false){const span=document.createElement('span');if(!tex)return '';try{katex.render(tex,span,{displayMode:display,throwOnError:true,trust:false,strict:'ignore',output:'htmlAndMathml'});}catch(error){console.warn('Math rendering:',error.message);span.textContent=tex;span.className='math-fallback';}return span.innerHTML;}
 function coefficientFractions(tex){
   // Move coefficients out of monomial fractions without changing the exact record.
@@ -89,7 +90,7 @@ function setExploring(value,fromRenderer=false){
 function buildIndex(){
   const query=$('caseSearch').value.toLowerCase().trim();
   const filtered=state.records.filter(r=>(`${r.id} ${r.title} ${r.category||''} ${r.family||''} ${r.evidenceKind||''}`).toLowerCase().includes(query));
-  $('caseIndex').innerHTML=['open','solved'].map(key=>{
+  $('caseIndex').innerHTML=groupOrder.map(key=>{
     const rows=filtered.filter(r=>group(r)===key);
     if(!rows.length&&key!=='solved')return '';
     if(!rows.length&&query)return '';
@@ -100,7 +101,7 @@ function updateSurfaceLoading(){
   const loading=state.surfaceState==='loading',failed=state.surfaceState==='error';
   $('surfaceLoading').hidden=!state.exploring||(!loading&&!failed);
   $('surfaceLoading').dataset.state=state.surfaceState;
-  $('surfaceLoadingLabel').textContent=failed?'The 3D view is unavailable on this device. You can still use the atlas.':'Loading surface…';
+  $('surfaceLoadingLabel').textContent=failed?'The 3D view has been paused. You can still use the atlas.':'Loading surface…';
   $('surface').setAttribute('aria-busy',String(loading));
 }
 function onStatus(event){
@@ -124,6 +125,13 @@ function definitionsMarkup(r){
   const values=Array.isArray(defs)?defs:typeof defs==='string'?[defs]:Object.entries(defs).map(([k,v])=>`${k}=${v}`);
   return `<div class="definitions">${values.map(d=>math(typeof d==='string'?d:d.latex||'',true)).join('')}</div>`;
 }
+function caseNavigation(record){
+  const ordered=groupOrder.flatMap(key=>state.records.filter(r=>group(r)===key));
+  const index=ordered.findIndex(r=>r.id===record.id);
+  if(index<0)return '';
+  const link=(target,direction,label,arrow)=>target?`<div class="case-pagination-entry ${direction}"><a class="page-next" href="#case/${encodeURIComponent(target.id)}" rel="${direction}" aria-label="${label} instance: ${escape(target.title)}">${direction==='prev'?`<span aria-hidden="true">${arrow}</span>`:''}${label}${direction==='next'?`<span aria-hidden="true">${arrow}</span>`:''}</a><p class="case-pagination-title">${escape(target.title)}</p></div>`:'';
+  return `<nav class="case-pagination" aria-label="Browse instances">${link(ordered[index-1],'prev','Previous','←')}${link(ordered[index+1],'next','Next','→')}</nav>`;
+}
 async function renderCase(record,loadId){
   const why=await loadContent(record.content.why);if(loadId!==state.loadId)return;
   const certificate=hasCertificate(record),proved=isProved(record);
@@ -136,8 +144,9 @@ async function renderCase(record,loadId){
     <section class="goal-panel" aria-label="Certificate problem"><h2 class="goal-label">THE GOAL</h2><p class="goal-intro">Find a homogeneous polynomial ${math('D')} on six complex variables such that</p><div class="goal-equation">${math('F^{q+1}\\;\\bigm|\\; A-q\\cdot\\mathrm dF(v)+F\\cdot\\operatorname{div}(v)',true)}</div><div class="goal-fields"><span>for some vector field</span><span class="goal-field-equation">${math('v=\\left(\\frac{N_0}{D},\\ldots,\\frac{N_5}{D}\\right)')}</span><span>with</span><span class="goal-field-equation">${math('\\deg N_i=\\deg D+6q-5.')}</span></div><div class="goal-fineprint">${math('D\\ne0')} and ${math('\\gcd(D,F)=1')}. Divisibility is in ${math('\\mathbb C[X_0,X_1,X_2,Y_0,Y_1,Y_2]_{(F)}')}. The challenge asks for a Lean proof that such a field exists.</div></section>
     <section class="instance-panel" aria-label="Exact instance"><div class="section-line"><h2>THIS INSTANCE</h2><button id="copyInstance" class="subtle-button copy-instance-button" aria-label="Copy (F, q, A)">Copy ${math('(F, q, A)')}</button></div><div class="polynomial-row"><div class="polynomial-symbol">F</div><div class="polynomial-value"><div class="primary-polynomial">${displayPolynomial(record.F)}</div>${definitionsMarkup(record)}</div></div><div class="polynomial-row"><div class="polynomial-symbol">q</div><div class="polynomial-value">${math(String(record.q),true)}</div></div><div class="polynomial-row"><div class="polynomial-symbol">A</div><div class="polynomial-value"><div class="primary-polynomial">${displayPolynomial(record.A)}</div></div></div>${certificate&&record.D?`<div class="solution-panel"><div class="solution-title"><span class="status-dot"></span> Known certificate </div><div class="polynomial-row"><div class="polynomial-symbol">D</div><div class="polynomial-value"><div class="primary-polynomial">${displayPolynomial(record.D)}</div>${record.D.degree!==undefined?`<p class="goal-fineprint">Homogeneous degree ${escape(record.D.degree)}. Highlighted on the surface where visible.</p>`:''}</div></div></div>`:''}</section>
     <section class="case-notes mathematical-prose"><h2>Why this instance matters</h2>${why}</section>
-    <div class="record-actions"><button class="participate-action" data-modal="participate" data-instance="${escape(record.id)}">Participate <span>↗</span></button><button id="discussionToggle" aria-expanded="false" aria-controls="instanceDiscussion">Discussion <span aria-hidden="true">＋</span></button></div>${HodgeDiscussion.markup(record)}`;
+    <div class="record-actions"><button class="participate-action" data-modal="participate" data-instance="${escape(record.id)}">Participate <span>↗</span></button><button id="discussionToggle" aria-expanded="false" aria-controls="instanceDiscussion">Discussion <span aria-hidden="true">＋</span></button></div>${HodgeDiscussion.markup(record)}${caseNavigation(record)}`;
   renderMath($('caseView'));
+  $('caseView').querySelector('.case-pagination').addEventListener('click',event=>{if(event.target.closest('a'))$('main').focus({preventScroll:true});});
   $('solutionButton')?.addEventListener('click',()=>showSolution(record));
   const discussion=HodgeDiscussion.mount($('instanceDiscussion'));
   $('discussionToggle').addEventListener('click',()=>{const open=$('instanceDiscussion').hidden;$('instanceDiscussion').hidden=!open;$('discussionToggle').setAttribute('aria-expanded',String(open));$('discussionToggle').querySelector('span').textContent=open?'−':'＋';if(open){discussion.open();$('instanceDiscussion').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});}});
@@ -168,7 +177,7 @@ async function loadCatalogue(){
 async function restorePreview(){
   let saved;try{saved=JSON.parse(sessionStorage.getItem('hodge-preview-restore'));sessionStorage.removeItem('hodge-preview-restore');}catch{return;}
   if(!saved||saved.hash!==location.hash)return;
-  $('caseSearch').value=saved.search||'';buildIndex();$('main').scrollTop=saved.scroll;$('caseIndex').scrollTop=saved.sidebarScroll;
+  $('caseSearch').value=saved.search||'';buildIndex();$('main').scrollTop=saved.scroll;$('sidebarScroll').scrollTop=saved.sidebarScroll;
   if(saved.solutionId&&state.records.some(r=>r.id===saved.solutionId&&hasCertificate(r))){await showSolution(await getRecord(saved.solutionId));$('infoDialog').scrollTop=saved.modalScroll;}
 }
 async function startLivePreview(){
@@ -178,7 +187,7 @@ async function startLivePreview(){
   setInterval(async()=>{
     if(checking||state.exploring||document.hidden)return;checking=true;
     try{const response=await fetch('data/revision.json',{cache:'no-store'});if(response.ok&&(await response.json()).revision!==revision){
-      sessionStorage.setItem('hodge-preview-restore',JSON.stringify({hash:location.hash,scroll:$('main').scrollTop,sidebarScroll:$('caseIndex').scrollTop,search:$('caseSearch').value,solutionId:state.solutionId,modalScroll:$('infoDialog').scrollTop}));location.reload();
+      sessionStorage.setItem('hodge-preview-restore',JSON.stringify({hash:location.hash,scroll:$('main').scrollTop,sidebarScroll:$('sidebarScroll').scrollTop,search:$('caseSearch').value,solutionId:state.solutionId,modalScroll:$('infoDialog').scrollTop}));location.reload();
     }}catch{/* A stopped local preview can be restarted without a noisy error loop. */}finally{checking=false;}
   },2500);
 }
@@ -208,7 +217,7 @@ async function route(){
   document.body.classList.toggle('home-page',page==='home');
   buildChapterIndex(chapterId);
   for(const [key,linkId] of [['home','homeLink'],['technical-information','technicalLink'],['leaderboard','leaderboardLink']]){const link=$(linkId);link.classList.toggle('active',page===key);if(page===key)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');}
-  buildIndex();const activeLink=$('caseIndex').querySelector('.case-link.active');if(!caseId)$('caseIndex').scrollTop=0;else if(activeLink)activeLink.scrollIntoView({block:'nearest'});
+  buildIndex();const activeLink=$('caseIndex').querySelector('.case-link.active');if(!caseId)$('sidebarScroll').scrollTop=0;else if(activeLink)activeLink.scrollIntoView({block:'nearest'});
   $('homeView').hidden=page!=='home';$('technicalView').hidden=page!=='technical-information'||!!chapterId;$('chapterView').hidden=!chapterId;$('leaderboardView').hidden=page!=='leaderboard';$('caseView').hidden=page!=='case';$('notFound').hidden=true;$('main').scrollTop=0;
   if(!caseId){
     document.title=page==='home'?'hodge.computer — a mathematics challenge':`${page==='leaderboard'?'Leaderboard':'Technical information'} — hodge.computer`;
@@ -257,7 +266,7 @@ async function main(){
   try{state.renderer=HodgeRenderer.create($('surface'),{onStatus,onModeChange:mode=>{if(state.exploring!==(mode==='free'))setExploring(mode==='free',true);}});}catch(error){console.error(error);onStatus({state:'error',message:'WebGL2 unavailable'});}
   $('exploreToggle').addEventListener('click',()=>setExploring(!state.exploring));
   $('leaderboardRetry').addEventListener('click',()=>renderLeaderboard(state.loadId));
-  $('caseSearch').addEventListener('input',()=>{buildIndex();$('caseIndex').scrollTop=0;});
+  $('caseSearch').addEventListener('input',()=>{buildIndex();$('caseSearch').scrollIntoView({block:'nearest'});});
   $('menuButton').addEventListener('click',()=>openDrawer(!document.body.classList.contains('drawer-open')));
   $('drawerBackdrop').addEventListener('click',()=>openDrawer(false));
   $('closeDialog').addEventListener('click',()=>$('infoDialog').close());

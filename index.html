@@ -43,14 +43,16 @@
     <button id="drawerBackdrop" class="drawer-backdrop" aria-label="Close case index" hidden></button>
     <aside id="sidebar" class="sidebar" aria-label="Case index" tabindex="-1">
       <a class="brand" href="#home" aria-label="hodge.computer home"><span class="brand-symbol">h.</span><span>hodge.computer</span><span class="brand-arrow">↗</span></a>
-      <nav class="page-nav" aria-label="Main pages">
-        <a id="homeLink" class="home-link active" href="#home" aria-current="page"><span aria-hidden="true">⌂</span> The challenge <span class="home-arrow" aria-hidden="true">↗</span></a>
-        <div class="technical-nav-row"><a id="technicalLink" class="home-link" href="#technical-information"><span aria-hidden="true">∴</span> Technical information</a><button id="technicalDisclosure" aria-expanded="false" aria-controls="technicalChapters" aria-label="Expand technical chapters"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 6 6-6 6"/></svg></button></div><nav id="technicalChapters" class="technical-chapters" aria-label="Technical chapters" hidden></nav>
-        <a id="leaderboardLink" class="home-link" href="#leaderboard"><span aria-hidden="true">≡</span> Leaderboard <span class="home-arrow" aria-hidden="true">↗</span></a>
-      </nav>
-      <div class="sidebar-intro"><span class="eyebrow">THE CASE ATLAS</span><span id="totalCount" class="muted">— instances</span></div>
-      <label class="search"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"></circle><path d="m13 13 4 4"></path></svg><input id="caseSearch" type="search" placeholder="Find an instance" autocomplete="off" aria-label="Search instances"><span class="search-key">/</span></label>
-      <nav id="caseIndex" class="case-index" aria-label="Open and solved instances"><p class="index-loading">Reading the atlas…</p></nav>
+      <div id="sidebarScroll" class="sidebar-scroll">
+        <nav class="page-nav" aria-label="Main pages">
+          <a id="homeLink" class="home-link active" href="#home" aria-current="page"><span aria-hidden="true">⌂</span> The challenge <span class="home-arrow" aria-hidden="true">↗</span></a>
+          <div class="technical-nav-row"><a id="technicalLink" class="home-link" href="#technical-information"><span aria-hidden="true">∴</span> Technical information</a><button id="technicalDisclosure" aria-expanded="false" aria-controls="technicalChapters" aria-label="Expand technical chapters"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 6 6-6 6"/></svg></button></div><nav id="technicalChapters" class="technical-chapters" aria-label="Technical chapters" hidden></nav>
+          <a id="leaderboardLink" class="home-link" href="#leaderboard"><span aria-hidden="true">≡</span> Leaderboard <span class="home-arrow" aria-hidden="true">↗</span></a>
+        </nav>
+        <div class="sidebar-intro"><span class="eyebrow">THE CASE ATLAS</span><span id="totalCount" class="muted">— instances</span></div>
+        <label class="search"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"></circle><path d="m13 13 4 4"></path></svg><input id="caseSearch" type="search" placeholder="Find an instance" autocomplete="off" aria-label="Search instances"><span class="search-key">/</span></label>
+        <nav id="caseIndex" class="case-index" aria-label="Open and solved instances"><p class="index-loading">Reading the atlas…</p></nav>
+      </div>
       <div class="sidebar-foot"><span>Created by <a href="https://x.com/benediamond" target="_blank" rel="noopener noreferrer">Ben Diamond</a></span><button data-modal="about" aria-label="About this challenge">i</button></div>
     </aside>
     <div class="workspace">
@@ -63,7 +65,7 @@
             <a class="progress-card solved" href="#leaderboard"><span class="progress-symbol" aria-hidden="true">✓</span><span class="progress-kicker">CONSTRUCTIONS FOUND</span><span id="solvedCount" class="progress-number">—</span><span class="progress-label">known certificates</span><span class="progress-link">Meet the contributors <span aria-hidden="true">↗</span></span></a>
             <a class="progress-card open" href="#case/holdout"><span class="progress-symbol" aria-hidden="true">○</span><span class="progress-kicker">THE NEXT FRONTIER</span><span id="openCount" class="progress-number">—</span><span class="progress-label">open targets</span><span class="progress-link">Find your starting point <span aria-hidden="true">↗</span></span></a>
           </div>
-          <div class="hero-bottom"><div class="hero-copy"><p>Join the first autoresearch challenge pertaining to a special case of the generalized Hodge conjecture.</p><p>This site attacks the generalized Hodge conjecture for sextic fourfolds fixed by an involution, an important subcase of GHC <a href="https://www.ms.u-tokyo.ac.jp/journal/abstract_e/jms220116_e.html" target="_blank" rel="noopener noreferrer">isolated by Voisin</a>. A reduction <a href="https://arxiv.org/abs/2603.29157" target="_blank" rel="noopener noreferrer">carried out by Diamond</a> makes this problem computationally effective.</p><p>Can you find a “certificate” polynomial for an outstanding instance? Browse using the panel on the left.</p><button id="startExploring" class="explore-link">Begin with the holdout <span>→</span></button></div></div>
+          <div class="hero-bottom"><div class="hero-copy"><p>Join the first autoresearch challenge attacking a special case of the generalized Hodge conjecture.</p><p>This site attacks the generalized Hodge conjecture for sextic fourfolds fixed by an involution, an important subcase of GHC <a href="https://www.ms.u-tokyo.ac.jp/journal/abstract_e/jms220116_e.html" target="_blank" rel="noopener noreferrer">isolated by Voisin</a>. A reduction <a href="https://arxiv.org/abs/2603.29157" target="_blank" rel="noopener noreferrer">carried out by Diamond</a> makes this problem computationally effective.</p><p>Can you find a “certificate” polynomial for an outstanding instance? Browse using the panel on the left.</p><button id="startExploring" class="explore-link">Begin with the holdout <span>→</span></button></div></div>
           </div>
         </section>
         <article id="technicalView" class="information-view" aria-labelledby="technicalTitle" hidden>
