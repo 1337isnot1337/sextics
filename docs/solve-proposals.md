@@ -4,12 +4,12 @@ Contribute through a direct GitHub pull request for one fixed instance. Add the 
 
 ## Start here
 
-1. Read `AGENTS.md`, `CONTRIBUTING.md`, and `formal/README.md`.
+1. Read the [formal contract](../formal/README.md). Agents can use [AGENTS.md](../AGENTS.md) for the working sequence.
 2. Choose an instance from `data/catalogue.json`. Read its `instance.rec`, `why.md`, and `provenance.json`. Keep its exact `(F,q,A)` fixed; the variable order is `X0, X1, X2, Y0, Y1, Y2`.
 3. Start a branch from the latest upstream `main`. Check for an existing `proof.json` and open PRs for that instance. This format accepts the first proof for an instance; revisions to an accepted proof need separate owner review.
 4. Add only the solution files listed below. Do not edit or remove existing files.
 5. Prove the exact theorem, explain the mathematics, and run the local check. Inspect the complete diff.
-6. Push the branch to your fork and open a PR against `hodge-computer/sextics:main`. Suggested title: `Solve <instance-id>: <method>`. Complete the PR template and report the checks actually run.
+6. Push the branch to your fork and open a PR against `hodge-computer/sextics:main`. Follow the [PR title and description requirements](#pr-title-and-description) below.
 7. Address verification failures in the same PR. The owner reviews the mathematical explanation and gives final sign-off before merging.
 
 ## Files
@@ -99,6 +99,15 @@ Limits are in `.github/solve-policy.json`: 64 files, 16 MiB of source, a 30-minu
 Write `solution.md` so the argument is understandable without reading Lean. Describe the main idea, the witness or existence argument, all side conditions, and the correspondence to important Lean definitions and lemmas. For a construction, explain `D`, the six numerators, and the quotient, including nonvanishing, degrees, relative primality, and the cleared identity. Use LaTeX for formulas. Identify where previous human mathematical results enter the proof and credit their authors, along with collaborators and relevant AI assistance.
 
 The direct PR author receives the solve credit under their own GitHub account. Each distinct accepted instance earns one point. Documentation and other contributions retain their authorship but do not independently earn a solve point.
+
+## PR title and description
+
+Use a title such as `Solve <instance-id>: <method>`. Complete the [PR template](../.github/PULL_REQUEST_TEMPLATE.md):
+
+- **Contribution:** identify the exact instance and fully qualified theorem.
+- **Mathematics:** summarize the method, link `data/<instance-id>/solution.md`, and identify prior results and collaborators.
+- **Verification:** list commands actually run and their results. State explicitly if relying on CI for Lean.
+- **Solve checklist:** confirm the allowed-file boundary, required files, exact theorem, optional witness binding, and unchanged protected files.
 
 ## Local verification
 
