@@ -39,5 +39,5 @@ async function apply(mesh,terms,shouldContinue=()=>true){
   for(let n=0;n<meta.vertexCount;n++)data[n*9+8]=values[n]/scale;
   return {...mesh,buffer:data.buffer,meta:{...meta,divisorScale:scale}};
 }
-window.HodgeDivisor=Object.freeze({polynomial,ambient,apply});
+globalThis.HodgeDivisor=Object.freeze({polynomial,ambient,apply});
 })();

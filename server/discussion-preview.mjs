@@ -29,7 +29,7 @@ const signed=service.auth.create({access_token:'local-token'},{login:'local-test
 for(const name of ['data','docs/technical','leaderboard'])await cp(path.join(source,name),path.join(root,name),{recursive:true});
 for(const name of ['app.js','leaderboard.js'])await cp(path.join(source,'assets',name),path.join(root,'assets',name));
 let html=await readFile(path.join(source,'index.html'),'utf8');
-html=html.replace('<script defer src="assets/renderer.js"></script>','<script>window.HodgeRenderer={create:()=>null};</script>').replace('<script defer src="assets/divisor.js"></script>','');
+html=html.replace('<script defer src="assets/surface.js"></script>','<script>window.HodgeRenderer={create:()=>null};</script>').replace('<script defer src="assets/divisor.js"></script>','');
 html=html.replace('ALGEBRAIC GEOMETRY <span>/</span> OPEN RESEARCH','LOCAL DISCUSSION TEST · NO MESSAGES LEAVE THIS COMPUTER');
 await writeFile(path.join(root,'index.html'),html);
 const handler=service.server.listeners('request')[0];service.server.removeAllListeners('request');service.server.on('request',(req,res)=>{

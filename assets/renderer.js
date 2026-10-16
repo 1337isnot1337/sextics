@@ -493,12 +493,15 @@ async function validateDynamicMesh(buffer,indexBuffer,meta,shouldContinue=()=>tr
 
 
 
-const SCRIPT_BASE=new URL('.',document.currentScript?.src||location.href);
+const SCRIPT_BASE=new URL('.',typeof document!=='undefined'?document.currentScript?.src||location.href:location.href);
 function create(canvas,options={}){
+  // In production this core runs only in a dedicated worker. The host forwards
+  // sizes and input; no graphics API is called by the page's UI thread.
+  const {view:window,page:document,reducedMotion:reduced}=options.host;
   const assetBase=options.assetBase?new URL(options.assetBase,location.href):SCRIPT_BASE;
   const onStatus=typeof options.onStatus==='function'?options.onStatus:()=>{};
   const onModeChange=typeof options.onModeChange==='function'?options.onModeChange:()=>{};
-  const gl=canvas.getContext('webgl2',{alpha:true,antialias:true,premultipliedAlpha:false,preserveDrawingBuffer:false,powerPreference:'high-performance'});
+  const gl=canvas.getContext('webgl2',{alpha:true,antialias:true,premultipliedAlpha:false,preserveDrawingBuffer:false,powerPreference:'high-performance',failIfMajorPerformanceCaveat:true});
   if(!gl)throw new Error('WebGL 2 is required for the mathematical surface.');
   gl.disable(gl.DITHER);gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);gl.disable(gl.CULL_FACE);gl.clearColor(0,0,0,0);
   const p=program(gl,VS,FS),U={};
@@ -506,8 +509,8 @@ function create(canvas,options={}){
   gl.useProgram(p);gl.uniformMatrix4fv(U.Model,false,mat4Identity());
   let activeVao=null,activeBuffers=[],activeCount=0,activeMeta=null,record=null;
   let job=0,busy=false,destroyed=false,contextLost=false,graphicsFault=false,needsDraw=true;
-  let depthPeeler=null,depthPeelerFailed=false,frameFence=null,frameId=0;
-  const listeners=[],reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let depthPeeler=null,depthPeelerFailed=false,frameFence=null,frameId=0,fenceStarted=0,frameJob=0,awaitingFirstFrame=false;
+  const listeners=[];
   const FOV=42*Math.PI/180,minDistance=.035,maxDistance=12;
   let baseYaw=.710,basePitch=.455,baseDistance=3.22,baseCenter=[0,0,0];
   let homeOrientation=ScreenTrackball.fromYawPitch(baseYaw,basePitch);
@@ -517,23 +520,38 @@ function create(canvas,options={}){
   const touches=new Map(),clamp=(x,a,b)=>Math.max(a,Math.min(b,x)),clone3=v=>v.slice();
   function listen(target,name,fn,opts){target.addEventListener(name,fn,opts);listeners.push(()=>target.removeEventListener(name,fn,opts));}
   function status(state,message,meta){onStatus({state,message,meta:meta||undefined});}
-  function cancel(){job++;busy=false;}
-  function clearMesh(){if(activeVao)gl.deleteVertexArray(activeVao);for(const b of activeBuffers)gl.deleteBuffer(b);activeVao=null;activeBuffers=[];activeCount=0;}
+  function cancel(){job++;busy=false;awaitingFirstFrame=false;}
+  function stop(message){
+    if(graphicsFault||destroyed)return;
+    graphicsFault=true;cancel();cancelAnimationFrame(frameId);
+    // Never delete or reuse handles from a lost/restored context. The owner
+    // terminates the worker and discards this canvas instead of auto-retrying.
+    activeVao=null;activeBuffers=[];activeCount=0;frameFence=null;depthPeeler=null;
+    status('error',message);options.onFatal?.(message);
+  }
+  function usable(){
+    if(destroyed||contextLost||graphicsFault)return false;
+    if(gl.isContextLost()){contextLost=true;stop('The graphics context was lost.');return false;}
+    return true;
+  }
+  function clearMesh(){if(!usable())return;if(activeVao)gl.deleteVertexArray(activeVao);for(const b of activeBuffers)gl.deleteBuffer(b);activeVao=null;activeBuffers=[];activeCount=0;}
   function hasCertificate(selected){return selected.certificateAvailable===true||selected.evidenceKind==='explicit-certificate'||selected.status==='solved';}
   function upload(mesh,selected){
+    if(!usable())return;
     const {meta,buffer,indexBuffer}=mesh;
     const vao=gl.createVertexArray(),vbo=gl.createBuffer(),ebo=gl.createBuffer();
     if(!vao||!vbo||!ebo)throw new Error('The graphics device could not allocate a mesh.');
     gl.bindVertexArray(vao);gl.bindBuffer(gl.ARRAY_BUFFER,vbo);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(buffer),gl.STATIC_DRAW);
     for(const [location,size,offset] of [[0,3,0],[1,3,12],[2,2,24],[3,1,32]]){gl.enableVertexAttribArray(location);gl.vertexAttribPointer(location,size,gl.FLOAT,false,36,offset);}
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,ebo);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint32Array(indexBuffer),gl.STATIC_DRAW);
+    if(!usable())return;
     if(gl.getError()!==gl.NO_ERROR){gl.deleteVertexArray(vao);gl.deleteBuffer(vbo);gl.deleteBuffer(ebo);throw new Error('Surface upload failed.');}
     clearMesh();activeVao=vao;activeBuffers=[vbo,ebo];activeCount=meta.triangleCount*3;
     const hasD=hasCertificate(selected)&&!!selected.render?.divisorTerms?.length;
     activeMeta={...meta,divisorVisible:hasD,projectionBox:10,xray:{enabled:true,reach:2.0,layers:6},cameraDefault:{yaw:baseYaw,pitch:basePitch,distance:baseDistance,center:baseCenter.slice()},sliceDescription:'A real two-dimensional section of X, on a fixed phase-rotated real four-plane; stereographic projection in [−10, 10]³.'};
     gl.useProgram(p);gl.uniform3fv(U.OriginalCenter,new Float32Array(meta.centerOriginal));gl.uniform1f(U.DisplayScale,meta.displayScale);gl.uniform1f(U.ProjectionBox,10);gl.uniform1f(U.DivisorStrength,hasD?1:0);gl.uniform1f(U.DivisorMode,1);
-    canvas.setAttribute('aria-label',(selected.title||'Sextic fourfold')+' — real slice of F = 0'+(hasD?', with certificate divisor highlighted':''));
-    needsDraw=true;status('ready','Surface ready',activeMeta);
+    options.onLabel?.((selected.title||'Sextic fourfold')+' — real slice of F = 0'+(hasD?', with certificate divisor highlighted':''));
+    needsDraw=true;awaitingFirstFrame=true;
   }
   async function ungzip(url){
     const response=await fetch(url);if(!response.ok)throw new Error('Missing local mesh asset: '+url.pathname);
@@ -559,6 +577,7 @@ function create(canvas,options={}){
     return bakedPromise;
   }
   async function setCase(selected){
+    if(!usable())return;
     cancel();const id=job;record=selected;busy=true;activeCount=0;needsDraw=true;
     status('loading','Preparing the saved slice…');
     try{
@@ -568,26 +587,26 @@ function create(canvas,options={}){
       baseYaw=saved.yaw;basePitch=saved.pitch;baseDistance=saved.distance;baseCenter=saved.center.slice();
       homeOrientation=ScreenTrackball.fromYawPitch(baseYaw,basePitch);resetCamera();
       if(r.bakedHome){
-        const mesh=await baked();if(id!==job||destroyed)return;
-        const shaded=await HodgeDivisor.apply(mesh,hasCertificate(selected)?r.divisorTerms:null,()=>id===job&&!destroyed);
-        if(id!==job||destroyed)return;busy=false;upload(shaded,selected);return;
+        const mesh=await baked();if(id!==job||!usable())return;
+        const shaded=await HodgeDivisor.apply(mesh,hasCertificate(selected)?r.divisorTerms:null,()=>id===job&&usable());
+        if(id!==job||!usable())return;busy=false;upload(shaded,selected);return;
       }
       if(r.mesh){
         const response=await fetch(new URL(r.mesh,assetBase));if(!response.ok)throw new Error('Missing saved slice.');
         const manifest=await response.json(),root=new URL('.',new URL(r.mesh,assetBase));
         const [buffer,indexBuffer]=await Promise.all([ungzip(new URL(manifest.vertices,root)),ungzip(new URL(manifest.indices,root))]);
-        const mesh={buffer,indexBuffer,meta:manifest.meta};await validateDynamicMesh(buffer,indexBuffer,mesh.meta,()=>id===job&&!destroyed);
-        if(id!==job||destroyed)return;
-        const shaded=await HodgeDivisor.apply(mesh,hasCertificate(selected)?r.divisorTerms:null,()=>id===job&&!destroyed);
-        if(id!==job||destroyed)return;busy=false;upload(shaded,selected);return;
+        const mesh={buffer,indexBuffer,meta:manifest.meta};await validateDynamicMesh(buffer,indexBuffer,mesh.meta,()=>id===job&&usable());
+        if(id!==job||!usable())return;
+        const shaded=await HodgeDivisor.apply(mesh,hasCertificate(selected)?r.divisorTerms:null,()=>id===job&&usable());
+        if(id!==job||!usable())return;busy=false;upload(shaded,selected);return;
       }
       if(r.pairId==='contact46006'&&!r.terms&&(r.seed===undefined||r.seed===245646)){
-        const mesh=await baked();if(id!==job||destroyed)return;
-        const shaded=await HodgeDivisor.apply(mesh,hasCertificate(selected)?r.divisorTerms:null,()=>id===job&&!destroyed);
-        if(id!==job||destroyed)return;busy=false;upload(shaded,selected);return;
+        const mesh=await baked();if(id!==job||!usable())return;
+        const shaded=await HodgeDivisor.apply(mesh,hasCertificate(selected)?r.divisorTerms:null,()=>id===job&&usable());
+        if(id!==job||!usable())return;busy=false;upload(shaded,selected);return;
       }
       throw new Error('This instance has no saved slice.');
-    }catch(error){if(id===job&&!destroyed){busy=false;status('error',error.message||String(error));}throw error;}
+    }catch(error){if(id===job&&usable()){busy=false;status('error',error.message||String(error));}throw error;}
   }
   function freezeVisibleCamera(){orbitOrientation=cameraOrientation.slice();orbitDistance=cameraDistance;orbitCenter=clone3(cameraCenter);}
   function resetCamera(){orbitOrientation=homeOrientation.slice();orbitDistance=baseDistance;orbitCenter=baseCenter.slice();cameraOrientation=homeOrientation.slice();cameraDistance=baseDistance;cameraCenter=baseCenter.slice();targetX=targetY=currentX=currentY=0;drag=null;touches.clear();touchGesture=null;needsDraw=true;}
@@ -595,11 +614,11 @@ function create(canvas,options={}){
     cameraMode=mode==='free'?'free':'parallax';drag=null;touches.clear();touchGesture=null;targetX=targetY=currentX=currentY=0;
     if(cameraMode==='free')freezeVisibleCamera();
     // Keep the visible pose on return; the frame loop eases rotation, zoom and pan back to parallax.
-    canvas.classList.toggle('free-camera',cameraMode==='free');canvas.style.touchAction=cameraMode==='free'?'none':'auto';needsDraw=true;onModeChange(cameraMode);
+    needsDraw=true;onModeChange(cameraMode);
   }
   function beginDrag(pointerId,action,x,y){freezeVisibleCamera();return {pointerId,action,x,y,orientation:orbitOrientation.slice(),center:clone3(orbitCenter),distance:orbitDistance};}
   function pannedCenter(center,dx,dy,orientation,distance){return ScreenTrackball.pan(center,dx,dy,orientation,distance,FOV,canvas.clientHeight);}
-  listen(window,'pointermove',e=>{if(cameraMode==='parallax'&&!reduced){targetX=2*e.clientX/innerWidth-1;targetY=2*e.clientY/innerHeight-1;}},{passive:true});
+  listen(window,'pointermove',e=>{if(cameraMode==='parallax'&&!reduced){targetX=2*e.clientX/window.innerWidth-1;targetY=2*e.clientY/window.innerHeight-1;}},{passive:true});
   listen(window,'pointerleave',()=>{targetX=targetY=0;},{passive:true});
   listen(window,'blur',()=>{targetX=targetY=0;drag=null;touches.clear();touchGesture=null;},{passive:true});
   listen(canvas,'contextmenu',e=>{if(cameraMode==='free')e.preventDefault();});
@@ -625,14 +644,26 @@ function create(canvas,options={}){
   },{passive:false});
   function endPointer(e){if(e.pointerType==='touch'){touches.delete(e.pointerId);if(touches.size===1){const [id,pt]=touches.entries().next().value;drag=beginDrag(id,'orbit',pt.x,pt.y);touchGesture=null;}else if(!touches.size){drag=null;touchGesture=null;}}else if(drag?.pointerId===e.pointerId)drag=null;try{canvas.releasePointerCapture?.(e.pointerId);}catch(_){}}
   listen(canvas,'pointerup',endPointer,{passive:true});listen(canvas,'pointercancel',endPointer,{passive:true});listen(canvas,'lostpointercapture',e=>{if(drag?.pointerId===e.pointerId)drag=null;},{passive:true});
-  listen(window,'keydown',e=>{if(e.target instanceof Element&&e.target.closest('input,textarea,select,[contenteditable="true"]'))return;if(e.key==='Escape'&&cameraMode==='free')setMode('parallax');if((e.key==='r'||e.key==='R')&&cameraMode==='free'&&!e.metaKey&&!e.ctrlKey)resetCamera();});
-  listen(canvas,'webglcontextlost',e=>{e.preventDefault();contextLost=true;status('error','The graphics context was lost. Reload to restore the surface.');});
-  function resize(){const w0=Math.max(1,canvas.clientWidth),h0=Math.max(1,canvas.clientHeight),budget=innerWidth<760?1_500_000:3_000_000,dpr=Math.min(devicePixelRatio||1,2,Math.sqrt(budget/(w0*h0))),w=Math.max(1,Math.floor(w0*dpr)),h=Math.max(1,Math.floor(h0*dpr));if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h;gl.viewport(0,0,w,h);needsDraw=true;}}
-  listen(window,'resize',resize,{passive:true});listen(document,'visibilitychange',()=>{needsDraw=true;});resize();
+  listen(window,'keydown',e=>{if(e.textInput)return;if(e.key==='Escape'&&cameraMode==='free')setMode('parallax');if((e.key==='r'||e.key==='R')&&cameraMode==='free'&&!e.metaKey&&!e.ctrlKey)resetCamera();});
+  listen(canvas,'webglcontextlost',()=>{contextLost=true;stop('The graphics context was lost.');});
+  function resize(){if(!usable())return;const w0=Math.max(1,canvas.clientWidth),h0=Math.max(1,canvas.clientHeight),budget=window.innerWidth<760?1_500_000:3_000_000,dpr=Math.min(window.devicePixelRatio||1,2,Math.sqrt(budget/(w0*h0))),w=Math.max(1,Math.floor(w0*dpr)),h=Math.max(1,Math.floor(h0*dpr));if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h;gl.viewport(0,0,w,h);needsDraw=true;}}
+  listen(window,'resize',resize,{passive:true});listen(document,'visibilitychange',()=>{needsDraw=true;fenceStarted=performance.now();});resize();
   function frame(now){
-    if(destroyed)return;frameId=requestAnimationFrame(frame);if(document.hidden||contextLost||graphicsFault)return;
+    if(!usable())return;frameId=requestAnimationFrame(frame);if(document.hidden)return;
     if(now-lastDraw<(busy?180:33.34)&&!needsDraw)return;
-    if(frameFence){const state=gl.clientWaitSync(frameFence,0,0);if(state===gl.TIMEOUT_EXPIRED)return;gl.deleteSync(frameFence);frameFence=null;if(state===gl.WAIT_FAILED){graphicsFault=true;status('error','Graphics synchronization failed. Reload to restore the surface.');return;}}
+    if(frameFence){
+      const state=gl.clientWaitSync(frameFence,0,0);
+      if(!usable())return;
+      if(state===gl.TIMEOUT_EXPIRED){
+        if(now-fenceStarted>5000)stop('The graphics device stopped responding.');
+        return;
+      }
+      gl.deleteSync(frameFence);frameFence=null;
+      if(state===gl.WAIT_FAILED){stop('Graphics synchronization failed.');return;}
+      if(awaitingFirstFrame&&frameJob===job){
+        awaitingFirstFrame=false;status('ready','Surface ready',activeMeta);
+      }
+    }
     const dt=Math.min(.05,(now-last)/1000);last=now;lastDraw=now;resize();
     gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
     if(!activeCount||!activeVao)return;
@@ -644,12 +675,15 @@ function create(canvas,options={}){
     const basis=ScreenTrackball.basis(cameraOrientation),eye=cameraCenter.map((c,i)=>c+cameraDistance*basis.back[i]);
     gl.useProgram(p);gl.bindVertexArray(activeVao);gl.uniformMatrix4fv(U.View,false,lookAt(eye,cameraCenter,basis.up));gl.uniformMatrix4fv(U.Projection,false,perspective(FOV,canvas.width/canvas.height,Math.max(.0005,Math.min(.035,cameraDistance*.025)),40));gl.uniform3fv(U.Camera,new Float32Array(eye));gl.uniform1f(U.Time,now/1000);gl.uniform1f(U.TranslucencyEnabled,depthPeelerFailed?0:1);gl.uniform1f(U.TransNear,0);gl.uniform1f(U.TransFar,2);gl.uniform1f(U.TransMinAlpha,.18);
     const draw=()=>gl.drawElements(gl.TRIANGLES,activeCount,gl.UNSIGNED_INT,0),distanceToBounds=Math.hypot(...eye.map(c=>Math.max(0,Math.abs(c)-1.01)));
-    if(!depthPeelerFailed&&distanceToBounds<2){try{if(!depthPeeler)depthPeeler=createDepthPeeler(gl,p);depthPeeler.render(canvas.width,canvas.height,activeVao,draw,6);}catch(error){depthPeelerFailed=true;if(depthPeeler)depthPeeler.dispose();depthPeeler=null;status('warning','X-ray is unavailable on this device; showing an opaque surface.',activeMeta);}}
+    if(!depthPeelerFailed&&distanceToBounds<2){try{if(!depthPeeler)depthPeeler=createDepthPeeler(gl,p);depthPeeler.render(canvas.width,canvas.height,activeVao,draw,6);}catch(error){if(!usable())return;depthPeelerFailed=true;if(depthPeeler)depthPeeler.dispose();depthPeeler=null;status('warning','X-ray is unavailable on this device; showing an opaque surface.',activeMeta);}}
     if(depthPeelerFailed||distanceToBounds>=2){gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,canvas.width,canvas.height);gl.useProgram(p);gl.bindVertexArray(activeVao);gl.uniform1i(U.RenderPass,0);gl.depthMask(true);gl.enable(gl.DEPTH_TEST);gl.disable(gl.BLEND);gl.disable(gl.CULL_FACE);draw();}
-    frameFence=gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE,0);gl.flush();needsDraw=false;
+    if(!usable())return;
+    frameJob=job;fenceStarted=performance.now();frameFence=gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE,0);
+    if(!frameFence){stop('Graphics synchronization is unavailable.');return;}
+    gl.flush();needsDraw=false;
   }
   frameId=requestAnimationFrame(frame);
-  return {setCase,setMode,resetCamera,getMeta:()=>activeMeta,getMode:()=>cameraMode,getCamera:()=>({orientation:cameraOrientation.slice(),distance:cameraDistance,center:cameraCenter.slice(),mode:cameraMode}),destroy(){destroyed=true;cancel();cancelAnimationFrame(frameId);listeners.forEach(f=>f());if(frameFence)gl.deleteSync(frameFence);if(depthPeeler)depthPeeler.dispose();clearMesh();gl.deleteProgram(p);}};
+  return {setCase,setMode,resetCamera,getMeta:()=>activeMeta,getMode:()=>cameraMode,getCamera:()=>({orientation:cameraOrientation.slice(),distance:cameraDistance,center:cameraCenter.slice(),mode:cameraMode}),destroy(){const valid=usable();cancel();cancelAnimationFrame(frameId);listeners.forEach(f=>f());if(valid){if(frameFence)gl.deleteSync(frameFence);if(depthPeeler)depthPeeler.dispose();clearMesh();gl.deleteProgram(p);}destroyed=true;}};
 }
-window.HodgeRenderer=Object.freeze({create,defaultView:Object.freeze({seed:245646,box:10,xray:true,xrayReach:2,mode:'parallax',yaw:.710,pitch:.455,distance:3.22})});
+globalThis.HodgeSurfaceCore=Object.freeze({create,defaultView:Object.freeze({seed:245646,box:10,xray:true,xrayReach:2,mode:'parallax',yaw:.710,pitch:.455,distance:3.22})});
 })();

@@ -1,0 +1,125 @@
+// Failure-path regression tests. No GPU or external service required.
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const vm = require('node:vm');
+const path = require('node:path');
+const source = name => fs.readFileSync(path.join(__dirname, '../assets', name), 'utf8');
+const event = (target, name, props = {}) => target.dispatchEvent(Object.assign(new Event(name), props));
+
+function core() {
+  let now = 0, raf = null, lost = false, waiting = false, resumeFetch;
+  const calls = [], status = [], failures = [];
+  const gl = new Proxy({}, {get(target, name) {
+    if (typeof name !== 'string') return target[name];
+    if (name.toUpperCase() === name) return name;
+    if (name === 'isContextLost') return () => lost;
+    return (...args) => {
+      calls.push(name);
+      if (lost) throw new Error('Used a lost WebGL context: ' + name);
+      if (name === 'getError') return 'NO_ERROR';
+      if (name === 'getShaderParameter' || name === 'getProgramParameter') return true;
+      if (name === 'clientWaitSync') return waiting ? 'TIMEOUT_EXPIRED' : 'CONDITION_SATISFIED';
+      if (name.startsWith('create') || name === 'getUniformLocation' || name === 'fenceSync') return {};
+    };
+  }});
+  const canvas = Object.assign(new EventTarget(), {clientWidth:800, clientHeight:600, width:800, height:600, getContext:() => gl});
+  const view = Object.assign(new EventTarget(), {innerWidth:800, innerHeight:600, devicePixelRatio:1});
+  const page = Object.assign(new EventTarget(), {hidden:false});
+  const meta = {vertexCount:3, triangleCount:1, positionMin:[0,0,0], positionMax:[.1,.1,.1], centerOriginal:[0,0,0], displayScale:10};
+  const context = {URL, Float32Array, Float64Array, Uint16Array, Int16Array, Uint32Array, Uint8Array,
+    ArrayBuffer, Map, performance:{now:() => now}, location:{href:'http://localhost/assets/surface-worker.js'},
+    requestAnimationFrame:fn => (raf = fn, 1), cancelAnimationFrame:() => { raf = null; },
+    HodgeDivisor:{apply:async mesh => mesh},
+    fetch:async url => {
+      await new Promise(resolve => { if (context.pauseFetch) resumeFetch = resolve; else resolve(); });
+      return {ok:true, json:async () => meta, arrayBuffer:async () => new ArrayBuffer(String(url).includes('index') ? 12 : 18)};
+    }};
+  vm.runInNewContext(source('renderer.js'), context);
+  const renderer = context.HodgeSurfaceCore.create(canvas, {host:{view,page,reducedMotion:true},
+    onStatus:s => status.push(s), onFatal:message => failures.push(message)});
+  const record = {id:'test', render:{bakedHome:true, camera:{yaw:0, pitch:0, distance:8, center:[0,0,0]}}};
+  return {renderer, record, calls, status, failures, page,
+    frame(time) {now = time; const fn = raf; raf = null; fn?.(now);},
+    lose(emit = true) {lost = true; if (emit) event(canvas, 'webglcontextlost');},
+    restore() {lost = false; event(canvas, 'webglcontextrestored');},
+    wait(value) {waiting = value;}, pause() {context.pauseFetch = true;},
+    resume() {context.pauseFetch = false; resumeFetch();}
+  };
+}
+
+function controller({supported = true, transferThrows = false} = {}) {
+  let now = 0, timer, replacement = 0;
+  const workers = [], states = [];
+  const canvas = Object.assign(new EventTarget(), {clientWidth:800, clientHeight:600,
+    style:{}, classList:{toggle(){}, remove(){}}, setAttribute(){},
+    cloneNode:() => ({style:{}, classList:{remove(){}}}), replaceWith:() => replacement++});
+  if (supported) canvas.transferControlToOffscreen = () => {if (transferThrows) throw Error('Transfer failed'); return {};};
+  const window = new EventTarget(), document = Object.assign(new EventTarget(), {
+    hidden:false, currentScript:{src:'http://localhost/assets/surface.js'}});
+  class Worker {
+    constructor() {this.messages=[]; workers.push(this);}
+    postMessage(message) {this.messages.push(message);}
+    terminate() {this.terminated=true;}
+    emit(type, value) {this.onmessage({data:{type,value}});}
+  }
+  const context = {window, document, Worker, URL, console:{warn(){}},
+    innerWidth:800, innerHeight:600, devicePixelRatio:1, matchMedia:() => ({matches:false}),
+    performance:{now:() => now}, setInterval:fn => (timer = fn, 1), clearInterval:() => {timer=null;}};
+  vm.runInNewContext(source('surface.js'), context);
+  const api = window.HodgeRenderer.create(canvas, {onStatus:s => states.push(s)});
+  return {api, states, workers, document, replacement:() => replacement,
+    tick(time) {now=time; timer?.();}, pulse() {workers[0].emit('pulse');}};
+}
+
+(async () => {
+  // Report ready only after the GPU confirms an actual frame, not after upload.
+  let c = core(); await c.renderer.setCase(c.record);
+  assert.equal(c.status.at(-1).state, 'loading');
+  c.frame(100); assert.equal(c.status.at(-1).state, 'loading');
+  c.frame(150); assert.equal(c.status.at(-1).state, 'ready');
+
+  // The screenshot's failure: navigation / resizing / teardown after loss or
+  // restoration must never delete or bind handles from the former context.
+  c.lose(); const count = c.calls.length;
+  await c.renderer.setCase(c.record); c.frame(200); c.restore();
+  await c.renderer.setCase(c.record); c.renderer.destroy();
+  assert.equal(c.calls.length, count); assert.equal(c.failures.length, 1);
+
+  // A download finishing after loss cannot upload its now-stale surface.
+  c = core(); c.pause(); const pending = c.renderer.setCase(c.record);
+  c.lose(); const before = c.calls.length; c.resume(); await pending;
+  assert.equal(c.calls.length, before); assert.equal(c.status.at(-1).state, 'error');
+
+  // Detect loss even before the browser delivers its asynchronous lost event.
+  c = core(); c.lose(false); await c.renderer.setCase(c.record);
+  assert.equal(c.failures.length, 1);
+
+  // A live JS worker whose GPU never signals also has a bounded wait.
+  c = core(); await c.renderer.setCase(c.record); c.wait(true); c.frame(100);
+  c.frame(5099); assert.equal(c.failures.length, 0);
+  c.frame(5101); assert.match(c.failures[0], /stopped responding/);
+
+  // Hidden-tab time is not charged to the GPU deadline.
+  c = core(); await c.renderer.setCase(c.record); c.wait(true); c.frame(100);
+  c.page.hidden=true; c.frame(10000); c.page.hidden=false; event(c.page,'visibilitychange');
+  c.frame(10001); assert.equal(c.failures.length, 0);
+
+  // A blocked worker cannot block this watchdog; subsequent navigation sends
+  // nothing to it and cannot overwrite the error with an eternal spinner.
+  let h = controller(); await h.api.setCase({id:'a'}); h.tick(5001);
+  assert.equal(h.workers[0].terminated, true); assert.equal(h.replacement(), 1);
+  const sent = h.workers[0].messages.length;
+  await h.api.setCase({id:'b'}); h.api.setMode('free'); h.api.destroy();
+  assert.equal(h.workers[0].messages.length, sent); assert.equal(h.states.at(-1).state,'error');
+
+  // Slow network while the worker remains responsive is not a graphics hang.
+  h = controller(); for (let time=1000; time<15000; time+=1000) {h.pulse(); h.tick(time);}
+  assert.equal(h.workers[0].terminated, undefined);
+  h.document.hidden=true; h.tick(40000); h.document.hidden=false; event(h.document,'visibilitychange');
+  h.tick(40001); assert.equal(h.workers[0].terminated, undefined);
+  h.workers[0].emit('fatal','Context lost'); assert.equal(h.workers[0].terminated,true);
+
+  h = controller({supported:false}); assert.equal(h.workers.length,0); assert.equal(h.states.at(-1).state,'error');
+  h = controller({transferThrows:true}); assert.equal(h.workers[0].terminated,true);
+  console.log('Surface resilience: first-frame readiness, context loss/restoration, late loads, GPU and worker timeouts, background tabs, slow network, unsupported browsers passed.');
+})().catch(error => {console.error(error); process.exitCode=1;});
