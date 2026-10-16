@@ -100,7 +100,7 @@ function updateSurfaceLoading(){
   const loading=state.surfaceState==='loading',failed=state.surfaceState==='error';
   $('surfaceLoading').hidden=!state.exploring||(!loading&&!failed);
   $('surfaceLoading').dataset.state=state.surfaceState;
-  $('surfaceLoadingLabel').textContent=failed?'Surface unavailable. Please reload.':'Loading surface…';
+  $('surfaceLoadingLabel').textContent=failed?'The 3D view is unavailable on this device. You can still use the atlas.':'Loading surface…';
   $('surface').setAttribute('aria-busy',String(loading));
 }
 function onStatus(event){

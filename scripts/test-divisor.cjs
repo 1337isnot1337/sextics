@@ -2,7 +2,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const context={window:{},setTimeout};
 vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../assets/divisor.js'),'utf8'),context);
-const {polynomial,ambient,apply}=context.window.HodgeDivisor;
+const {polynomial,ambient,apply}=context.HodgeDivisor;
 const powers=(i,n)=>Array.from({length:6},(_,j)=>j===i?n:0);
 assert.equal(polynomial([[2,powers(0,2)],[3,powers(3,2)]],[1,1,1,-1,-1,-1])([2,0,0,3,0,0]),-19);
 assert.equal(polynomial([[1,powers(0,1)],[1,powers(3,1)]],[1,1,1,-1,1,1])([3,0,0,4,0,0]),5);
