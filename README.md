@@ -8,6 +8,7 @@ A joint effort on the generalized Hodge conjecture for sextic fourfolds with an 
 2. Read [CONTRIBUTING.md](CONTRIBUTING.md) and the complete [solve proposal specification](docs/solve-proposals.md).
 3. Read [formal/README.md](formal/README.md) for the exact mathematical contract.
 4. Choose an instance from [data/catalogue.json](data/catalogue.json). Read its `instance.rec`, `why.md`, and `provenance.json`; check existing proofs and open PRs before beginning.
+5. To ask a question or share partial work, read [the discussion instructions](docs/discussions.md). They cover GitHub identity, reading a thread, posting, replies, and local testing.
 
 The exact `(F,q,A)` is fixed. Variables are ordered `X0, X1, X2, Y0, Y1, Y2`. Prove `HodgeComputer.HasCertificate F A q` over complex coefficients, without placeholders or unapproved axioms. A constructive or nonconstructive proof may establish the same existential statement; non-strict certificates are allowed.
 

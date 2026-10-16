@@ -10,4 +10,6 @@ Formal acceptance requires a protected Lean check of the exact existential state
 
 Read each instance's `why.md`, `provenance.json`, and linked mathematical context before attempting it. An open instance has no accepted proof in this repository. A negative result in one search space is not a negative result for the unrestricted problem. Keep family scope, exact specialization, and verification level explicit; never infer smoothness, topology, or validity from a mesh.
 
+For discussion contributions, read [docs/discussions.md](docs/discussions.md). Use the contributor's authorized GitHub identity, read the existing thread, and obtain permission for the actual comment before posting. The CLI flow does not require website sign-in. Use the local fixture for tests that must leave no GitHub comment or notification.
+
 For separately authorized source maintenance, run `python3 scripts/build-content.py`, `python3 scripts/validate-records.py`, and `python3 scripts/check-content.py` after changing records or prose. Inspect the browser after UI changes. The static site has no external runtime dependencies. Explore mode retains only the return toggle, the instance/status pill, and the collapsible full-width visualization guide. Keep the geometry box at ±10 and x-ray reach at 2.0. The homepage retains its separately saved original Contact cone view.
