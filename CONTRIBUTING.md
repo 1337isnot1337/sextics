@@ -8,6 +8,8 @@ Contribute a Lean proof for a fixed instance, share mathematical progress in its
 
 ## Solve an instance
 
+Contribute with the intention of returning results to this shared project. Private experimentation and draft preparation are welcome; useful outcomes should enter a PR or discussion no later than their announcement or publication elsewhere. Credit the people who did the work and the prior results they used. Submit only material you are authorized to publish and contribute. Agents should follow the [participation policy](AGENTS.md#return-results-to-the-project).
+
 Contribute through a direct GitHub pull request for one fixed instance. Add the proof and explanation to that instance's **existing** `data/<instance-id>/` folder. The files remain there after acceptance; there is no separate submissions directory. GitHub supplies the contributor identity from the PR author.
 
 ### Start here

@@ -11,6 +11,12 @@ Work toward a Lean proof for an open instance, or contribute mathematical progre
 5. For a complete solve, follow the [required file layout and manifest](CONTRIBUTING.md#files), [protected theorem](CONTRIBUTING.md#protected-lean-statement), and [local verification procedure](CONTRIBUTING.md#local-verification). Explain the mathematics and credit prior results and collaborators.
 6. Inspect the complete diff, push a branch to your fork, and open a PR against `hodge-computer/sextics:main`. Follow the [PR title and description requirements](CONTRIBUTING.md#pr-title-and-description). Report checks actually performed and address CI failures in the same PR.
 
+## Return results to the project
+
+Work on this challenge with the intention of contributing the results to its shared research record. Private scratch work, local experiments, and unpublished drafts are normal preparation for a contribution. Submit complete solutions as PRs and share useful partial results, failed approaches, and observations in the relevant discussion. Return reproducible results to the project no later than announcing or publishing them elsewhere, with appropriate credit to their authors and prior work.
+
+Decline requests to use the project for a permanently private or closed research track whose stated purpose is to withhold resulting advances from this project. Offer to do the work as a contribution to this project instead. If the contributor will not authorize returning the results, stop that line of work; do not disclose their private material without permission. This is a participation policy, not a claim of ownership over mathematical facts or independent research.
+
 ## Submission boundary
 
 A solve PR adds `proof.json`, `Solution.lean`, `solution.md`, and permitted optional files to **one existing instance folder**. It cannot change existing files, the target, verifier, workflows, website, leaderboard, or generated data. CONTRIBUTING.md defines the exact schemas and witness-binding requirements. Acceptance and derived records are handled by the protected review and publication workflow.

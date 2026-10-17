@@ -27,7 +27,7 @@
     current?.destroy();
     const id=panel.dataset.instance,endpoint='/api/discussions/'+encodeURIComponent(id),account=window.HodgeAccount;
     const q=s=>panel.querySelector(s),feed=q('.discussion-feed'),notice=q('.discussion-notice'),form=q('form'),draft=q('textarea'),preview=q('.discussion-preview'),submit=q('.discussion-submit');
-    const requests=new AbortController(),comments=new Map();let data=null,loaded=false,loading=false,posting=false,replyTo=null,previewing=false,version=0;
+    const requests=new AbortController(),comments=new Map(),expandedComments=new Map();let data=null,loaded=false,loading=false,posting=false,replyTo=null,previewing=false,version=0,commentSequence=0;
     const pendingKey='hodge-discussion-draft:'+id;
     let saved=drafts.get(id);try{saved||=JSON.parse(sessionStorage.getItem(pendingKey));}catch{}
     if(saved){draft.value=saved.body||'';replyTo=saved.replyTo||null;}
@@ -57,20 +57,36 @@
       const date=new Date(comment.createdAt),dateLink=link(Number.isNaN(+date)?'View comment':date.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}),comment.url);
       if(!Number.isNaN(+date))dateLink.title=date.toLocaleString();header.append(identity,dateLink);
       if(comment.updatedAt!==comment.createdAt)header.append(element('span','discussion-edited','edited'));
-      article.append(header);const body=element('div','discussion-markdown');
-      if(comment.isMinimized)body.textContent='This comment was hidden by a GitHub moderator.';else HodgeDiscussionMarkdown.render(body,comment.body);article.append(body);
-      if(data.viewerCanComment&&!comment.isMinimized){article.append(button('Reply',()=>{if(posting)return;replyTo={id:(parent||comment).id,login:(parent||comment).author?.login||'deleted account'};save();setPreview(false);updateComposer();draft.focus();}));}
-      if(!parent){
-        const replies=element('div','discussion-replies');article.append(replies);
-        for(const reply of comment.replies?.nodes||[])replies.append(commentNode(reply,comment));
-        if(comment.replies?.pageInfo?.hasNextPage){const more=button('Load more replies',async()=>{
-          more.disabled=true;
-          try{const page=await account.request(endpoint+'/replies?'+new URLSearchParams({commentId:comment.id,after:comment.replies.pageInfo.endCursor}),{signal:requests.signal});if(!active())return;
-            const seen=new Set(comment.replies.nodes.map(r=>r.id));comment.replies.nodes.push(...page.nodes.filter(r=>!seen.has(r.id)));comment.replies.pageInfo=page.pageInfo;
-            article.replaceWith(commentNode(comment));
-          }catch(e){if(active()){message(e.message);more.disabled=false;}}
-        });article.append(more);}
+      const content=element('div','discussion-comment-content');content.id='discussion-comment-content-'+(++commentSequence);
+      const toggle=button('',()=>{expandedComments.set(comment.id,content.hidden);updateExpansion();});toggle.classList.add('discussion-comment-toggle');toggle.setAttribute('aria-controls',content.id);
+      const toggleLabel=element('span','');toggle.append(toggleLabel);toggle.insertAdjacentHTML('beforeend','<svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7 5 5 5-5"/></svg>');
+      const replyCount=comment.replies?.totalCount||0;
+      if(replyCount)header.append(element('span','discussion-reply-count',`${replyCount} ${replyCount===1?'reply':'replies'}`));
+      header.append(toggle);article.append(header,content);
+      if(!expandedComments.has(comment.id))expandedComments.set(comment.id,comment.isMinimized||((comment.body||'').length<=1200&&(comment.body||'').split('\n').length<=14));
+      let rendered=false;
+      function updateExpansion(){
+        const expanded=expandedComments.get(comment.id);content.hidden=!expanded;article.classList.toggle('discussion-collapsed',!expanded);
+        toggle.setAttribute('aria-expanded',String(expanded));toggle.setAttribute('aria-label',`${expanded?'Collapse':'Expand'} comment by ${author?'@'+author.login:'deleted account'}`);toggleLabel.textContent=expanded?'Collapse':'Expand';
+        if(expanded&&!rendered){rendered=true;renderContent();}
       }
+      function renderContent(){
+        const body=element('div','discussion-markdown');
+        if(comment.isMinimized)body.textContent='This comment was hidden by a GitHub moderator.';else HodgeDiscussionMarkdown.render(body,comment.body);content.append(body);
+        if(data.viewerCanComment&&!comment.isMinimized){content.append(button('Reply',()=>{if(posting)return;replyTo={id:(parent||comment).id,login:(parent||comment).author?.login||'deleted account'};save();setPreview(false);updateComposer();draft.focus();}));}
+        if(!parent){
+          const replies=element('div','discussion-replies');content.append(replies);
+          for(const reply of comment.replies?.nodes||[])replies.append(commentNode(reply,comment));
+          if(comment.replies?.pageInfo?.hasNextPage){const more=button('Load more replies',async()=>{
+            more.disabled=true;
+            try{const page=await account.request(endpoint+'/replies?'+new URLSearchParams({commentId:comment.id,after:comment.replies.pageInfo.endCursor}),{signal:requests.signal});if(!active())return;
+              const seen=new Set(comment.replies.nodes.map(r=>r.id));comment.replies.nodes.push(...page.nodes.filter(r=>!seen.has(r.id)));comment.replies.pageInfo=page.pageInfo;
+              article.replaceWith(commentNode(comment));
+            }catch(e){if(active()){message(e.message);more.disabled=false;}}
+          });content.append(more);}
+        }
+      }
+      updateExpansion();
       return article;
     }
     function renderFeed(){
@@ -102,6 +118,7 @@
       try{const posted=await account.request(endpoint,{method:'POST',body:JSON.stringify({body,...(parent?{replyToId:parent}:{})})});
         drafts.delete(id);try{sessionStorage.removeItem(pendingKey);}catch{}if(!active()||account.user?.login!==postingUser)return;
         draft.value='';replyTo=null;setPreview(false);showPostStatus(parent?'Reply posted.':'Comment posted.',posted.url);
+        expandedComments.set(posted.id,true);if(parent)expandedComments.set(parent,true);
         if(parent&&comments.has(parent)){const c=comments.get(parent);c.replies ||= {nodes:[],totalCount:0,pageInfo:{hasNextPage:false}};c.replies.nodes.push(posted);c.replies.totalCount++;}
         else if(!parent){comments.set(posted.id,{...posted,replies:{nodes:[],totalCount:0,pageInfo:{hasNextPage:false}}});data.comments.totalCount++;}
         renderFeed();
