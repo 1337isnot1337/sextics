@@ -249,3 +249,36 @@ q = 1,     A = X_{0}^{3}\cdot Y_{0}^{3}.
 It is smooth by a direct estimate over \(\mathbb C\). At a hypothetical nonzero common zero of the partial derivatives, choose a coordinate of largest modulus \(M\). Its pure-sixth derivative has modulus \(6\cdot M^{5}\), whereas the sum of the absolute coefficients of all its mixed derivative terms is at most four, giving modulus at most \(4\cdot M^{5}\). This is impossible. The target is nonzero modulo \(J(F)\): none of the monomials in any \(Z_{i}F_{Z_{j}}\) is \(X_{0}^{3}\cdot Y_{0}^{3}\), so extraction of that coefficient annihilates \(J(F)_{6}\) but takes value one on \(A\). No certificate for this input is known here.
 
 Failure for a selected denominator or a restricted numerator space does not exclude support on other divisors. The generic reduction identifies a sufficient next theorem: construct one nonzero support class in a family dominating the full even-sextic parameter space. Solving isolated atlas instances may suggest such a construction, but does not by itself supply that family.
+
+## 4.7 Structured targets beyond the holdout
+
+An open atlas entry means that its exact existence statement has no accepted
+Lean proof here. It need not be an instance of unknown mathematical existence.
+The following targets separate the task of extracting explicit certificates
+from known geometric arguments from the task of extending those arguments to
+new sectors.
+
+| Target | Structure and remaining task |
+| --- | --- |
+| [Reflection · coupled Fano quotient](#case/reflection-coupled-fano) | Existence follows from §3.3. Compute a support or rational field on a coupled sextic with one serving reflection. |
+| [Cyclic triple cover · Fano density](#case/cyclic-triple-fano) | Existence follows from §3.4. Make the weighted-Fano density construction explicit for an order-three cover. |
+| [Split ternaries · third-order pole](#case/split-ternary-q2) | Existence follows from §§3A.1–3A.3. Construct a certificate at \(q=2\), beyond the elementary split Euler target degrees. |
+| [Crossed ternaries · elliptic transfer](#case/crossed-ternary-asymmetric) | Existence follows from the involution-stable split theorem in §3A.3. The individual coordinate reflections miss this target. |
+| [Polarized split · K3 remainder](#case/polarized-k3-remainder) | The target has a nonzero component in the K3 exterior-square remainder of §§3A.4–3A.6. |
+| [Coupled Klein · nontrivial character](#case/klein-coupled-character) | The numerator selects a nontrivial order-seven residue character, outside the invariant sector of §4.3. |
+| [Permutation symmetry · residual sector](#case/symmetric-sextic-residual) | The numerator is symmetric but the residue is alternating under each permutation group, outside the quotient-density sector. |
+| [Rank-one coupling · biquartic pencil](#case/rank-one-biquartic) | A single factored mixed component destroys the split while retaining a structured binary-cubic discriminant. |
+| [Quadric contact · broken reflections](#case/quadric-contact-broken) | A deformation of an accepted example cannot use its old quadric denominator, even with completely new numerators. |
+| [Four plus two · suspension remainder](#case/four-plus-two-residual) | The decomposition is \(4+2\), rather than \(3+3\), and the target lies outside the two visible reflection sectors. |
+
+The first four have geometric existence proofs; the book also explains finite
+algebraic procedures in principle. Their atlas entries ask for a concrete
+certificate or a formal proof, not a new proof that the geometric theorem is
+true. For the other six, the stated methods do not supply the selected class;
+this is not an assertion that every possible method has been ruled out.
+
+All ten sextics are smooth by reduction modulo five, and the selected targets
+are nonzero in their Jacobian rings. Their records include exact, reproducible
+checks of these statements and the specified symmetry and denominator
+obstructions. The motivations explain the scope of each check. Neither those
+checks nor a visually interesting slice constitutes an accepted certificate.

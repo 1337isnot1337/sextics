@@ -1,6 +1,6 @@
 # Immutable target and presentation; acceptance is derived from a checked, merged proposal.
 id: cone-ladder-linear
-title: Cone ladder · hyperplane
+title: Split sextic · factored binary form
 q: 1
 F: X0**6 + X1**6 - X1**5*X2 + X1*X2**5 - X2**6 + Y0**6 + Y1**6 - Y1**5*Y2 + Y1*Y2**5 - Y2**6
 A: -10*X0*X1**4*Y0 - 10*X0*X2**4*Y0

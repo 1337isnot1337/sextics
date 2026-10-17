@@ -1,0 +1,21 @@
+{
+  "instanceId": "cyclic-triple-fano",
+  "variables": [
+    "X0",
+    "X1",
+    "X2",
+    "Y0",
+    "Y1",
+    "Y2"
+  ],
+  "statementSource": "instance.rec",
+  "contextSource": "why.md",
+  "sameVarietyInstances": [],
+  "mathematicalChecks": "checks.json",
+  "checkCommand": "sage -python scripts/audit-frontier.py",
+  "existenceStatus": "Known by the cited geometric theorem; no explicit witness supplied.",
+  "references": [
+    "docs/03-geometric-support.md \u00a73.4"
+  ],
+  "discussionUrl": "https://github.com/hodge-computer/sextics/discussions/112"
+}

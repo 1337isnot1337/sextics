@@ -1,3 +1,13 @@
+## How this example arose
+
+The mathematical sequence began with contact presentations, rather than a search for a hyperplane denominator for this prescribed target. A cubic-contact construction used \(f=h^2+C\cdot k\). A subsequent quartic construction used \(f=c\cdot e^3+P_4\cdot k_2\), with \(e\) a conic, and the field \(\nabla P_4\times\nabla e\).
+
+The quartic step was recorded as a test of a contact-and-twist criterion developed from earlier positive and negative examples. The resulting field both supplied a certificate and identified the target it served.
+
+The next observation was that the same identity does not depend on \(P\) having degree four. For \(f=c\cdot e^3+P\cdot k\), it works for each \(1\leq\deg P\leq5\), with \(\deg k=6-\deg P\). The field determines the served target \(A=Y_0\cdot(\nabla P\times\nabla e)(k)\). The hyperplane case is one specialization of that degree ladder.
+
+The equation displayed here is a simple representative, obtained by choosing \(e=X_0^2\), \(P=X_1-X_2\), and \(k=X_1^5+X_2^5\). Thus its target and certificate come from the construction together; the degree-one pole is a consequence of that choice, not a condition imposed on a previously unsolved tuple.
+
 ## A hyperplane contact presentation
 In the \(X\) variables put
 \[

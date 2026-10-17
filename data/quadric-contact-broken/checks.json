@@ -1,0 +1,27 @@
+{
+  "id": "quadric-contact-broken",
+  "smoothReductionPrime": 5,
+  "reducedPartials": [
+    "X0^5",
+    "X1^5",
+    "X2^5",
+    "Y0^5",
+    "Y1^5",
+    "Y2^5"
+  ],
+  "targetNonzeroInReducedJacobianRing": true,
+  "coordinateReflections": [],
+  "reflectionsServingTarget": [],
+  "subsetEulerAtoms": [],
+  "hessianSymmetrizerDimension": 1,
+  "diagonalSymmetryScreen": {
+    "projectiveDiagonalGroupOrder": 24,
+    "juniorElementsFixingTarget": []
+  },
+  "oldDenominatorE1": {
+    "prime": 101,
+    "columns": 336,
+    "rank": 336,
+    "augmentedRank": 337
+  }
+}

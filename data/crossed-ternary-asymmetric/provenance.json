@@ -1,0 +1,21 @@
+{
+  "instanceId": "crossed-ternary-asymmetric",
+  "variables": [
+    "X0",
+    "X1",
+    "X2",
+    "Y0",
+    "Y1",
+    "Y2"
+  ],
+  "statementSource": "instance.rec",
+  "contextSource": "why.md",
+  "sameVarietyInstances": [],
+  "mathematicalChecks": "checks.json",
+  "checkCommand": "sage -python scripts/audit-frontier.py",
+  "existenceStatus": "Known by the cited geometric theorem; no explicit witness supplied.",
+  "references": [
+    "docs/03a-split-and-k3.md \u00a73A.3, Involution-stable ternary decompositions"
+  ],
+  "discussionUrl": "https://github.com/hodge-computer/sextics/discussions/114"
+}

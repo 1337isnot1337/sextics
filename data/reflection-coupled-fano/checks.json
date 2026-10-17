@@ -1,0 +1,34 @@
+{
+  "id": "reflection-coupled-fano",
+  "smoothReductionPrime": 5,
+  "reducedPartials": [
+    "X0^5",
+    "X1^5",
+    "X2^5",
+    "Y0^5",
+    "Y1^5",
+    "Y2^5"
+  ],
+  "targetNonzeroInReducedJacobianRing": true,
+  "coordinateReflections": [
+    5
+  ],
+  "reflectionsServingTarget": [
+    5
+  ],
+  "subsetEulerAtoms": [],
+  "hessianSymmetrizerDimension": 1,
+  "diagonalSymmetryScreen": {
+    "projectiveDiagonalGroupOrder": 4,
+    "juniorElementsFixingTarget": [
+      [
+        3,
+        3,
+        3,
+        3,
+        3,
+        0
+      ]
+    ]
+  }
+}

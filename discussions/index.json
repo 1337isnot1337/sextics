@@ -244,6 +244,46 @@
     "klein-rational": {
       "number": 105,
       "nodeId": "D_kwDOVLOOJc4AqE-t"
+    },
+    "reflection-coupled-fano": {
+      "number": 111,
+      "nodeId": "D_kwDOVLOOJc4AqKTX"
+    },
+    "cyclic-triple-fano": {
+      "number": 112,
+      "nodeId": "D_kwDOVLOOJc4AqKTY"
+    },
+    "split-ternary-q2": {
+      "number": 113,
+      "nodeId": "D_kwDOVLOOJc4AqKTZ"
+    },
+    "crossed-ternary-asymmetric": {
+      "number": 114,
+      "nodeId": "D_kwDOVLOOJc4AqKTa"
+    },
+    "polarized-k3-remainder": {
+      "number": 115,
+      "nodeId": "D_kwDOVLOOJc4AqKTb"
+    },
+    "klein-coupled-character": {
+      "number": 116,
+      "nodeId": "D_kwDOVLOOJc4AqKTc"
+    },
+    "symmetric-sextic-residual": {
+      "number": 117,
+      "nodeId": "D_kwDOVLOOJc4AqKTd"
+    },
+    "rank-one-biquartic": {
+      "number": 118,
+      "nodeId": "D_kwDOVLOOJc4AqKTe"
+    },
+    "quadric-contact-broken": {
+      "number": 119,
+      "nodeId": "D_kwDOVLOOJc4AqKTg"
+    },
+    "four-plus-two-residual": {
+      "number": 120,
+      "nodeId": "D_kwDOVLOOJc4AqKTi"
     }
   }
 }

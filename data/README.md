@@ -23,3 +23,33 @@ python3 scripts/check-content.py
 ```
 
 `python3 scripts/preview.py` serves the local website, watches sources, and rebuilds valid changes. The browser retains its route, reading position, and open construction dialog; refresh is deferred during free-camera exploration. The static site reads generated local assets and has no external runtime dependency.
+
+## Structured frontier checks
+
+Ten structured targets include `checks.json`, reproducible with SageMath:
+
+```sh
+sage -python scripts/audit-frontier.py
+```
+
+The script reads the exact `.rec` statements and checks their sparse encodings,
+parity, degrees, coordinate reflections, elementary split Euler conditions,
+Hessian symmetrizers, and diagonal symmetry characters. It also checks the
+specific old-denominator obstruction for `quadric-contact-broken`.
+
+For these targets, reduction modulo five has partial derivatives equal to the
+six fifth powers, possibly permuted. The projective special fiber is therefore
+smooth. Properness of the projective singular locus implies smoothness in
+characteristic zero. In both fibers the Jacobian ideal is a complete intersection
+of six quintics, with the same Hilbert function. Its graded quotients over the
+local ring at five are consequently free, so a nonzero reduced target class
+cannot have been zero over the rationals. Scalar extension gives the same
+conclusion over the complex numbers. This extra constant-rank argument matters:
+nonzero reduction alone does not generally prove characteristic-zero
+nonmembership in an ideal.
+
+The symmetry screens exclude only the specified constructions. They do not
+classify all automorphisms, polynomial maps, contact divisors, or possible
+certificates. Known geometric existence is recorded separately in each
+`why.md` with its theorem reference. None of these curation checks awards a
+solve or replaces the protected Lean acceptance workflow.

@@ -1,1 +1,14 @@
-New local challenge proposed by this curation; no certificate is supplied or known from the inspected catalogue. Includes both \((4,2)\) and \((2,4)\) X/Y bidegrees; tests beyond one-sided coupling mechanisms.
+The central holdout uses only mixed terms of \(X/Y\)-bidegree \((4,2)\). This example adds a coupling of the opposite bidegree:
+\[
+F=F_0+\frac12\cdot(X_0^3X_1Y_0Y_1+X_1^3X_2Y_1Y_2)
++\frac13\cdot X_0X_2Y_0^3Y_2.
+\]
+The target remains \(X_0^3\cdot Y_0^3\), so the change tests the equation rather than substituting a more convenient class.
+
+The new term is still even under the global involution and invariant under each paired sign change. It therefore preserves a useful quotient structure while spoiling the one-sided bidegree pattern. This is a controlled way to distinguish arguments that use the paired symmetries from arguments that secretly rely on all couplings having the same weight under separate scaling of the \(X\) and \(Y\) blocks.
+
+For a split equation, block Euler fields act on each ternary sextic by a single weight. The two types of mixed terms acquire different weights, so adding both introduces distinct errors into that calculation. A coefficient chosen to cancel one error need not cancel the other. This is a concrete obstruction to importing the elementary split formula unchanged, rather than a claim that no more elaborate combination of fields can work.
+
+The perturbation is small in description: three mixed monomials and rational coefficients. It keeps exact calculations manageable while forcing a construction to address interaction in both bidegrees.
+
+A useful advance would identify a family of denominators or correspondences that accommodates both weight patterns, perhaps after exploiting the surviving paired-sign quotient. Compare [the mixed-polar balanced target](#case/mixed-polar), which introduces the same bidegree issue with a different coupling placement and a target involving all six coordinates. The distinction helps separate difficulties caused by \(F\) from those caused by the selected class.
