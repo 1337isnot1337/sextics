@@ -39,13 +39,13 @@ async function loadContent(path){
   return state.contentCache.get(path);
 }
 function positionDialog(){
-  const dialog=$('infoDialog'),panel=state.page==='leaderboard'?$('contributorDetails'):state.page==='case'?$('caseView'):null;
-  const aligned=(dialog.classList.contains('solution-dialog')||(dialog.classList.contains('instance-participation')&&state.page==='case'))&&panel&&!panel.hidden;
+  const dialog=$('infoDialog'),panel=state.page==='case'?$('caseView'):state.page==='leaderboard'?$('leaderboardView'):state.page==='technical-information'?($('chapterView').hidden?$('technicalView'):$('chapterView')):$('homeView');
+  const aligned=(dialog.classList.contains('solution-dialog')||dialog.classList.contains('participate-dialog'))&&panel&&!panel.hidden;
   dialog.classList.toggle('column-dialog',!!aligned);
   if(aligned){
-    const bounds=panel.getBoundingClientRect(),inset=state.page==='leaderboard'?12:0;
-    dialog.style.setProperty('--solution-left',`${bounds.left+inset}px`);
-    dialog.style.setProperty('--solution-width',`${Math.max(0,bounds.width-2*inset)}px`);
+    const bounds=panel.getBoundingClientRect();
+    dialog.style.setProperty('--solution-left',`${bounds.left}px`);
+    dialog.style.setProperty('--solution-width',`${bounds.width}px`);
   }else{
     dialog.style.removeProperty('--solution-left');dialog.style.removeProperty('--solution-width');
   }
