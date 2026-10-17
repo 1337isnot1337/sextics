@@ -7,7 +7,7 @@
   function link(text,url){const n=element('a','',text);try{const u=new URL(url);if(u.protocol!=='https:'||u.hostname!=='github.com')throw Error();n.href=u.href;n.target='_blank';n.rel='noopener noreferrer';}catch{}return n;}
   const button=(text,run)=>{const n=element('button','discussion-button',text);n.type='button';n.addEventListener('click',run);return n;};
   function markup(record){return `<section id="instanceDiscussion" class="discussion-panel" aria-labelledby="discussionHeading" data-instance="${escape(record.id)}" hidden>
-    <header class="discussion-header"><div><p class="dialog-eyebrow">THE COMMON ROOM</p><h2 id="discussionHeading">Discussion <span class="discussion-count" hidden></span></h2></div><div class="discussion-tools"><a class="discussion-github" target="_blank" rel="noopener noreferrer" hidden>View on GitHub ↗</a><button type="button" class="discussion-refresh discussion-button">Refresh</button></div></header>
+    <header class="discussion-header"><div><p class="dialog-eyebrow">THE COMMON ROOM</p><h2 id="discussionHeading">Discussion <span class="discussion-count" hidden></span></h2></div><div class="discussion-tools"><a class="discussion-github" target="_blank" rel="noopener noreferrer" hidden>View on GitHub ↗</a><button type="button" class="discussion-refresh discussion-button" aria-label="Refresh discussion" aria-busy="false"><span>Refresh</span></button></div></header>
     <p class="discussion-context">${escape(record.title)} <span>·</span> Questions, calculations, and independent checks</p>
     <div class="discussion-notice" role="status" aria-live="polite"></div>
     <details class="discussion-intro" hidden><summary>About this thread</summary><div class="discussion-markdown"></div></details>
@@ -26,7 +26,7 @@
   function mount(panel){
     current?.destroy();
     const id=panel.dataset.instance,endpoint='/api/discussions/'+encodeURIComponent(id),account=window.HodgeAccount;
-    const q=s=>panel.querySelector(s),feed=q('.discussion-feed'),notice=q('.discussion-notice'),form=q('form'),draft=q('textarea'),preview=q('.discussion-preview'),submit=q('.discussion-submit');
+    const q=s=>panel.querySelector(s),feed=q('.discussion-feed'),notice=q('.discussion-notice'),form=q('form'),draft=q('textarea'),preview=q('.discussion-preview'),submit=q('.discussion-submit'),refresh=q('.discussion-refresh');
     const requests=new AbortController(),comments=new Map(),expandedComments=new Map();let data=null,loaded=false,loading=false,posting=false,replyTo=null,previewing=false,version=0,commentSequence=0;
     const pendingKey='hodge-discussion-draft:'+id;
     let saved=drafts.get(id);try{saved||=JSON.parse(sessionStorage.getItem(pendingKey));}catch{}
@@ -100,12 +100,12 @@
       updateComposer();
     }
     async function load(append=false){
-      if(loading)return;loading=true;const run=++version;q('.discussion-refresh').disabled=true;q('.discussion-more').disabled=true;
-      message(append?'Loading more comments…':loaded?'Refreshing…':'Loading discussion…');
+      if(loading)return;loading=true;const run=++version;refresh.disabled=true;refresh.setAttribute('aria-busy',String(!append));refresh.setAttribute('aria-label',append?'Refresh discussion':'Refreshing discussion');q('.discussion-more').disabled=true;
+      message(append?'Loading more comments…':loaded?'':'Loading discussion…');
       try{await account.ready;if(!active()||run!==version)return;const next=await account.request(endpoint+(append?'?'+new URLSearchParams({after:data.comments.pageInfo.endCursor}):''),{signal:requests.signal});if(!active()||run!==version)return;
         data=next;loaded=true;if(!append)comments.clear();for(const c of next.comments.nodes)comments.set(c.id,c);renderFeed();message('');
       }catch(e){if(active()&&run===version){message(e.message);if(e.status===401||e.status===403){data=null;comments.clear();feed.replaceChildren();q('.discussion-intro').hidden=true;q('.discussion-count').hidden=true;q('.discussion-more').hidden=true;}updateComposer();}}
-      finally{if(run===version){loading=false;q('.discussion-refresh').disabled=false;q('.discussion-more').disabled=false;}}
+      finally{if(run===version){loading=false;refresh.disabled=false;refresh.setAttribute('aria-busy','false');refresh.setAttribute('aria-label','Refresh discussion');q('.discussion-more').disabled=false;}}
     }
     draft.addEventListener('input',()=>{save();updateComposer();});
     q('.discussion-preview-toggle').addEventListener('click',()=>setPreview(!previewing));
