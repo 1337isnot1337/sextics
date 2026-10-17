@@ -142,12 +142,15 @@ function updateDiscussionCounts(){
     link.title=label;link.setAttribute('aria-label',label);
   });
 }
-function revealDiscussion(){
+async function revealDiscussion(commentNumber=null){
   const panel=$('instanceDiscussion');if(!panel)return;
   openDrawer(false);
-  if(panel.hidden)$('discussionToggle').click();
-  else panel.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});
+  panel.hidden=false;$('discussionToggle').setAttribute('aria-expanded','true');$('discussionToggle').querySelector('span').textContent='−';
+  const scroll=()=>{if(panel.isConnected&&!panel.hidden)panel.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});};
+  if(!commentNumber)scroll();
   panel.focus({preventScroll:true});
+  await HodgeDiscussion.open(commentNumber);
+  if(!commentNumber)scroll();
 }
 function updateSurfaceLoading(){
   const loading=state.surfaceState==='loading',failed=state.surfaceState==='error';
@@ -203,9 +206,9 @@ async function renderCase(record,loadId){
   const discussion=HodgeDiscussion.mount($('instanceDiscussion'));
   $('discussionToggle').addEventListener('click',()=>{
     const panel=$('instanceDiscussion'),open=panel.hidden;panel.hidden=!open;$('discussionToggle').setAttribute('aria-expanded',String(open));$('discussionToggle').querySelector('span').textContent=open?'−':'＋';
-    if(open){const scroll=()=>{if(panel.isConnected&&!panel.hidden)panel.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});};scroll();discussion.open().then(scroll);}
+    if(open)revealDiscussion();
   });
-  if(discussion.resume||location.hash.split('/')[2]==='discussion')revealDiscussion();
+  if(discussion.resume||location.hash.split('/')[2]==='discussion')revealDiscussion(location.hash.split('/')[3]);
   $('copyInstance').addEventListener('click',()=>copyText(`F = ${expression(record.F)}\nq = ${record.q}\nA = ${expression(record.A)}\nvariables = X0, X1, X2, Y0, Y1, Y2`));
 }
 async function copyText(text,message='Exact instance copied.'){try{await navigator.clipboard.writeText(text);announce(message);}catch{const node=document.createElement('textarea');node.value=text;node.style.position='fixed';node.style.opacity='0';document.body.append(node);node.select();const copied=document.execCommand('copy');node.remove();announce(copied?message:'Select the text and copy it manually.');}}
@@ -268,6 +271,10 @@ async function route(){
   const chapterId=hash.startsWith('technical-information/')?decodeURIComponent(hash.split('/')[1]):null;
   const page=caseId?'case':hash==='technical-information'||chapterId?'technical-information':hash==='leaderboard'||hash.startsWith('leaderboard/')?'leaderboard':'home';
   openDrawer(false);if(state.exploring)setExploring(false);if($('infoDialog').open)$('infoDialog').close();
+  // A comment permalink within the current instance should preserve the draft,
+  // loaded pages, and surface instead of rebuilding the whole instance view.
+  if(page==='case'&&state.page==='case'&&state.current===caseId&&hash.split('/')[2]==='discussion'&&$('instanceDiscussion')?.dataset.instance===caseId){revealDiscussion(hash.split('/')[3]);return;}
+  HodgeDiscussion.unmount();
   state.current=caseId;state.page=page;
   document.body.classList.toggle('home-page',page==='home');
   buildChapterIndex(chapterId);
@@ -316,6 +323,7 @@ const modals={
 };
 function showModal(name){if(!modals[name])return;state.modalId++;const dialog=$('infoDialog');dialog.classList.remove('solution-dialog','participate-dialog','instance-participation','column-dialog');dialog.removeAttribute('aria-labelledby');$('dialogContent').innerHTML=modals[name];dialog.showModal();dialog.scrollTop=0;}
 async function main(){
+  HodgeDiscussion.startLinks();
   renderMath(document);
   $('technicalDisclosure').addEventListener('click',()=>setChaptersExpanded($('technicalChapters').hidden));
   try{state.renderer=HodgeRenderer.create($('surface'),{onStatus,onModeChange:mode=>{if(state.exploring!==(mode==='free'))setExploring(mode==='free',true);}});}catch(error){console.error(error);onStatus({state:'error',message:'WebGL2 unavailable'});}
@@ -329,7 +337,7 @@ async function main(){
   addEventListener('resize',()=>{if($('infoDialog').open)positionDialog();});
   $('infoDialog').addEventListener('click',event=>{if(event.target===$('infoDialog')){const box=$('infoDialog').getBoundingClientRect();if(event.clientX<box.left||event.clientX>box.right||event.clientY<box.top||event.clientY>box.bottom)$('infoDialog').close();}});
   document.addEventListener('click',async event=>{
-    const discussion=event.target.closest('.case-discussion-link');if(discussion&&discussion.hash===location.hash&&!event.metaKey&&!event.ctrlKey&&!event.shiftKey&&!event.altKey){event.preventDefault();revealDiscussion();}
+    const discussion=event.target.closest('a[href]');if(discussion&&discussion.origin===location.origin&&discussion.pathname===location.pathname&&/^#case\/[^/]+\/discussion(?:\/\d+)?$/.test(discussion.hash)&&discussion.hash===location.hash&&event.button===0&&!event.metaKey&&!event.ctrlKey&&!event.shiftKey&&!event.altKey){event.preventDefault();if($('infoDialog').open)$('infoDialog').close();revealDiscussion(discussion.hash.split('/')[3]);}
     const target=event.target.closest('[data-modal]');if(target){if(target.tagName==='A'){if(event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;event.preventDefault();}if(target.dataset.modal==='participate'){try{showParticipation(target.dataset.instance?await getRecord(target.dataset.instance):null);}catch(error){announce('Could not load this instance. Please try again.');}}else showModal(target.dataset.modal);}
     const solution=event.target.closest('[data-solution]');if(solution){try{await showSolution(await getRecord(solution.dataset.solution));}catch(error){announce('The construction could not be loaded. Please try again.');console.error(error);}}
     const solver=event.target.closest('.solver-leaderboard-link');if(solver&&solver.hash===location.hash){event.preventDefault();await route();}

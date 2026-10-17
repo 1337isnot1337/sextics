@@ -13,14 +13,14 @@
     {name:'discussionDisplayMath',level:'block',start(src){return src.search(/\$\$|\\\[/);},tokenizer(src){const m=displayRule.exec(src);if(m)return {type:'discussionDisplayMath',raw:m[0],text:m[1]??m[2]};},renderer(token){return math(token.text,true);}},
     {name:'discussionInlineMath',level:'inline',start(src){return src.search(/\$|\\\(/);},tokenizer(src){const m=inlineRule.exec(src);if(m)return {type:'discussionInlineMath',raw:m[0],text:m[1]??m[2]??m[3]};},renderer(token){return math(token.text,false);}}
   ]});
-  function render(target,source){
+  function render(target,source,baseUrl='https://github.com/hodge-computer/sextics/'){
     const fragment=DOMPurify.sanitize(parser.parse(String(source||'').slice(0,65536)),{
       RETURN_DOM_FRAGMENT:true,ALLOW_DATA_ATTR:false,
       ALLOWED_TAGS:['p','br','strong','em','del','a','ul','ol','li','blockquote','pre','code','h1','h2','h3','h4','h5','h6','hr','table','thead','tbody','tr','th','td','span','input'],
       ALLOWED_ATTR:['href','title','start','type','checked','disabled','data-discussion-math','data-display']
     });
     for(const link of fragment.querySelectorAll('a')){
-      try{const href=link.getAttribute('href');if(!href)throw Error();const url=new URL(href,'https://github.com/hodge-computer/sextics/');if(!['https:','http:','mailto:'].includes(url.protocol))throw Error();link.href=url.href;link.target='_blank';link.rel='noopener noreferrer nofollow';}
+      try{const href=link.getAttribute('href');if(!href)throw Error();const url=new URL(href,baseUrl);if(!['https:','http:','mailto:'].includes(url.protocol))throw Error();link.href=url.href;link.target='_blank';link.rel='noopener noreferrer nofollow';}
       catch{link.removeAttribute('href');}
     }
     for(const input of fragment.querySelectorAll('input')){if(input.type!=='checkbox')input.remove();else input.disabled=true;}
@@ -31,6 +31,7 @@
       try{if(tex.length>5000)throw Error();katex.render(tex,node,{displayMode:display,throwOnError:false,trust:false,strict:'ignore',maxExpand:200,maxSize:10,macros:{}});}
       catch{node.textContent=tex;}
     }
+    window.HodgeDiscussion?.localizeLinks(fragment);
     target.replaceChildren(fragment);
   }
   window.HodgeDiscussionMarkdown={render};

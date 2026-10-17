@@ -367,7 +367,9 @@ dialog.participate-dialog{max-width:760px;max-height:88dvh;padding:34px 38px;ove
 .discussion-access{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .discussion-intro{margin:18px 0 22px;color:#afc2dd;font-size:13px}
 .discussion-intro summary{cursor:pointer;display:list-item;margin-bottom:12px}
-.discussion-comment{padding:24px 0;border-top:1px solid var(--line);min-width:0}
+.discussion-comment{padding:24px 0;border-top:1px solid var(--line);min-width:0;scroll-margin-top:96px}
+.discussion-comment-linked>.discussion-comment-header{background:#92bfa21c;box-shadow:0 0 0 7px #92bfa21c;border-radius:4px}
+.discussion-comment:focus{outline:none}
 .discussion-comment:first-child{border-top:0}
 .discussion-comment-header{display:flex;align-items:center;flex-wrap:wrap;gap:10px 14px;font:12px/1.6 var(--sans);color:#8ea4c3;margin-bottom:14px}
 .discussion-comment-header a{text-decoration:none;color:#a9bbd7;display:inline-flex;align-items:center;gap:9px}
