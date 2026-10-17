@@ -69,6 +69,16 @@ dialog{--dialog-top:40px;border:1px solid #4959764f;border-radius:8px;padding:va
 .page-nav .home-link>span:first-child{width:17px;text-align:center;flex-shrink:0}
 .sidebar .brand,.sidebar .search,.sidebar-foot{flex-shrink:0}
 .sidebar-scroll{min-height:0;flex:1;overflow-y:auto;overflow-x:hidden;overscroll-behavior-y:contain;scrollbar-width:thin;scrollbar-color:#2e384a transparent}
+.case-index-row{position:relative}
+.case-index-row .case-link{padding-right:42px;min-height:42px}
+.case-index-title{min-width:0}
+.case-discussion-link{position:absolute;right:5px;top:5px;width:32px;height:30px;display:grid;place-items:center;color:#62718a;text-decoration:none;border-radius:5px;font:10px/1 var(--sans);font-variant-numeric:tabular-nums;transition:color .16s,background .16s}
+.case-discussion-link svg{position:absolute;width:29px;height:25px;fill:none;stroke:currentColor;stroke-width:1;stroke-linejoin:round;opacity:.7}
+.case-discussion-link span{position:relative;padding-bottom:3px}
+.case-discussion-link.has-comments{color:#b5c8e5}
+.case-discussion-link:hover{color:#e1ebfa;background:#8ba9d319}
+.case-discussion-link:focus-visible{outline:2px solid #8ba9d3;outline-offset:1px}
+.discussion-panel:focus{outline:none}
 .information-view{padding:128px 0 112px;max-width:var(--content-width);min-height:100%}
 .information-heading{margin-bottom:37px}
 .information-heading .hero-eyebrow{margin:0 0 21px}

@@ -18,9 +18,44 @@ function coefficientFractions(tex){
     (_,coefficient,monomial,denominator)=>`\\frac{${coefficient||'1'}}{${denominator}}\\cdot ${monomial.trim()}`);
 }
 function polynomialTex(tex){
-  return coefficientFractions(tex)
-    .replace(/(^|[+\-(])\s*(\d+)(?:\s|\\,)*(?=[A-Za-z(]|\\(?:bigl|left)\b)/g,'$1 $2\\cdot ')
-    .replace(/(\\frac\{\d+\}\{\d+\})(?:\s|\\,)*(?=[A-Za-z(]|\\(?:sum|bigl|left)\b)/g,'$1\\cdot ');
+  tex=coefficientFractions(tex);
+  let at=0,result='',previous=null;
+  // Keep scripts and command arguments intact: z_1^2 z_2 is a product,
+  // while f(z), a subscript, and the words in \text{...} are not.
+  function argument(format=false){
+    let leading='';while(/\s/.test(tex[at]||'')&&at<tex.length)leading+=tex[at++];
+    if(tex[at]==='{'){
+      const start=++at;let depth=1;
+      while(at<tex.length&&depth){if(tex[at]==='{')depth++;else if(tex[at]==='}')depth--;at++;}
+      const body=tex.slice(start,at-1);return leading+'{'+(format?polynomialTex(body):body)+'}';
+    }
+    if(tex[at]==='\\'){const command=tex.slice(at).match(/^\\(?:[A-Za-z]+|.)/)[0];at+=command.length;return leading+command;}
+    return leading+(tex[at++]||'');
+  }
+  function scripts(){let suffix='';while(tex[at]==='_'||tex[at]==='^'){suffix+=tex[at++]+argument();}return suffix;}
+  while(at<tex.length){
+    let token=tex[at++],kind=null;
+    if(/\s/.test(token)){result+=token;continue;}
+    if(token==='\\'){
+      const command=tex.slice(at).match(/^[A-Za-z]+|^./)?.[0]||'';at+=command.length;token+=command;
+      if([',','!',';',' '].includes(command)){result+=token;continue;}
+      if(['frac','dfrac','tfrac'].includes(command)){token+=argument(true)+argument(true);kind='factor';}
+      else if(['text','operatorname','mathrm'].includes(command)){token+=argument();}
+      else if(['sum','prod'].includes(command))kind='operator';
+      else if(['mathcal','mathbb','mathbf'].includes(command)){token+=argument();kind='factor';}
+      else if(/^(?:alpha|beta|gamma|delta|theta|lambda|mu|nu|xi|pi|rho|sigma|tau|phi|chi|psi|omega|Delta|Theta|Phi|Psi|Omega)$/.test(command))kind='factor';
+      else if(/^(?:left|right|bigl|bigr|Bigl|Bigr|biggl|biggr|Biggl|Biggr)$/.test(command)){
+        token+=tex[at++]||'';kind=/[)\]]$/.test(token)?'close':/[(\[]$/.test(token)?'open':null;
+      }
+      token+=scripts();
+    }else if(/[A-Za-z]/.test(token)){token+=scripts();kind=/^[XYZxyz]_/.test(token)?'scalar':'factor';}
+    else if(/\d/.test(token)){while(/\d/.test(tex[at]||'')&&at<tex.length)token+=tex[at++];token+=scripts();kind='number';}
+    else if(/[)\]]/.test(token)){token+=scripts();kind='close';}
+    else if(/[(\[]/.test(token))kind='open';
+    if((['factor','scalar','number','operator'].includes(kind)&&['factor','scalar','number','close'].includes(previous))||(kind==='open'&&['number','scalar','close'].includes(previous)))result+='\\cdot ';
+    result+=token;previous=kind;
+  }
+  return result;
 }
 function displayPolynomial(p){return math(polynomialTex(latex(p)||expression(p)),true);}
 function proseMath(text){
@@ -94,8 +129,25 @@ function buildIndex(){
     const rows=filtered.filter(r=>group(r)===key);
     if(!rows.length&&key!=='solved')return '';
     if(!rows.length&&query)return '';
-    return `<section class="index-section" aria-label="${escape(groupNames[key])}"><h2 class="index-heading"><span class="status-dot ${key==='open'?'open':''}"></span>${escape(groupNames[key])}<span class="index-count">${rows.length.toString().padStart(2,'0')}</span></h2>${rows.map(r=>`<a class="case-link${state.current===r.id?' active':''}" href="#case/${encodeURIComponent(r.id)}" ${state.current===r.id?'aria-current="page"':''}><span class="case-number">${escape(r.number)}</span><span><span class="case-name">${escape(r.title)}</span>${r.id==='holdout'||r.featured?`<span class="case-family">${escape(r.subtitle||r.category||'A central open target')}</span>`:''}</span></a>`).join('')}${!rows.length?'<p class="index-empty">Reserved for verified Lean proofs.</p>':''}</section>`;
+    return `<section class="index-section" aria-label="${escape(groupNames[key])}"><h2 class="index-heading"><span class="status-dot ${key==='open'?'open':''}"></span>${escape(groupNames[key])}<span class="index-count">${rows.length.toString().padStart(2,'0')}</span></h2>${rows.map(r=>`<div class="case-index-row"><a class="case-link${state.current===r.id?' active':''}" href="#case/${encodeURIComponent(r.id)}" ${state.current===r.id?'aria-current="page"':''}><span class="case-number">${escape(r.number)}</span><span class="case-index-title"><span class="case-name">${escape(r.title)}</span>${r.id==='holdout'||r.featured?`<span class="case-family">${escape(r.subtitle||r.category||'A central open target')}</span>`:''}</span></a><a class="case-discussion-link" href="#case/${encodeURIComponent(r.id)}/discussion" data-discussion="${escape(r.id)}" data-title="${escape(r.title)}" aria-label="Open discussion for ${escape(r.title)}"><svg viewBox="0 0 30 25" aria-hidden="true"><path d="M6 2.5h18a3 3 0 0 1 3 3v11a3 3 0 0 1-3 3h-8l-6 4v-4H6a3 3 0 0 1-3-3v-11a3 3 0 0 1 3-3Z"/></svg><span aria-hidden="true">—</span></a></div>`).join('')}${!rows.length?'<p class="index-empty">Reserved for verified Lean proofs.</p>':''}</section>`;
   }).join('')||'<p class="index-empty">No instances match this search.</p>';
+  updateDiscussionCounts();
+}
+function updateDiscussionCounts(){
+  $('caseIndex').querySelectorAll('.case-discussion-link').forEach(link=>{
+    const count=HodgeDiscussion.count(link.dataset.discussion),known=Number.isSafeInteger(count);
+    link.querySelector('span').textContent=known?(count>99?'99+':String(count)):'—';
+    link.classList.toggle('has-comments',known&&count>0);
+    const label=known?`${count} ${count===1?'comment':'comments'} (top-level) · ${link.dataset.title}`:`Open discussion for ${link.dataset.title}`;
+    link.title=label;link.setAttribute('aria-label',label);
+  });
+}
+function revealDiscussion(){
+  const panel=$('instanceDiscussion');if(!panel)return;
+  openDrawer(false);
+  if(panel.hidden)$('discussionToggle').click();
+  else panel.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});
+  panel.focus({preventScroll:true});
 }
 function updateSurfaceLoading(){
   const loading=state.surfaceState==='loading',failed=state.surfaceState==='error';
@@ -123,7 +175,7 @@ function definitionsMarkup(r){
   const defs=r.displayDefinitions||r.latex?.definitions;
   if(!defs)return '';
   const values=Array.isArray(defs)?defs:typeof defs==='string'?[defs]:Object.entries(defs).map(([k,v])=>`${k}=${v}`);
-  return `<div class="definitions">${values.map(d=>math(typeof d==='string'?d:d.latex||'',true)).join('')}</div>`;
+  return `<div class="definitions">${values.map(d=>math(polynomialTex(typeof d==='string'?d:d.latex||''),true)).join('')}</div>`;
 }
 function caseNavigation(record){
   const ordered=groupOrder.flatMap(key=>state.records.filter(r=>group(r)===key));
@@ -149,8 +201,11 @@ async function renderCase(record,loadId){
   $('caseView').querySelector('.case-pagination').addEventListener('click',event=>{if(event.target.closest('a'))$('main').focus({preventScroll:true});});
   $('solutionButton')?.addEventListener('click',()=>showSolution(record));
   const discussion=HodgeDiscussion.mount($('instanceDiscussion'));
-  $('discussionToggle').addEventListener('click',()=>{const open=$('instanceDiscussion').hidden;$('instanceDiscussion').hidden=!open;$('discussionToggle').setAttribute('aria-expanded',String(open));$('discussionToggle').querySelector('span').textContent=open?'−':'＋';if(open){discussion.open();$('instanceDiscussion').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});}});
-  if(discussion.resume)$('discussionToggle').click();
+  $('discussionToggle').addEventListener('click',()=>{
+    const panel=$('instanceDiscussion'),open=panel.hidden;panel.hidden=!open;$('discussionToggle').setAttribute('aria-expanded',String(open));$('discussionToggle').querySelector('span').textContent=open?'−':'＋';
+    if(open){const scroll=()=>{if(panel.isConnected&&!panel.hidden)panel.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});};scroll();discussion.open().then(scroll);}
+  });
+  if(discussion.resume||location.hash.split('/')[2]==='discussion')revealDiscussion();
   $('copyInstance').addEventListener('click',()=>copyText(`F = ${expression(record.F)}\nq = ${record.q}\nA = ${expression(record.A)}\nvariables = X0, X1, X2, Y0, Y1, Y2`));
 }
 async function copyText(text,message='Exact instance copied.'){try{await navigator.clipboard.writeText(text);announce(message);}catch{const node=document.createElement('textarea');node.value=text;node.style.position='fixed';node.style.opacity='0';document.body.append(node);node.select();const copied=document.execCommand('copy');node.remove();announce(copied?message:'Select the text and copy it manually.');}}
@@ -209,7 +264,7 @@ async function renderLeaderboard(loadId){
   }
 }
 async function route(){
-  const id=++state.loadId;const hash=location.hash.replace(/^#/,'');const caseId=hash.startsWith('case/')?decodeURIComponent(hash.slice(5)):null;
+  const id=++state.loadId;const hash=location.hash.replace(/^#/,'');const caseId=hash.startsWith('case/')?decodeURIComponent(hash.split('/')[1]):null;
   const chapterId=hash.startsWith('technical-information/')?decodeURIComponent(hash.split('/')[1]):null;
   const page=caseId?'case':hash==='technical-information'||chapterId?'technical-information':hash==='leaderboard'||hash.startsWith('leaderboard/')?'leaderboard':'home';
   openDrawer(false);if(state.exploring)setExploring(false);if($('infoDialog').open)$('infoDialog').close();
@@ -274,13 +329,15 @@ async function main(){
   addEventListener('resize',()=>{if($('infoDialog').open)positionDialog();});
   $('infoDialog').addEventListener('click',event=>{if(event.target===$('infoDialog')){const box=$('infoDialog').getBoundingClientRect();if(event.clientX<box.left||event.clientX>box.right||event.clientY<box.top||event.clientY>box.bottom)$('infoDialog').close();}});
   document.addEventListener('click',async event=>{
+    const discussion=event.target.closest('.case-discussion-link');if(discussion&&discussion.hash===location.hash&&!event.metaKey&&!event.ctrlKey&&!event.shiftKey&&!event.altKey){event.preventDefault();revealDiscussion();}
     const target=event.target.closest('[data-modal]');if(target){if(target.tagName==='A'){if(event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;event.preventDefault();}if(target.dataset.modal==='participate'){try{showParticipation(target.dataset.instance?await getRecord(target.dataset.instance):null);}catch(error){announce('Could not load this instance. Please try again.');}}else showModal(target.dataset.modal);}
     const solution=event.target.closest('[data-solution]');if(solution){try{await showSolution(await getRecord(solution.dataset.solution));}catch(error){announce('The construction could not be loaded. Please try again.');console.error(error);}}
     const solver=event.target.closest('.solver-leaderboard-link');if(solver&&solver.hash===location.hash){event.preventDefault();await route();}
   });
   document.addEventListener('keydown',event=>{if(event.key==='Escape'){if(state.exploring)setExploring(false);openDrawer(false);}if(event.key==='/'&&!state.exploring&&!$('infoDialog').open&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){event.preventDefault();if(innerWidth<=680)openDrawer(true);$('caseSearch').focus();}});
   $('startExploring').addEventListener('click',()=>{const r=state.records.find(r=>r.id==='sparse-coupled-holdout')||state.records.find(r=>r.id.includes('holdout'))||state.records.find(r=>group(r)==='open');if(r)location.hash=`case/${r.id}`;});
-  try{await loadCatalogue();await route();await restorePreview();startLivePreview();}catch(error){console.error(error);$('caseIndex').innerHTML='<p class="index-empty">The atlas could not be loaded. Use the local server command in README.md.</p>';onStatus({state:'error',message:'Surface unavailable'});}
+  document.addEventListener('hodge-discussion-counts',updateDiscussionCounts);
+  try{await loadCatalogue();HodgeDiscussion.startCounts();await route();await restorePreview();startLivePreview();}catch(error){console.error(error);$('caseIndex').innerHTML='<p class="index-empty">The atlas could not be loaded. Use the local server command in README.md.</p>';onStatus({state:'error',message:'Surface unavailable'});}
   addEventListener('hashchange',route);
   window.HODGE_ATLAS={get state(){return {current:state.current,page:state.page,exploring:state.exploring,records:state.records.length,groups:Object.fromEntries(['open','solved'].map(g=>[g,state.records.filter(r=>group(r)===g).length]))};},get renderer(){return state.renderer;}};
 }

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { GitHub, readDiscussion, readReplies, postComment } from './github.mjs';
+import { GitHub, readDiscussion, readDiscussionCounts, readReplies, postComment } from './github.mjs';
 import { createService } from './server.mjs';
 const entry={number:7,nodeId:'D_target'},session={token:'user-token'},repository='hodge-computer/sextics';
 const leaf={id:'C_one',body:'$x^2$',url:'https://github.com/hodge-computer/sextics/discussions/7#discussioncomment-1',isMinimized:false};
@@ -22,6 +22,19 @@ test('reads bind the discussion ID, paginate and suppress minimized content at b
  const d=await readDiscussion(github,entry,'cursor',session);assert.equal(d.viewerCanComment,true);assert.equal(d.comments.pageInfo.endCursor,'next');assert.equal(d.comments.nodes[0].body,'');assert.equal(d.comments.nodes[0].replies.nodes[0].body,'');
  assert.equal((await readDiscussion(github,entry,'cursor',null)).viewerCanComment,false);
  await assert.rejects(readDiscussion(github,{...entry,nodeId:'wrong'},'cursor',session),e=>e.status===404);
+});
+test('atlas counts use mapped discussions, omit unavailable threads and recheck access before cached reads',async()=>{
+ let calls=0,reads=0,token='reader-one',allowed=true;
+ const github={readToken:async()=>{reads++;if(!allowed)throw new Error('Access denied');return token;},graphql:async(query,variables,usedToken)=>{
+  calls++;assert.equal(usedToken,token);assert(!query.includes('body'));assert.deepEqual(variables.ids,['D_target','D_missing']);
+  return {nodes:[{id:'D_target',comments:{totalCount:23}},null,{id:'D_unmapped',comments:{totalCount:999}}]};
+ }};
+ const entries={holdout:entry,missing:{number:8,nodeId:'D_missing'}};
+ assert.deepEqual(await readDiscussionCounts(github,entries,null),{counts:{holdout:23}});
+ assert.deepEqual(await readDiscussionCounts(github,entries,null),{counts:{holdout:23}});
+ assert.equal(calls,1);assert.equal(reads,2);
+ token='reader-two';await readDiscussionCounts(github,entries,session);assert.equal(calls,2);
+ allowed=false;await assert.rejects(readDiscussionCounts(github,entries,session),/Access denied/);
 });
 test('reply pagination is restricted to a top-level comment of this instance',async()=>{
  let discussionId=entry.nodeId,replyTo=null;
@@ -45,6 +58,7 @@ test('HTTP boundary enforces target mapping, CSRF, body schema, pagination and r
  await writeFile(path.join(root,'data/catalogue.json'),JSON.stringify({instanceIds:['holdout','unmapped']}));
  await writeFile(path.join(root,'discussions/index.json'),JSON.stringify({repository,instances:{holdout:entry}}));
  const github={config:{repository},readToken:async s=>s?.token||'public-token',graphql:async(query,vars,token)=>{
+  if(vars.ids){assert.deepEqual(vars.ids,[entry.nodeId]);return {nodes:[{id:entry.nodeId,comments:{totalCount:3}}]};}
   if(query.startsWith('mutation')){writes++;assert.equal(token,'user-token');return {addDiscussionComment:{comment:leaf}};}
   if(vars.id)return {node:{discussion:{id:entry.nodeId},replyTo:null,replies:page([leaf])}};
   return {repository:{discussion:{id:entry.nodeId,url:'https://github.com/'+repository+'/discussions/7',locked:false,comments:page([leaf])}}};
@@ -54,6 +68,7 @@ test('HTTP boundary enforces target mapping, CSRF, body schema, pagination and r
  const headers={cookie,origin,'Content-Type':'application/json','X-CSRF-Token':signed.csrf};
  const post=(body,h=headers)=>fetch(base+'/api/discussions/holdout',{method:'POST',headers:h,body:JSON.stringify(body)});
  try{
+  const counts=await fetch(base+'/api/discussion-counts');assert.equal(counts.headers.get('cache-control'),'no-store');assert.deepEqual(await counts.json(),{counts:{holdout:3}});
   assert.equal((await fetch(base+'/api/discussions/missing')).status,404);assert.equal((await fetch(base+'/api/discussions/unmapped')).status,503);
   assert.equal((await post({body:'hello'},{})).status,401);assert.equal((await post({body:'hello'},{...headers,origin:'https://evil.test'})).status,403);
   for(const body of [{body:''},{body:'a'.repeat(30001)},{body:'hello',author:'someone-else'},{body:'hello',replyToId:5}])assert.equal((await post(body)).status,400);

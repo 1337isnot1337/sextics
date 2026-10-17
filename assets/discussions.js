@@ -3,10 +3,35 @@
   'use strict';
   const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const drafts=new Map();let current;
+  const counts=new Map();let countsLoading=false,countsUpdated=0,countsVersion=0;
+  function countChanged(id,count){
+    if(!Number.isSafeInteger(count)||count<0||counts.get(id)===count)return;
+    counts.set(id,count);document.dispatchEvent(new CustomEvent('hodge-discussion-counts'));
+  }
+  async function refreshCounts(){
+    if(countsLoading||document.hidden||Date.now()-countsUpdated<60000)return;
+    countsLoading=true;countsUpdated=Date.now();const version=countsVersion;
+    try{
+      await HodgeAccount.ready;
+      const data=await HodgeAccount.request('/api/discussion-counts');
+      if(version!==countsVersion)return;
+      for(const [id,count] of Object.entries(data.counts||{}))if(Number.isSafeInteger(count)&&count>=0)counts.set(id,count);
+      document.dispatchEvent(new CustomEvent('hodge-discussion-counts'));
+    }catch{/* Counts are optional; every discussion link remains usable. */}
+    finally{countsLoading=false;}
+  }
+  async function startCounts(){
+    await HodgeAccount.ready;
+    refreshCounts();
+    addEventListener('focus',refreshCounts);
+    document.addEventListener('visibilitychange',refreshCounts);
+    setInterval(refreshCounts,60000);
+    document.addEventListener('hodge-session-change',()=>{countsVersion++;counts.clear();countsUpdated=0;document.dispatchEvent(new CustomEvent('hodge-discussion-counts'));refreshCounts();});
+  }
   const element=(tag,className,text)=>{const n=document.createElement(tag);n.className=className;if(text!==undefined)n.textContent=text;return n;};
   function link(text,url){const n=element('a','',text);try{const u=new URL(url);if(u.protocol!=='https:'||u.hostname!=='github.com')throw Error();n.href=u.href;n.target='_blank';n.rel='noopener noreferrer';}catch{}return n;}
   const button=(text,run)=>{const n=element('button','discussion-button',text);n.type='button';n.addEventListener('click',run);return n;};
-  function markup(record){return `<section id="instanceDiscussion" class="discussion-panel" aria-labelledby="discussionHeading" data-instance="${escape(record.id)}" hidden>
+  function markup(record){return `<section id="instanceDiscussion" class="discussion-panel" aria-labelledby="discussionHeading" tabindex="-1" data-instance="${escape(record.id)}" hidden>
     <header class="discussion-header"><div><p class="dialog-eyebrow">THE COMMON ROOM</p><h2 id="discussionHeading">Discussion <span class="discussion-count" hidden></span></h2></div><div class="discussion-tools"><a class="discussion-github" target="_blank" rel="noopener noreferrer" hidden>View on GitHub ↗</a><button type="button" class="discussion-refresh discussion-button" aria-label="Refresh discussion" aria-busy="false"><span>Refresh</span></button></div></header>
     <p class="discussion-context">${escape(record.title)} <span>·</span> Questions, calculations, and independent checks</p>
     <div class="discussion-notice" role="status" aria-live="polite"></div>
@@ -94,6 +119,7 @@
       if(!comments.size){const empty=element('div','discussion-empty');empty.append(element('h3','','Start the conversation.'),element('p','','Share a question, a partial calculation, or an independent check.'));feed.append(empty);}
       else for(const comment of comments.values())feed.append(commentNode(comment));
       const count=q('.discussion-count');count.hidden=false;count.textContent=String(data.comments.totalCount);count.title='Top-level comments';
+      countChanged(id,data.comments.totalCount);
       q('.discussion-more').hidden=!data.comments.pageInfo.hasNextPage;
       const github=q('.discussion-github');github.href=data.url;github.hidden=false;
       const intro=q('.discussion-intro');intro.hidden=!data.body;if(data.body)HodgeDiscussionMarkdown.render(intro.querySelector('div'),data.body);
@@ -127,9 +153,9 @@
     });
     function sessionChanged(){if(!active())return;version++;loading=false;data=null;loaded=false;comments.clear();feed.replaceChildren();q('.discussion-intro').hidden=true;q('.discussion-intro div').replaceChildren();q('.discussion-github').hidden=true;q('.discussion-count').hidden=true;q('.discussion-more').hidden=true;updateComposer();if(!panel.hidden)load();}
     document.addEventListener('hodge-session-change',sessionChanged);
-    const controller={open(){if(!loaded)load();},destroy(){save();requests.abort();document.removeEventListener('hodge-session-change',sessionChanged);}};
+    const controller={open(){return loaded?Promise.resolve():load();},destroy(){save();requests.abort();document.removeEventListener('hodge-session-change',sessionChanged);}};
     try{controller.resume=sessionStorage.getItem('hodge-discussion-open')===id;if(controller.resume)sessionStorage.removeItem('hodge-discussion-open');}catch{}
     current=controller;updateComposer();return controller;
   }
-  window.HodgeDiscussion={markup,mount};
+  window.HodgeDiscussion={markup,mount,startCounts,refreshCounts,count:id=>counts.get(id)};
 })();

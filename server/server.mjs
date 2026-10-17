@@ -3,7 +3,7 @@ import { readFile, writeFile, realpath, stat, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Auth, equal } from './auth.mjs';
-import { GitHub, ServiceError, readDiscussion, readReplies, postComment } from './github.mjs';
+import { GitHub, ServiceError, readDiscussion, readDiscussionCounts, readReplies, postComment } from './github.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const escape = value => String(value).replace(/[&<>"']/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[char]));
@@ -48,14 +48,17 @@ export async function createService({ root = ROOT, origin, setupOrigin = origin,
   const records = Array.isArray(catalogue) ? catalogue : catalogue.instanceIds || catalogue.records || catalogue.instances;
   if (!Array.isArray(records)) throw new Error('Invalid instance catalogue.');
   const instanceIds = new Set(records.map(r => typeof r === 'string' ? r : r.id));
-  async function mapping(id) {
-    if (!instanceIds.has(id)) throw new ServiceError(404, 'Unknown instance.');
+  async function mappings() {
     let index;
     try { index = JSON.parse(await readFile(path.join(root, 'discussions/index.json'), 'utf8')); }
     catch (error) { if (error.code === 'ENOENT') throw new ServiceError(503, 'The discussion has not been connected yet.'); throw error; }
     if (index.repository !== config.repository) throw new Error('Invalid discussion repository.');
-    const entry = index.instances[id];
-    if (!entry || !Number.isSafeInteger(entry.number) || entry.number < 1 || typeof entry.nodeId !== 'string') throw new ServiceError(503, 'The discussion has not been connected yet.');
+    return Object.fromEntries(Object.entries(index.instances || {}).filter(([id,entry]) => instanceIds.has(id) && entry && Number.isSafeInteger(entry.number) && entry.number > 0 && typeof entry.nodeId === 'string'));
+  }
+  async function mapping(id) {
+    if (!instanceIds.has(id)) throw new ServiceError(404, 'Unknown instance.');
+    const entry = (await mappings())[id];
+    if (!entry) throw new ServiceError(503, 'The discussion has not been connected yet.');
     return entry;
   }
   async function staticFile(url, req, res) {
@@ -99,6 +102,7 @@ export async function createService({ root = ROOT, origin, setupOrigin = origin,
         auth.requireWrite(req, session);
         return send(res, 200, { ok:true }, { 'Set-Cookie':await auth.remove(req.headers.cookie) });
       }
+      if (url.pathname === '/api/discussion-counts' && req.method === 'GET') return send(res, 200, await readDiscussionCounts(github, await mappings(), session));
       const match = /^\/api\/discussions\/([A-Za-z0-9-]+)(\/replies)?$/.exec(url.pathname);
       if (match) {
         const entry = await mapping(match[1]);

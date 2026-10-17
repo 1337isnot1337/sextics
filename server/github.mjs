@@ -98,6 +98,27 @@ export async function readDiscussion(github, entry, cursor, session) {
     comments: { ...discussion.comments, nodes: discussion.comments.nodes.filter(Boolean).map(clean) } };
 }
 
+// Fetch only counts for the atlas, not the contents of every conversation.
+const countCaches = new WeakMap();
+export async function readDiscussionCounts(github, entries, session) {
+  const token = await github.readToken(session);
+  const ids = Object.values(entries).map(entry => entry.nodeId), key = JSON.stringify(Object.entries(entries));
+  const cached = countCaches.get(github);
+  if (cached?.token === token && cached.key === key && cached.expires > Date.now()) return cached.value;
+  const byNode = new Map();
+  for (let offset = 0; offset < ids.length; offset += 100) {
+    const data = await github.graphql(`query($ids:[ID!]!) {
+      nodes(ids:$ids) { ... on Discussion { id comments { totalCount } } }
+    }`, { ids:ids.slice(offset, offset + 100) }, token);
+    for (const node of data.nodes || []) {
+      if (node && Number.isSafeInteger(node.comments?.totalCount) && node.comments.totalCount >= 0) byNode.set(node.id, node.comments.totalCount);
+    }
+  }
+  const value = { counts:Object.fromEntries(Object.entries(entries).filter(([,entry]) => byNode.has(entry.nodeId)).map(([id,entry]) => [id,byNode.get(entry.nodeId)])) };
+  countCaches.set(github, { token, key, value, expires:Date.now() + 60000 });
+  return value;
+}
+
 export async function readReplies(github, entry, commentId, cursor, session) {
   const token = await github.readToken(session);
   const data = await github.graphql(`query($id:ID!,$after:String) {
@@ -119,5 +140,6 @@ export async function postComment(github, entry, body, replyToId, session) {
   const data = await github.graphql(`mutation($input:AddDiscussionCommentInput!) {
     addDiscussionComment(input:$input) { comment { ${commentFields} } }
   }`, { input: { discussionId: entry.nodeId, body, ...(replyToId ? { replyToId } : {}) } }, session.token);
+  countCaches.delete(github);
   return clean(data.addDiscussionComment.comment);
 }
