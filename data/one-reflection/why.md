@@ -3,10 +3,19 @@ The sextic is a sparse deformation of Fermat with two couplings,
 X_0^3\cdot X_1\cdot Y_0\cdot Y_1
 +X_1^3\cdot X_2\cdot Y_0\cdot Y_1.
 \]
-Both involve the same pair of odd coordinates. The remaining coordinate \(Y_2\) appears only through its sixth power, so its individual reflection survives. The target is the familiar cubic \(X_0^3\cdot Y_0^3\), keeping the requested class simple while changing the coupling geometry from the central holdout.
+Both involve the same pair of odd coordinates. The target is the degree-six monomial \(X_0^3\cdot Y_0^3\), keeping the requested class simple while changing the coupling geometry from the central holdout. The visible reflection in \(Y_2\) alone does not serve this target, since its numerator is even in \(Y_2\).
 
-The surviving reflection gives genuine information, but not immediately about this target. The quotient by \(Y_2\mapsto-Y_2\) is a weighted Fano hypersurface. Its supported residue sector corresponds to numerators odd in \(Y_2\), because the ambient volume also changes sign. The displayed target has no \(Y_2\) factor and occupies the complementary sector.
+However, [fringewidth observed in the discussion](https://github.com/hodge-computer/sextics/discussions/54#discussioncomment-18986773) that two additional reflections become visible after the block-linear change
+\[
+P=Y_0+Y_1,\qquad M=Y_0-Y_1.
+\]
+Indeed, \(Y_0\cdot Y_1=(P^2-M^2)/4\), while \(Y_0^6+Y_1^6\) is separately even in \(P\) and \(M\). Consequently \(F\) is separately even in \(P,M,Y_2\). This coordinate change commutes with the global sign involution, and the target decomposes as
+\[
+A=\frac18\cdot X_0^3\cdot P\cdot(P^2+3\cdot M^2)
++\frac18\cdot X_0^3\cdot M\cdot(M^2+3\cdot P^2).
+\]
+The two summands are odd under the \(P\) and \(M\) reflections, respectively.
 
-This distinction is why one remaining reflection does not settle the entire challenge. [Chapter 4](#technical-information/known-locus) describes the residual variation in the one-reflection family. The target selected here probes that boundary instead of requesting another class already covered by the quotient theorem. Compare [the coupled Fano target](#case/reflection-coupled-fano), where the numerator deliberately has the favorable odd character and nonconstructive existence is known.
+Thus **existence is already known geometrically** from the reflection theorem in [Chapter 3](#technical-information/geometric-support): each summand descends to the appropriate weighted Fano quotient, whose rational-curve construction provides divisor support. Adding the supported classes and applying the certificate theorem gives existence for this target. The theorem supplies a finite construction in principle, but no explicit witness or accepted Lean proof is currently supplied for this instance.
 
-The two mixed terms retain some low-rank structure: their sum factors as \(X_1\cdot Y_0\cdot Y_1\cdot(X_0^3+X_1^2\cdot X_2)\). That makes this a useful place to seek adapted coordinates or a special supporting divisor before attempting a completely general even sextic. The factorization is a feature of the perturbation, not a factorization of \(F\) or a certificate. A successful treatment should explain how the remaining reflection and the shared coupling factors can cooperate to reach the currently unsupported character.
+The constructive challenge is to turn these hidden reflections into usable equations for a supporting divisor and a rational vector field. The shared factor \(X_1\cdot Y_0\cdot Y_1\) in the perturbation offers an additional algebraic handle. A successful construction would show how changing coordinates can expose useful quotient geometry even when the displayed target lies outside the sector served by the most obvious reflection. Compare [the coupled Fano target](#case/reflection-coupled-fano), where the favorable reflection character is visible from the outset.
