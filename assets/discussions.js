@@ -110,10 +110,11 @@
       const article=element('article','discussion-comment'+(parent?' discussion-reply':''));article.dataset.comment=comment.id;
       const number=commentNumber(comment);if(number)article.id='discussioncomment-'+number;article.tabIndex=-1;
       const header=element('header','discussion-comment-header'),author=comment.author;
-      const identity=link(author?'@'+author.login:'Deleted account',author?.url);
+      const authorName=author?'@'+author.login:'Deleted account',identity=link('',author?.url);
+      identity.append(element('span','discussion-author-name',authorName));identity.title=authorName;
       if(author?.avatarUrl){try{const u=new URL(author.avatarUrl);if(u.protocol==='https:'&&u.hostname==='avatars.githubusercontent.com'){const img=element('img','discussion-avatar');img.src=u.href;img.alt='';img.width=30;img.height=30;img.loading='lazy';img.referrerPolicy='no-referrer';identity.prepend(img);}}catch{}}
       const date=new Date(comment.createdAt),dateLink=link(Number.isNaN(+date)?'View comment':date.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}),comment.url);
-      if(!Number.isNaN(+date))dateLink.title=date.toLocaleString();header.append(identity,dateLink);
+      dateLink.classList.add('discussion-comment-date');if(!Number.isNaN(+date))dateLink.title=date.toLocaleString();header.append(identity,dateLink);
       if(comment.updatedAt!==comment.createdAt)header.append(element('span','discussion-edited','edited'));
       const content=element('div','discussion-comment-content');content.id='discussion-comment-content-'+(++commentSequence);
       const toggle=button('',()=>{expandedComments.set(comment.id,content.hidden);updateExpansion();});toggle.classList.add('discussion-comment-toggle');toggle.setAttribute('aria-controls',content.id);
