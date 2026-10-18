@@ -69,6 +69,9 @@ dialog{--dialog-top:40px;border:1px solid #4959764f;border-radius:8px;padding:va
 .page-nav .home-link>span:first-child{width:17px;text-align:center;flex-shrink:0}
 .sidebar .brand,.sidebar .search,.sidebar-foot{flex-shrink:0}
 .sidebar-scroll{min-height:0;flex:1;overflow-y:auto;overflow-x:hidden;overscroll-behavior-y:contain;scrollbar-width:thin;scrollbar-color:#2e384a transparent}
+.atlas-colophon{margin:0;padding:18px 25px;border-top:1px solid var(--line);color:#91a0b7;font:13px/1.8 var(--serif)}
+.atlas-colophon blockquote,.atlas-colophon p{margin:0}
+.atlas-colophon figcaption{margin-top:12px;font:10px/1.6 var(--sans);letter-spacing:.04em;color:#91a0b7}
 .case-index-row{position:relative}
 .case-index-row .case-link{padding-right:42px;min-height:42px}
 .case-index-title{min-width:0}

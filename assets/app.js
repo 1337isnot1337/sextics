@@ -124,6 +124,7 @@ function setExploring(value,fromRenderer=false){
 }
 function buildIndex(){
   const query=$('caseSearch').value.toLowerCase().trim();
+  $('atlasColophon').hidden=!!query||!state.records.length;
   const filtered=state.records.filter(r=>(`${r.id} ${r.title} ${r.category||''} ${r.family||''} ${r.evidenceKind||''}`).toLowerCase().includes(query));
   $('caseIndex').innerHTML=groupOrder.map(key=>{
     const rows=filtered.filter(r=>group(r)===key);
