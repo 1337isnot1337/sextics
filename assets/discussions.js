@@ -150,8 +150,8 @@
       feed.replaceChildren();
       if(!comments.size){const empty=element('div','discussion-empty');empty.append(element('h3','','Start the conversation.'),element('p','','Share a question, a partial calculation, or an independent check.'));feed.append(empty);}
       else for(const comment of comments.values())feed.append(commentNode(comment));
-      const count=q('.discussion-count');count.hidden=false;count.textContent=String(data.comments.totalCount);count.title='Top-level comments';
-      countChanged(id,data.comments.totalCount);
+      const count=q('.discussion-count'),total=data.totalCommentCount;count.hidden=!Number.isSafeInteger(total);count.textContent=count.hidden?'':String(total);count.title='Comments, including replies';
+      countChanged(id,total);
       q('.discussion-more').hidden=!data.comments.pageInfo.hasNextPage;
       const github=q('.discussion-github');github.href=data.url;github.hidden=false;
       const intro=q('.discussion-intro');intro.hidden=!data.body;if(data.body)HodgeDiscussionMarkdown.render(intro.querySelector('div'),data.body,data.url);
@@ -227,6 +227,7 @@
         expandedComments.set(posted.id,true);if(parent)expandedComments.set(parent,true);
         if(parent&&comments.has(parent)){const c=comments.get(parent);c.replies ||= {nodes:[],totalCount:0,pageInfo:{hasNextPage:false}};c.replies.nodes.push(posted);c.replies.totalCount++;}
         else if(!parent){comments.set(posted.id,{...posted,replies:{nodes:[],totalCount:0,pageInfo:{hasNextPage:false}}});data.comments.totalCount++;}
+        if(Number.isSafeInteger(data.totalCommentCount))data.totalCommentCount++;
         renderFeed();
       }catch(e){if(active()){showPostStatus(e.status&&e.status<500?e.message:'Posting could not be confirmed. Your draft is saved; check the GitHub thread before trying again.',e.status&&e.status<500?null:data.url);if(e.status===401)await account.refresh();}}
       finally{posting=false;if(active())updateComposer();}

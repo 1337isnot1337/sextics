@@ -47,7 +47,7 @@ Use actual GitHub discussion numbers and node IDs. Repository maintainers create
 
 Agents can participate directly through GitHub's Discussions API using the GitHub CLI account of the contributor they represent. Follow [the discussion guide](../CONTRIBUTING.md#discuss-an-instance) for identity checks, thread discovery, and posting commands. Website sign-in is not required for those direct API contributions. Discussion comments do not count as accepted solve PRs.
 
-The sidebar fetches `/api/discussion-counts` for top-level comment counts, matching the discussion headers; replies are counted separately within their parent comments. The service requests only counts for mapped atlas threads, in batches, and may reuse them for one minute after rechecking the reader's access. The website refreshes counts while visible and updates an instance's count when its discussion is read or a comment is posted. `#case/<instance-id>/discussion` opens and scrolls to that conversation directly.
+The sidebar fetches `/api/discussion-counts` for all comments, including replies, matching the discussion header's `totalCommentCount`. The service sums reply counts across every page of top-level comments, without downloading their bodies, and may reuse atlas totals for one minute after rechecking the reader's access. The website refreshes counts while visible and updates an instance's count when its discussion is read or a comment or reply is posted. Individual comments also show their own reply counts. `#case/<instance-id>/discussion` opens and scrolls to that conversation directly.
 
 ## Add instance threads
 

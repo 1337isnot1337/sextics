@@ -139,7 +139,7 @@ function updateDiscussionCounts(){
     const count=HodgeDiscussion.count(link.dataset.discussion),known=Number.isSafeInteger(count);
     link.querySelector('span').textContent=known?(count>99?'99+':String(count)):'—';
     link.classList.toggle('has-comments',known&&count>0);
-    const label=known?`${count} ${count===1?'comment':'comments'} (top-level) · ${link.dataset.title}`:`Open discussion for ${link.dataset.title}`;
+    const label=known?`${count} ${count===1?'comment':'comments'}, including replies · ${link.dataset.title}`:`Open discussion for ${link.dataset.title}`;
     link.title=label;link.setAttribute('aria-label',label);
   });
 }

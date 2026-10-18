@@ -79,6 +79,7 @@ export class GitHub {
 export const commentFields = `id body url createdAt updatedAt isMinimized
   author { login avatarUrl url }`;
 const pageFields = 'totalCount pageInfo { hasNextPage endCursor }';
+const countFields = `${pageFields} nodes { id replies { totalCount } }`;
 const withReplies = `${commentFields} replies(first:20) { ${pageFields} nodes { ${commentFields} } }`;
 const clean = comment => ({ ...comment, body: comment.isMinimized ? '' : comment.body,
   ...(comment.replies ? { replies: { ...comment.replies, nodes: comment.replies.nodes.filter(Boolean).map(clean) } } : {}) });
@@ -90,12 +91,41 @@ export async function readDiscussion(github, entry, cursor, session) {
     repository(owner:$owner,name:$name) { discussion(number:$number) {
       id number title body url locked
       comments(first:30,after:$after) { ${pageFields} nodes { ${withReplies} } }
+      commentTotals: comments(first:100) { ${countFields} }
     } }
   }`, { owner, name, number: entry.number, after: cursor || null }, token);
   const discussion = data.repository?.discussion;
   if (!discussion || discussion.id !== entry.nodeId) throw new ServiceError(404, 'This discussion is unavailable.');
-  return { ...discussion, viewerCanComment: !!session && !discussion.locked,
+  const { commentTotals, ...thread } = discussion;
+  return { ...thread, totalCommentCount:await countCommentsAndReplies(github, entry.nodeId, commentTotals, token), viewerCanComment: !!session && !discussion.locked,
     comments: { ...discussion.comments, nodes: discussion.comments.nodes.filter(Boolean).map(clean) } };
+}
+
+// GitHub's connection total counts top-level comments only. Sum reply totals
+// across every parent page without downloading comment or reply bodies.
+async function countCommentsAndReplies(github, id, firstPage, token) {
+  const topLevel=firstPage?.totalCount, replies=new Map(), cursors=new Set();
+  if (!Number.isSafeInteger(topLevel) || topLevel<0) throw new ServiceError(502, 'Discussion counts are unavailable. Please try again.');
+  let page=firstPage;
+  for (;;) {
+    if (!Array.isArray(page?.nodes) || !page.pageInfo) throw new ServiceError(502, 'Discussion counts are unavailable. Please try again.');
+    for (const comment of page.nodes) {
+      if (!comment) continue;
+      const count=comment.replies?.totalCount;
+      if (!comment.id || !Number.isSafeInteger(count) || count<0) throw new ServiceError(502, 'Discussion counts are unavailable. Please try again.');
+      replies.set(comment.id,count);
+    }
+    if (!page.pageInfo.hasNextPage) break;
+    const after=page.pageInfo.endCursor;
+    if (!after || cursors.has(after)) throw new ServiceError(502, 'Discussion counts are unavailable. Please try again.');
+    cursors.add(after);
+    const next=await github.graphql(`query($id:ID!,$after:String!) {
+      node(id:$id) { ... on Discussion { id comments(first:100,after:$after) { ${countFields} } } }
+    }`, {id,after}, token);
+    if (next.node?.id!==id) throw new ServiceError(404, 'This discussion is unavailable.');
+    page=next.node.comments;
+  }
+  return topLevel+[...replies.values()].reduce((sum,count)=>sum+count,0);
 }
 
 // Fetch only counts for the atlas, not the contents of every conversation.
@@ -108,10 +138,10 @@ export async function readDiscussionCounts(github, entries, session) {
   const byNode = new Map();
   for (let offset = 0; offset < ids.length; offset += 100) {
     const data = await github.graphql(`query($ids:[ID!]!) {
-      nodes(ids:$ids) { ... on Discussion { id comments { totalCount } } }
+      nodes(ids:$ids) { ... on Discussion { id comments(first:100) { ${countFields} } } }
     }`, { ids:ids.slice(offset, offset + 100) }, token);
     for (const node of data.nodes || []) {
-      if (node && Number.isSafeInteger(node.comments?.totalCount) && node.comments.totalCount >= 0) byNode.set(node.id, node.comments.totalCount);
+      if (node && ids.includes(node.id)) byNode.set(node.id, await countCommentsAndReplies(github, node.id, node.comments, token));
     }
   }
   const value = { counts:Object.fromEntries(Object.entries(entries).filter(([,entry]) => byNode.has(entry.nodeId)).map(([id,entry]) => [id,byNode.get(entry.nodeId)])) };
