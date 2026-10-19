@@ -6,5 +6,5 @@
   "maxFiles": 64,
   "maxBytes": 16777216,
   "timeoutSeconds": 1800,
-  "memoryMb": 6144
+  "memoryMb": 14336
 }
