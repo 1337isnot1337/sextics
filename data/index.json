@@ -907,15 +907,20 @@
     {
       "id": "holdout-x04-p",
       "title": "Holdout · transverse quartic",
-      "status": "open",
-      "formalStatus": "unproved",
-      "evidenceKind": "none",
-      "certificateAvailable": false,
+      "status": "solved",
+      "formalStatus": "proved",
+      "evidenceKind": "existence-proof",
+      "certificateAvailable": true,
       "visibility": "navigation",
-      "draftDisplayStatus": "open",
+      "draftDisplayStatus": "solved",
       "category": "Challenge instances",
       "q": 1,
-      "path": "data/holdout-x04-p/record.json"
+      "path": "data/holdout-x04-p/record.json",
+      "credit": {
+        "githubLogin": "fqlx",
+        "origin": "contribution",
+        "awardedAt": "2026-10-19T19:10:59Z"
+      }
     },
     {
       "id": "one-reflection",
