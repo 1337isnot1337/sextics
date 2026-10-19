@@ -278,13 +278,37 @@
   "slice": "slices/holdout-x0-y03-y12.json",
   "rationale": "why.md",
   "provenanceFile": "provenance.json",
-  "formalStatus": "unproved",
-  "status": "open",
-  "evidenceKind": "none",
-  "certificateAvailable": false,
+  "formalStatus": "proved",
+  "status": "solved",
+  "evidenceKind": "existence-proof",
+  "certificateAvailable": true,
   "content": {
-    "why": "data/holdout-x0-y03-y12/why.html"
+    "why": "data/holdout-x0-y03-y12/why.html",
+    "solution": "data/holdout-x0-y03-y12/solution.html"
   },
-  "witnessAvailability": "missing",
-  "draftDisplayStatus": "open"
+  "pullRequest": {
+    "number": 139,
+    "url": "https://github.com/hodge-computer/sextics/pull/139",
+    "headCommit": "112309156e644561b315cdf5faf12277e17d24db",
+    "baseCommit": "dc13685686ca4f997c6af8575d76e7b0be04b34c",
+    "mergeCommit": "2135abe175753a846e5e80514f97ea8b05eec208"
+  },
+  "certificate": {
+    "proofSource": "data/holdout-x0-y03-y12/Solution.lean"
+  },
+  "witnessAvailability": "lean-source",
+  "leanVerification": {
+    "formalStatus": "proved",
+    "status": "accepted",
+    "proofFile": "data/holdout-x0-y03-y12/Solution.lean",
+    "receipt": "data/holdout-x0-y03-y12/acceptance.json",
+    "theorem": "Submission.certificate",
+    "checker": "Lean (version 4.33.0, x86_64-unknown-linux-gnu, commit d8b18978322de05a8f3dba51ef03cf5461676c17, Release)"
+  },
+  "credit": {
+    "githubLogin": "fqlx",
+    "origin": "contribution",
+    "awardedAt": "2026-10-19T19:10:55Z"
+  },
+  "draftDisplayStatus": "solved"
 }
