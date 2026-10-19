@@ -1,0 +1,36 @@
+{
+  "id": "one-reflection-y2-sector",
+  "homogeneousDegrees": [
+    6,
+    6
+  ],
+  "q": 1,
+  "involutionParities": [
+    1,
+    -1
+  ],
+  "degreeSixJacobianRanks": [
+    36,
+    37
+  ],
+  "subsetEulerAtoms": [],
+  "coordinateReflections": [
+    "Y2"
+  ],
+  "coordinateReflectionsServingTarget": [
+    "Y2"
+  ],
+  "smoothness": {
+    "method": "Maximal-coordinate derivative estimate",
+    "mixedDerivativeBounds": [
+      "3",
+      "4",
+      "1",
+      "2",
+      "2",
+      "0"
+    ],
+    "pureDerivativeCoefficient": 6
+  },
+  "densityObstruction": "Odd under both deck transformations of the two binary-cubic maps."
+}

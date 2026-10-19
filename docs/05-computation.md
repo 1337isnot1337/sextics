@@ -99,11 +99,7 @@ Once a candidate is stable, reconstruct its coefficients over \(\mathbb Q\) or a
 For any proposed field \(v=N/D\), normalized or otherwise, form the polynomial
 
 \[
-\begin{aligned}
-E={}&A\cdot D^2-q\cdot D\cdot\sum_{i=0}^{5}N_i\cdot\partial_iF\\
-&+F\cdot\left(D\cdot\sum_{i=0}^{5}\partial_iN_i
--\sum_{i=0}^{5}N_i\cdot\partial_iD\right).
-\end{aligned}
+E=A\cdot D^2-q\cdot D\cdot\sum_{i=0}^{5}N_i\cdot\partial_iF+F\cdot\left(D\cdot\sum_{i=0}^{5}\partial_iN_i-\sum_{i=0}^{5}N_i\cdot\partial_iD\right).
 \]
 
 The required divisibility is equivalent to an exact polynomial identity

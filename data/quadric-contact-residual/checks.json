@@ -1,0 +1,24 @@
+{
+  "id": "quadric-contact-residual",
+  "homogeneousDegrees": [
+    6,
+    6
+  ],
+  "q": 1,
+  "involutionParities": [
+    1,
+    -1
+  ],
+  "degreeSixJacobianRanks": [
+    36,
+    37
+  ],
+  "subsetEulerAtoms": [],
+  "coordinateReflections": [],
+  "coordinateReflectionsServingTarget": [],
+  "smoothness": {
+    "method": "Fermat reduction",
+    "prime": 5
+  },
+  "densityObstruction": "Target invariant under both X0/Y0 and X1/Y1 exchanges."
+}

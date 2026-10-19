@@ -78,11 +78,7 @@ r(a,z)=B(a,a)+C(a,z)=0.
 <p>Once a candidate is stable, reconstruct its coefficients over <span class="inline-math" data-math>\mathbb Q</span> or a specified number field. For a reconstructed denominator, solve the complete numerator system again in exact arithmetic. If it is inconsistent, the numerical candidate has not produced a certificate; the reconstruction or the proposed denominator must change. If it is consistent, retain the actual numerator tuple and the quotient from <span class="inline-math" data-math>E_2</span>, then check the identity below independently.</p>
 <h2 id="55-exact-verification-and-lean-acceptance">5.5 Exact verification and Lean acceptance</h2>
 <p>For any proposed field <span class="inline-math" data-math>v=N/D</span>, normalized or otherwise, form the polynomial</p>
-<div class="page-equation" data-math data-display>\begin{aligned}
-E={}&amp;A\cdot D^2-q\cdot D\cdot\sum_{i=0}^{5}N_i\cdot\partial_iF\\
-&amp;+F\cdot\left(D\cdot\sum_{i=0}^{5}\partial_iN_i
--\sum_{i=0}^{5}N_i\cdot\partial_iD\right).
-\end{aligned}</div>
+<div class="page-equation" data-math data-display>E=A\cdot D^2-q\cdot D\cdot\sum_{i=0}^{5}N_i\cdot\partial_iF+F\cdot\left(D\cdot\sum_{i=0}^{5}\partial_iN_i-\sum_{i=0}^{5}N_i\cdot\partial_iD\right).</div>
 <p>The required divisibility is equivalent to an exact polynomial identity</p>
 <div class="page-equation" data-math data-display>E=F^{q+1}\cdot Q</div>
 <p>for some polynomial <span class="inline-math" data-math>Q</span>, together with the denominator and degree conditions. Indeed, <span class="inline-math" data-math>E=D^2\cdot K_A(N/D)</span>, and <span class="inline-math" data-math>D</span> is invertible in the localization at <span class="inline-math" data-math>(F)</span>. When the normalized equations hold with <span class="inline-math" data-math>B_D(N)=F^q\cdot C</span>, this gives <span class="inline-math" data-math>Q=C</span>.</p>

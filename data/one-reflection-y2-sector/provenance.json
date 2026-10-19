@@ -1,0 +1,25 @@
+{
+  "instanceId": "one-reflection-y2-sector",
+  "variables": [
+    "X0",
+    "X1",
+    "X2",
+    "Y0",
+    "Y1",
+    "Y2"
+  ],
+  "statementSource": "instance.rec",
+  "contextSource": "why.md",
+  "sameVarietyInstances": [
+    "one-reflection"
+  ],
+  "mathematicalChecks": "checks.json",
+  "checkCommand": "python3 scripts/audit-cubic-frontier.py",
+  "references": [
+    "data/one-reflection/solution.md",
+    "docs/02-explicit-constructions.md",
+    "docs/04-known-locus-and-frontier.md"
+  ],
+  "existenceStatus": "Geometric existence follows from the Y2 reflection theorem; no accepted proof for this target.",
+  "discussionUrl": "https://github.com/hodge-computer/sextics/discussions/126"
+}

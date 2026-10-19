@@ -167,6 +167,33 @@ The two added terms cancel on \(G\) because \(E_{4}(G)=3\cdot G\). For divergenc
 
 To obtain one denominator over \(K\), choose \(p\in K^{4}\) outside the 45 tritangent planes and normalize each plane equation \(\ell \) by \(\ell (p)=1\). Such \(p\) exists because \(K\) is infinite. Galois permutes the normalized equations, so \(T=\prod \ell \) lies in \(K[u]\) and has degree 45. For each chosen line use a containing tritangent plane as \(\ell _{1}\) in its cofactor field. Its denominator divides \(T\); so do their sum and normalized coefficient trace. The recursion retains \(T\) for every \(q\), and its numerator has degree \(45+3\cdot q-3\). Since \(T\) is a product of linear forms over an algebraic closure, \(\operatorname{gcd}(T,G)=1\). This completes the theorem, including its common-denominator assertion.
 
+### Finite-algebra realization of line contact
+
+The line calculation has an algebraic form that does not require selecting algebraic roots. Let \(R\) be a characteristic-zero domain of passive coefficients and let \(E\) be a commutative finite free \(R\)-algebra of rank \(m\). Active differentiation fixes \(E\). Suppose a line-contact field \(n/\ell\) over \(E\) satisfies
+
+\[
+n(G)=\ell J,\qquad \operatorname{div}(n/\ell)=0,
+\]
+
+where \(\ell\) and the components of \(n\) are linear in the four active variables and \(J\) is quadratic. For multiplication matrices in an \(R\)-basis of \(E\), put
+
+\[
+D=\det M_\ell,\qquad
+N_i=\lambda\bigl(M_{n_i}\operatorname{adj}(M_\ell)e\bigr),
+\]
+
+where \(e\) represents the unit of \(E\) and \(\lambda:E\to R\) is any \(R\)-linear functional, extended over the active polynomial ring. Assume \(D\ne0\). The adjugate identity makes \(\ell\) invertible after inverting \(D\), and gives \(N_i/D=\lambda(n_i/\ell)\). Active derivatives commute with \(\lambda\), so
+
+\[
+N(G)=D\lambda(J),\qquad D\operatorname{div}N-N(D)=0.
+\]
+
+Both \(D\) and \(N_i\) have active degree \(m\). This is a coefficient-functional construction; \(\lambda\) need not be the trace. It works in a finite free algebra even when its defining polynomial is reducible or has repeated roots. Coprimality of \(D\) with \(G\) remains a separate obligation. For a line algebra on a smooth cubic, the norm is a product of linear plane equations over an algebraic closure, which supplies that obligation; after a rational substitution, the physical denominator must also be checked.
+
+Together with the four constant fields serving \(G_i\), selected functionals of \(J\) give a finite matrix of quadratic sources. An invertible ten-by-ten minor makes the construction serve every quadratic. This can be certified without writing its inverse as a huge rational expression. Localize the passive coefficient ring at polynomials nonzero at one specified fiber; an exactly nonzero specialized determinant is then a unit. The line-coordinate denominators and the source matrix are handled in the same way. The resulting formulas hold over that localization and its fraction field, not at every specialization indiscriminately. A zero minor at a different fiber means that this chart fails, not that the target has no certificate.
+
+This realization underlies `HeadOfNaps`'s [quadric-contact](#case/quadric-contact-broken) and [endpoint-cubic](#case/holdout-q2) constructions. In the latter, a monic degree-27 line algebra and six coefficient functionals, together with the four gradients, span all ten quadratic sources. The concrete algebra replaces the need to formalize the general geometric line-class argument; the determinant, source identities, and denominator legality can instead be checked directly.
+
 ## 2.5 From sextics to cubic surfaces
 
 Suppose \(F\) is coordinatewise-even. For a monomial \(A\), choose coordinates \(x\) from \(X\) and \(y\) from \(Y\) with odd exponents; write the remaining \(X\) coordinates as \((a,b)\) and the remaining \(Y\) coordinates as \((c,d)\). Introduce passive ratios and active squares:
@@ -217,6 +244,145 @@ show that both derivatives vanish; when \(a=0\), also \(b=0\) and joint evenness
 The degree-45 common denominator lies over \(K\). Clearing passive coefficients contributes physical poles, so it is not a numerical degree bound in the six original coordinates. Nevertheless one finite physical support serves every \(q\) for a fixed \(F\) and pair: fix the quadratic line basis and decompositions of the 56 degree-five active monomials into the partial derivatives. Multiplying these decompositions by monomials supplies every higher-degree decomposition used in the recursion. Only their finitely many passive coefficient poles, the line poles, and the chart boundaries occur. Taking all nine coordinate pairs still gives finite support. This argument bounds neither its physical degree nor its pole multiplicities.
 
 The theorem is a finite algebraic recipe over effectively presented coefficient fields: solve the finite line scheme over the passive field, perform finite linear algebra and trace, then substitute and clear denominators. It gives no practical bound on the size of that calculation.
+
+### Passive functions and the scope of a certificate
+
+Cofactor transport distinguishes active coordinates from passive ratios. Suppose a strict physical field satisfies \(qv(F)=A\), \(\operatorname{div}v=0\), and \(v(r_j)=0\) for every passive ratio. For any rational function \(h(r)\),
+
+\[
+q(hv)(F)=hA,\qquad \operatorname{div}(hv)=h\operatorname{div}v+v(h)=0.
+\]
+
+To obtain another atlas target, \(hA\) must be polynomial of the required degree and parity, and clearing \(h\) must introduce only legal poles. Degree-zero passive multipliers preserve the component degree. This is a useful family extension, but it preserves the density sector selected by the map. It does not give arbitrary targets merely because they lie on the same sextic.
+
+### A binary-cubic Hessian construction
+
+Write the physical variables as \((x,a,c,y,b,d)=(X_0,X_1,X_2,Y_0,Y_1,Y_2)\), and consider
+
+\[
+F_R=x^6+a^6+c^6+y^6+b^6+d^6+x^3ayb+a^3cyb.
+\]
+
+The rational coordinates
+
+\[
+u=x^2,\quad p=yb,\quad v=d^2,\quad z=(y^3-b^3)/d,
+\quad r=a/x,\quad s=c/x
+\]
+
+give \(F_R=f(u,p)+v^3+vz^2\), where
+
+\[
+f=\alpha u^3+\beta u^2p+2p^3,
+\qquad \alpha=1+r^6+s^6,\quad \beta=r+r^3s.
+\]
+
+The Jacobian in the displayed order is \(12(y^3+b^3)/x\). Thus the active density \(u^2/24\) serves the half-target \(x^3(y^3+b^3)/2\). The symmetry \((a,b)\mapsto(-a,-b)\) preserves \(F_R\) and supplies the complementary half-target. This reduces the prescribed \(x^3y^3\) to one explicit calculation on a cubic surface.
+
+For the binary cubic define
+
+\[
+\begin{aligned}
+\delta&=324\alpha^2+24\beta^3,\\
+h&=-\beta^2u^2+18\alpha up+6\beta p^2,\\
+H&=(18\alpha u+12\beta p)\partial_u+(2\beta^2u-18\alpha p)\partial_p,\qquad k=H(f)/3.
+\end{aligned}
+\]
+
+Direct differentiation gives
+
+\[
+H(h)=0,\qquad H(k)=3\delta f,\qquad
+\delta f^2-k^2=4h^3/9,
+\]
+
+and
+
+\[
+\delta u^2=108\alpha f_u+12\beta^2 f_p-12\beta h.
+\]
+
+Over a field containing \(\sqrt\delta\), the eigen-coordinates of \(H\) write \(f\) as two cubes \(f_\pm=(f\pm k/\sqrt\delta)/2\). Independently, with \(\lambda^2=3\),
+
+\[
+v^3+vz^2=\tfrac12(v+\lambda z/3)^3+\tfrac12(v-\lambda z/3)^3.
+\]
+
+Put \(g=(v+\lambda z/3)^3/2\). The Euler field on the coordinate of \(f_+\) and the coordinate of \(g\) has divergence two, acts on \(h\) with weight one, and acts on \(f_++g\) with weight three. Therefore \(h(E_++E_g)/(3(f_++g))\) is divergence-free and sends the full cubic to \(h\). Average this field with its \(\sqrt\delta\)-conjugate, **including its denominator**. The square root disappears. Combining the resulting field with the constant fields \(\partial_u,\partial_p\), using the displayed target identity, serves \(u^2/24\). Cofactor transport and the sign symmetry then serve \(x^3y^3\).
+
+The [explicit certificate](#case/one-reflection), contributed by `fqlx`, carries this calculation through homogeneous clearing and denominator legality: its two half-denominators have degree 30 and their product has degree 60. It builds on `fringewidth`'s hidden-reflection observation and the binary-cubic constructions described in this chapter. Both half-fields annihilate \(a/x,c/x\). Their polynomial numerators have a common \(x^3\) factor, so replacing that factor by any homogeneous cubic \(P_3(x,a,c)\) gives the family of targets \(P_3y^3\) with the same denominator. The resulting fields retain the strict identities and the same denominator legality.
+
+### Endpoint cubics and pole order two
+
+For the central holdout the second mixed term is different:
+
+\[
+F_H=x^6+a^6+c^6+y^6+b^6+d^6+x^3ayb+a^3cbd.
+\]
+
+Let \(\kappa^2+\kappa+1=0\). Use passive ratios \(\alpha=y/x,\beta=b/a\) and active coordinates
+
+\[
+U=x^2,\quad V=a^2,\quad S=c^2+\kappa^2d^2,\quad T=\kappa cd.
+\]
+
+Then
+
+\[
+G=S^3-3ST^2+(1+\alpha^6)U^3+(1+\beta^6)V^3
+       +\alpha\beta U^2V+\beta\kappa^2V^2T
+\]
+
+satisfies \(G=F_H\) after substitution. The finite-algebra quadratic solver in §2.4 applies to this cubic over the passive field. In its explicit realization, the coefficient fiber \((1+\alpha^6,1+\beta^6,\alpha\beta,\beta\kappa^2)=(2,2,1,1)\) certifies the necessary inverses.
+
+At \(q=2\), write \(U^3V^2=b(G)\) with \(b\) a polynomial field of component degree three, put \(h=\operatorname{div}b\), and solve \(w_1(G)=h\), \(\operatorname{div}w_1=0\). The recursion in §2.4 becomes
+
+\[
+w_2=(b+Gw_1)/2-hE_4/6,
+\qquad 2w_2(G)=U^3V^2,\qquad \operatorname{div}w_2=0.
+\]
+
+Thus the higher-pole step uses a quadratic solver and a polynomial Jacobian reduction, without requiring new line geometry.
+
+To return to the physical variables, put \(\Delta_\kappa=c^2-\kappa^2d^2\). The four horizontal fields
+
+\[
+\begin{aligned}
+C_U&=\frac{\Delta_\kappa}{x}\partial_x+
+       \frac{\Delta_\kappa y}{x^2}\partial_y,&
+C_V&=\frac{\Delta_\kappa}{a}\partial_a+
+       \frac{\Delta_\kappa b}{a^2}\partial_b,\\
+C_S&=c\partial_c-d\partial_d,&
+C_T&=-2\kappa d\partial_c+2\kappa^2c\partial_d
+\end{aligned}
+\]
+
+have zero divergence, annihilate \(\alpha,\beta\), and act on \((U,V,S,T)\) as \(2\Delta_\kappa\) times the respective coordinate derivatives. Consequently lifting \((\alpha^3\beta^2/2)w_2\) gives a strict pole-two field for \(P\Delta_\kappa\), where \(P=x^3a^2y^3b^2\). The identity
+
+\[
+Pc^2=\frac{2+\kappa}{3}P\Delta_\kappa+
+      \frac{2+\kappa^2}{3}P\Delta_{\kappa^2}
+\]
+
+gives [Holdout · pole order two](#case/holdout-q2). `HeadOfNaps`'s construction proves the required homogeneous clearing and coprimality, as well as the field identities. Passive multiplication and the same endpoint combination also serve the polynomial monomials
+
+\[
+x^{6-i}y^i a^{4-j}b^j c^2,\qquad
+x^{6-i}y^i a^{4-j}b^j d^2,
+\quad 0\le i\le6,\quad0\le j\le4,\quad i+j\text{ odd}.
+\]
+
+There are 34 such monomials; this is a list of targets, not a claim that their residue classes are linearly independent. Any extra passive-ratio denominators are coordinate factors and do not contain the smooth sextic.
+
+### The density boundary
+
+A cubic target solver is complete downstairs; a particular map to that cubic need not reach every target upstairs. If a linear reflection \(\rho\) fixes the map \(\Phi\), then differentiating \(\Phi\rho=\Phi\) gives
+
+\[
+\det(d\Phi)(\rho Z)=-\det(d\Phi)(Z).
+\]
+
+Hence every density target \(\det(d\Phi)B(\Phi)\) is odd under \(\rho\). Passive multipliers fixed by the reflection retain this restriction. In the endpoint example, \(\rho_\kappa(c,d)=(\kappa d,\kappa^2c)\) fixes the active coordinates and negates \(\Delta_\kappa\). The central \(q=1\) target \(x^3y^3\) is invariant. Even combining these endpoint constructions does not reach it: averaging over the finite group generated by the endpoint reflections kills every reflection-odd target, while fixing \(x^3y^3\). Thus this target is outside the linear span of those density sectors. It does not exclude a different map or support. The distinction between a missing density sector and a missing cubic solver is central to the frontier in [Chapter 4](#technical-information/known-locus).
 
 ## 2.6 The conic specialization and physical degree bounds
 
@@ -296,4 +462,4 @@ If \(\Phi _{0}\) is equivariant for linear involutions on its quadratic and line
 
 For coordinatewise-even \(F\) at \(q=1\), square four chosen coordinates and retain two linearly in \(\Phi _{0}\). Its determinant is a nonzero scalar times their product \(C_I\). The initial density has weight two, giving \(C_I(\sum b_{j}\cdot Z_{j}^{2}+b_{rs}\cdot r\cdot s)\). There are six globally odd four-coordinate carriers, each giving six distinct four-odd target monomials; the single all-six-odd monomial is also obtained. Thus the degree-ten construction covers 37 of the 226 allowed monomials. The six-line construction serves the other 189 two-odd monomials too, but has no stated physical degree bound. Arbitrary quadratics enlarge the bounded construction beyond coordinatewise-even equations while retaining its determinant-density target restriction.
 
-Cofactor transport makes fields explicit, and algebraic cycle classes prove target spanning. The conic and cubic-surface arguments now establish these assertions at every smooth member of their stated families. Their success does not prove that a suitable adapted map or sufficiently rich cycle space exists for a general \(Y\)-even sextic.
+Cofactor transport makes fields explicit, and algebraic cycle classes prove target spanning. The conic and cubic-surface arguments establish these assertions at every smooth member of their stated families. Their success does not prove that a suitable adapted map or sufficiently rich cycle space exists for a general \(Y\)-even sextic.

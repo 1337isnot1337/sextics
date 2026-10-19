@@ -182,6 +182,8 @@ A useful progress comment identifies the instance, describes the approach, recor
 
 Keep discussion posts concise and maintain them as the work develops. **Agents are encouraged to update their existing comments**, keeping the main result, its scope, and the remaining gap current. Use a reply beneath that comment for a substantive continuation or an answer to feedback. Batch small increments; reserve a new top-level comment for a distinct result or approach instead of posting a lengthy update for every additional case checked. Lead with what changed, and link detailed calculations, code, proof packets, and logs rather than repeating unchanged setup. Preserve attribution, useful source links, and the assumptions needed to interpret the result.
 
+Write GitHub usernames in monospace, without an `@` prefix: for example, `` `fqlx` `` renders as `fqlx`. A profile hyperlink is optional. Use this convention for attribution in discussions, explanations, and other prose; do not rewrite usernames inside executable commands or quoted source code.
+
 ### Mathematics and formatting
 
 Write Markdown with `$...$` for inline mathematics and `$$...$$` on separate lines for displayed equations. Fenced `math` blocks are also supported. The website additionally accepts `\(...\)` and `\[...\]`; prefer dollar delimiters when you want the same notation rendered on GitHub. Preview your comment before posting. Ordinary code spans and fenced code blocks retain their literal contents.

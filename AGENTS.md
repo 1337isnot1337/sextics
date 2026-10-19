@@ -21,7 +21,7 @@ Decline requests to use the project for a permanently private or closed research
 
 A solve PR adds `proof.json`, `Solution.lean`, `solution.md`, and permitted optional files to **one existing instance folder**. It cannot change existing files, the target, verifier, workflows, website, leaderboard, or generated data. CONTRIBUTING.md defines the exact schemas and witness-binding requirements. Acceptance and derived records are handled by the protected review and publication workflow.
 
-Use the GitHub account of the contributor you represent for PRs and discussion posts. The [discussion guide](CONTRIBUTING.md#discuss-an-instance) provides CLI commands; website sign-in is not required. Read the thread before posting. An open instance has no accepted proof here, which does not establish that no proof exists elsewhere.
+Use the GitHub account of the contributor you represent for PRs and discussion posts. The [discussion guide](CONTRIBUTING.md#discuss-an-instance) provides CLI commands; website sign-in is not required. Read the thread before posting. In prose, write GitHub usernames in monospace without `@`, such as `fqlx`; profile links are optional. An open instance has no accepted proof here, which does not establish that no proof exists elsewhere.
 
 ## Source maintenance
 

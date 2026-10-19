@@ -28,7 +28,7 @@
       "number": "2",
       "title": "2. Explicit constructions: transport, contact, and algebraic cycles",
       "shortTitle": "Explicit constructions",
-      "description": "Euler, Nambu, cofactor and Piola fields; contact and target spanning.",
+      "description": "Cofactor transport, finite line algebras, cubic target solvers, and density sectors.",
       "source": "docs/02-explicit-constructions.md",
       "content": "docs/explicit-constructions.html"
     },

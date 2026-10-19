@@ -1148,6 +1148,45 @@
       "category": "Challenge instances",
       "q": 1,
       "path": "data/four-plus-two-residual/record.json"
+    },
+    {
+      "id": "quadric-contact-residual",
+      "title": "Quadric contact · residual sector",
+      "status": "open",
+      "formalStatus": "unproved",
+      "evidenceKind": "none",
+      "certificateAvailable": false,
+      "visibility": "navigation",
+      "draftDisplayStatus": "open",
+      "category": "Challenge instances",
+      "q": 1,
+      "path": "data/quadric-contact-residual/record.json"
+    },
+    {
+      "id": "one-reflection-y2-sector",
+      "title": "One reflection · transverse sector",
+      "status": "open",
+      "formalStatus": "unproved",
+      "evidenceKind": "none",
+      "certificateAvailable": false,
+      "visibility": "navigation",
+      "draftDisplayStatus": "open",
+      "category": "Challenge instances",
+      "q": 1,
+      "path": "data/one-reflection-y2-sector/record.json"
+    },
+    {
+      "id": "one-reflection-skew",
+      "title": "One reflection · skew coupling",
+      "status": "open",
+      "formalStatus": "unproved",
+      "evidenceKind": "none",
+      "certificateAvailable": false,
+      "visibility": "navigation",
+      "draftDisplayStatus": "open",
+      "category": "Challenge instances",
+      "q": 1,
+      "path": "data/one-reflection-skew/record.json"
     }
   ]
 }

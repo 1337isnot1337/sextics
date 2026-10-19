@@ -71,6 +71,9 @@
     "symmetric-sextic-residual",
     "rank-one-biquartic",
     "quadric-contact-broken",
-    "four-plus-two-residual"
+    "four-plus-two-residual",
+    "quadric-contact-residual",
+    "one-reflection-y2-sector",
+    "one-reflection-skew"
   ]
 }

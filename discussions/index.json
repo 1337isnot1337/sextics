@@ -284,6 +284,18 @@
     "four-plus-two-residual": {
       "number": 120,
       "nodeId": "D_kwDOVLOOJc4AqKTi"
+    },
+    "quadric-contact-residual": {
+      "number": 125,
+      "nodeId": "D_kwDOVLOOJc4AqP2v"
+    },
+    "one-reflection-y2-sector": {
+      "number": 126,
+      "nodeId": "D_kwDOVLOOJc4AqP2w"
+    },
+    "one-reflection-skew": {
+      "number": 127,
+      "nodeId": "D_kwDOVLOOJc4AqP2y"
     }
   }
 }

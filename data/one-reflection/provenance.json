@@ -11,5 +11,7 @@
   "statementSource": "instance.rec",
   "contextSource": "why.md",
   "discussionUrl": "https://github.com/hodge-computer/sextics/discussions/54",
-  "sameVarietyInstances": []
+  "sameVarietyInstances": [
+    "one-reflection-y2-sector"
+  ]
 }

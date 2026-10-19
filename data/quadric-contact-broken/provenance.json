@@ -10,13 +10,17 @@
   ],
   "statementSource": "instance.rec",
   "contextSource": "why.md",
-  "sameVarietyInstances": [],
+  "sameVarietyInstances": [
+    "quadric-contact-residual"
+  ],
   "mathematicalChecks": "checks.json",
   "checkCommand": "sage -python scripts/audit-frontier.py",
-  "existenceStatus": "Not established by the cited methods for this target; no claim of unrestricted nonexistence.",
+  "existenceStatus": "An explicit strict certificate is supplied by the accepted cubic-surface construction in solution.md.",
   "references": [
     "data/two-reflection-cubic-surface-d2/solution.md",
-    "docs/05-computation.md"
+    "docs/05-computation.md",
+    "data/quadric-contact-broken/solution.md",
+    "docs/02-explicit-constructions.md"
   ],
   "discussionUrl": "https://github.com/hodge-computer/sextics/discussions/119"
 }
