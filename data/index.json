@@ -1242,6 +1242,32 @@
       "category": "Challenge instances",
       "q": 1,
       "path": "data/one-reflection-skew/record.json"
+    },
+    {
+      "id": "holdout-moving-branch",
+      "title": "Moving branch · coupled cover",
+      "status": "open",
+      "formalStatus": "unproved",
+      "evidenceKind": "none",
+      "certificateAvailable": false,
+      "visibility": "navigation",
+      "draftDisplayStatus": "open",
+      "category": "Challenge instances",
+      "q": 1,
+      "path": "data/holdout-moving-branch/record.json"
+    },
+    {
+      "id": "holdout-ternary-deformation",
+      "title": "Deformed ternary · conic quotient",
+      "status": "open",
+      "formalStatus": "unproved",
+      "evidenceKind": "none",
+      "certificateAvailable": false,
+      "visibility": "navigation",
+      "draftDisplayStatus": "open",
+      "category": "Challenge instances",
+      "q": 1,
+      "path": "data/holdout-ternary-deformation/record.json"
     }
   ]
 }

@@ -296,6 +296,14 @@
     "one-reflection-skew": {
       "number": 127,
       "nodeId": "D_kwDOVLOOJc4AqP2y"
+    },
+    "holdout-moving-branch": {
+      "number": 146,
+      "nodeId": "D_kwDOVLOOJc4AqQrV"
+    },
+    "holdout-ternary-deformation": {
+      "number": 147,
+      "nodeId": "D_kwDOVLOOJc4AqQrX"
     }
   }
 }

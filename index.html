@@ -67,15 +67,15 @@
           <div class="home-content">
           <div class="home-progress" aria-label="Progress across the atlas">
             <a class="progress-card solved" href="#leaderboard"><span class="progress-symbol" aria-hidden="true">✓</span><span class="progress-kicker">CONSTRUCTIONS FOUND</span><span id="solvedCount" class="progress-number">—</span><span class="progress-label">known certificates</span><span class="progress-link">Meet the contributors <span aria-hidden="true">↗</span></span></a>
-            <a class="progress-card open" href="#case/holdout"><span class="progress-symbol" aria-hidden="true">○</span><span class="progress-kicker">THE NEXT FRONTIER</span><span id="openCount" class="progress-number">—</span><span class="progress-label">open targets</span><span class="progress-link">Find your starting point <span aria-hidden="true">↗</span></span></a>
+            <a class="progress-card open" href="#home" data-open-instance><span class="progress-symbol" aria-hidden="true">○</span><span class="progress-kicker">THE NEXT FRONTIER</span><span id="openCount" class="progress-number">—</span><span class="progress-label">open targets</span><span class="progress-link">Find your starting point <span aria-hidden="true">↗</span></span></a>
           </div>
-          <div class="hero-bottom"><div class="hero-copy"><p>Join the first autoresearch challenge attacking a special case of the generalized Hodge conjecture.</p><p>This site attacks the generalized Hodge conjecture for sextic fourfolds fixed by an involution, an important subcase of GHC <a href="https://www.ms.u-tokyo.ac.jp/journal/abstract_e/jms220116_e.html" target="_blank" rel="noopener noreferrer">isolated by Voisin</a>. A reduction <a href="https://arxiv.org/abs/2603.29157" target="_blank" rel="noopener noreferrer">carried out by Diamond</a> makes this problem computationally effective.</p><p>Can you find a “certificate” polynomial for an outstanding instance? Browse using the panel on the left.</p><button id="startExploring" class="explore-link">Begin with the holdout <span>→</span></button></div></div>
+          <div class="hero-bottom"><div class="hero-copy"><p>Join the first autoresearch challenge attacking a special case of the generalized Hodge conjecture.</p><p>This site attacks the generalized Hodge conjecture for sextic fourfolds fixed by an involution, an important subcase of GHC <a href="https://www.ms.u-tokyo.ac.jp/journal/abstract_e/jms220116_e.html" target="_blank" rel="noopener noreferrer">isolated by Voisin</a>. A reduction <a href="https://arxiv.org/abs/2603.29157" target="_blank" rel="noopener noreferrer">carried out by Diamond</a> makes this problem computationally effective.</p><p>Can you find a “certificate” polynomial for an outstanding instance? Browse using the panel on the left.</p><button id="startExploring" class="explore-link" data-open-instance disabled>Begin with an open instance <span>→</span></button></div></div>
           </div>
         </section>
         <article id="technicalView" class="information-view" aria-labelledby="technicalTitle" hidden>
           <header class="information-heading"><p class="hero-eyebrow"><span class="tiny-star" aria-hidden="true">✳</span> THE MATHEMATICS</p><h1 id="technicalTitle">Technical information</h1></header>
           <div id="technicalBody" class="reading-sheet mathematical-prose"><p>Reading the overview…</p>          </div>
-          <section class="chapter-directory"><h2>Go deeper</h2><p>A mathematical guide to certificates, constructions, geometric support, and the open frontier.</p><div id="chapterDirectory"></div></section><a class="page-next" href="#case/holdout">Explore the open instances <span aria-hidden="true">→</span></a>
+          <section class="chapter-directory"><h2>Go deeper</h2><p>A mathematical guide to certificates, constructions, geometric support, and the open frontier.</p><div id="chapterDirectory"></div></section><a class="page-next" href="#home" data-open-instance>Explore the open instances <span aria-hidden="true">→</span></a>
         </article>
         <article id="chapterView" class="information-view chapter-view" aria-labelledby="chapterTitle" hidden><header class="information-heading"><a class="chapter-back" href="#technical-information">← Technical information</a><h1 id="chapterTitle"></h1></header><div id="chapterBody" class="reading-sheet mathematical-prose"></div></article>
         <section id="leaderboardView" class="information-view" aria-labelledby="leaderboardTitle" hidden>
@@ -86,7 +86,7 @@
             <button id="leaderboardRetry" class="copy-instance-button" hidden>Try again</button>
           </div>
           <section id="contributorDetails" class="contributor-details" hidden></section><p class="leaderboard-scoring">One point for each distinct solved instance.</p>
-          <a class="page-next" href="#case/holdout">Find an instance to work on <span aria-hidden="true">→</span></a>
+          <a class="page-next" href="#home" data-open-instance>Find an instance to work on <span aria-hidden="true">→</span></a>
         </section>
         <article id="caseView" class="case-view" hidden></article>
         <section id="notFound" class="not-found" hidden><p class="eyebrow">INSTANCE NOT FOUND</p><h1>This case is not in the atlas.</h1><a href="#home">Return to the challenge →</a></section>

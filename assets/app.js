@@ -11,6 +11,17 @@ const isProved=r=>r.formalStatus==='proved';
 const group=r=>(isProved(r)||hasCertificate(r))?'solved':'open';
 const groupNames={open:'Open',solved:'Solved'};
 const groupOrder=['open','solved'];
+function firstOpenInstance(){
+  return state.records.filter(r=>group(r)==='open').sort((a,b)=>Number(a.number)-Number(b.number))[0];
+}
+function updateOpenInstanceLinks(){
+  const record=firstOpenInstance();
+  document.querySelectorAll('[data-open-instance]').forEach(link=>{
+    link.hidden=!record;
+    if(link.tagName==='A')link.href=record?`#case/${encodeURIComponent(record.id)}`:'#home';
+    else link.disabled=!record;
+  });
+}
 function math(tex,display=false){const span=document.createElement('span');if(!tex)return '';try{katex.render(tex,span,{displayMode:display,throwOnError:true,trust:false,strict:'ignore',output:'htmlAndMathml'});}catch(error){console.warn('Math rendering:',error.message);span.textContent=tex;span.className='math-fallback';}return span.innerHTML;}
 function coefficientFractions(tex){
   // Move coefficients out of monomial fractions without changing the exact record.
@@ -234,6 +245,7 @@ async function loadCatalogue(){
   const [data,accounts,chapters]=await Promise.all(responses.map(r=>r.json()));
   state.accounts=new Map(accounts.accounts.map(a=>[a.githubLogin.toLowerCase(),a]));state.chapters=chapters.pages;state.overview=chapters.overview;buildChapterIndex();
   state.records=data.records.map((r,i)=>({...r,number:String(i+1).padStart(2,'0')})).filter(r=>r.visibility!=='hidden'&&r.visibility!=='backend');
+  updateOpenInstanceLinks();
   $('totalCount').textContent=`${state.records.length} instances`;$('openCount').textContent=state.records.filter(r=>group(r)==='open').length;$('solvedCount').textContent=state.records.filter(hasCertificate).length;
 }
 async function restorePreview(){
@@ -347,7 +359,7 @@ async function main(){
     const solver=event.target.closest('.solver-leaderboard-link');if(solver&&solver.hash===location.hash){event.preventDefault();await route();}
   });
   document.addEventListener('keydown',event=>{if(event.key==='Escape'){if(state.exploring)setExploring(false);openDrawer(false);}if(event.key==='/'&&!state.exploring&&!$('infoDialog').open&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){event.preventDefault();if(innerWidth<=680)openDrawer(true);$('caseSearch').focus();}});
-  $('startExploring').addEventListener('click',()=>{const r=state.records.find(r=>r.id==='sparse-coupled-holdout')||state.records.find(r=>r.id.includes('holdout'))||state.records.find(r=>group(r)==='open');if(r)location.hash=`case/${r.id}`;});
+  $('startExploring').addEventListener('click',()=>{const r=firstOpenInstance();if(r)location.hash=`case/${encodeURIComponent(r.id)}`;});
   document.addEventListener('hodge-discussion-counts',updateDiscussionCounts);
   try{await loadCatalogue();HodgeDiscussion.startCounts();await route();await restorePreview();startLivePreview();}catch(error){console.error(error);$('caseIndex').innerHTML='<p class="index-empty">The atlas could not be loaded. Use the local server command in README.md.</p>';onStatus({state:'error',message:'Surface unavailable'});}
   addEventListener('hashchange',route);

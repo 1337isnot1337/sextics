@@ -1,0 +1,54 @@
+{
+  "id": "holdout-ternary-deformation",
+  "F": "X0**6 + X0**5*X1/14 + X0**3*X1*Y0*Y1 + X0*X2**5/14 + X1**6 + X1**5*X2/7 + X1**3*X2*Y1*Y2 + X2**6 + Y0**6 + Y1**6 + Y2**6",
+  "A": "X0**3*Y0**3",
+  "q": 1,
+  "smoothness": {
+    "method": "maximal-coordinate derivative estimate",
+    "bounds": [
+      "24/7",
+      "67/14",
+      "3/2",
+      "1",
+      "2",
+      "1"
+    ],
+    "strictBound": 6
+  },
+  "hessianSymmetrizerDimension": 1,
+  "coordinateReflections": [],
+  "diagonal": {
+    "groupOrder": 6,
+    "targetFixingOrder": 2,
+    "juniorElementsFixingTarget": []
+  },
+  "JacobianRanks": [
+    36,
+    37
+  ],
+  "originalCoverSwapDifference": "0",
+  "genericQuotientSmoothnessWitness": {
+    "alpha": 1,
+    "beta": 0,
+    "coverGradientBounds": [
+      "24/7",
+      "25/14",
+      "1/2",
+      "1",
+      "1"
+    ],
+    "branchDerivative": "9*P**2",
+    "weights": [
+      1,
+      1,
+      1,
+      2,
+      2
+    ],
+    "degree": 6,
+    "anticanonicalIndex": 1,
+    "ambientQuotientPoints": 3,
+    "quotientType": "1/2(1,1,1)"
+  },
+  "originalConicDefect": "k**5*u**5*v**7/7 + k*u**11*v/14 + u**2*v**10/14"
+}

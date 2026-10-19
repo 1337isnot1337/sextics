@@ -368,6 +368,8 @@ An open atlas entry means that its exact existence statement has no accepted Lea
 | Target | Structure and remaining task |
 | --- | --- |
 | [Holdout · character-separating bundle](#case/holdout-bundle) | Existence follows from §4.6 by combining the cover and a diagonal quotient. Construct the missing companion field or formalize the support argument. |
+| [Moving branch](#case/holdout-moving-branch) | A mixed sextic term makes the Fermat base depend on an active coordinate. The fixed-base cover, exchange, and trace construction no longer applies unchanged. |
+| [Ternary deformation](#case/holdout-ternary-deformation) | The cover and geometric support persist, but the explicit conic seed is no longer a curve on the quotient. Construct a replacement family or formalize the geometric argument. |
 | [Reflection · coupled Fano quotient](#case/reflection-coupled-fano) | Existence follows from §3.3. Compute a support or rational field on a coupled sextic with one serving reflection. |
 | [Cyclic triple cover · Fano density](#case/cyclic-triple-fano) | Existence follows from §3.4. Make the weighted-Fano density construction explicit for an order-three cover. |
 | [Split ternaries · third-order pole](#case/split-ternary-q2) | Existence follows from the split theorem at every positive pole order. Construct the full third-order-pole certificate or formalize that support argument. |
@@ -380,7 +382,7 @@ An open atlas entry means that its exact existence statement has no accepted Lea
 | [One reflection · skew coupling](#case/one-reflection-skew) | A skew term breaks both the physical exchanges of the binary-cubic construction and the auxiliary exchange of the equal-coefficient cover. A replacement must respect the changed equation. |
 | [Four plus two · suspension remainder](#case/four-plus-two-residual) | The decomposition is \(4+2\), rather than \(3+3\), and the target lies outside the two visible reflection sectors. |
 
-The bundle, reflection, cyclic-cover, split-ternary, and crossed-ternary targets have geometric existence proofs; the book also explains finite algebraic procedures in principle. Their atlas entries ask for a concrete certificate or a formal proof. For the other targets in the table, the specified constructions do not supply the selected class. This is not an assertion that every possible method has been ruled out.
+The bundle, ternary-deformation, reflection, cyclic-cover, split-ternary, and crossed-ternary targets have geometric existence proofs; the book also explains finite algebraic procedures in principle. Their atlas entries ask for a concrete certificate or a formal proof. For the other targets in the table, the specified constructions do not supply the selected class. This is not an assertion that every possible method has been ruled out.
 
 The [broken-reflection certificate](#case/quadric-contact-broken) and the Fermat-cover certificate illustrate complementary improvements: changing the supporting geometry can solve a target excluded by an earlier denominator or density map. The general theorem sought in §4.4 is stronger still: one nonzero support class in a family dominating the full even-sextic parameter space. Complete target coverage on one special variety does not by itself supply that family.
 
