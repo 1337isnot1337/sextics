@@ -278,13 +278,37 @@
   "slice": "slices/holdout-all-six.json",
   "rationale": "why.md",
   "provenanceFile": "provenance.json",
-  "formalStatus": "unproved",
-  "status": "open",
-  "evidenceKind": "none",
-  "certificateAvailable": false,
+  "formalStatus": "proved",
+  "status": "solved",
+  "evidenceKind": "existence-proof",
+  "certificateAvailable": true,
   "content": {
-    "why": "data/holdout-all-six/why.html"
+    "why": "data/holdout-all-six/why.html",
+    "solution": "data/holdout-all-six/solution.html"
   },
-  "witnessAvailability": "missing",
-  "draftDisplayStatus": "open"
+  "pullRequest": {
+    "number": 135,
+    "url": "https://github.com/hodge-computer/sextics/pull/135",
+    "headCommit": "4420285f7ffdaca1c58b75bebd42a68e61cd9179",
+    "baseCommit": "b774bb97fd86c75aa9b4fbd5a65c55490e7cf9e5",
+    "mergeCommit": "aab875c369a4da0b100f3ee7dc396fa33d6c82d6"
+  },
+  "certificate": {
+    "proofSource": "data/holdout-all-six/Solution.lean"
+  },
+  "witnessAvailability": "lean-source",
+  "leanVerification": {
+    "formalStatus": "proved",
+    "status": "accepted",
+    "proofFile": "data/holdout-all-six/Solution.lean",
+    "receipt": "data/holdout-all-six/acceptance.json",
+    "theorem": "Submission.certificate",
+    "checker": "Lean (version 4.33.0, x86_64-unknown-linux-gnu, commit d8b18978322de05a8f3dba51ef03cf5461676c17, Release)"
+  },
+  "credit": {
+    "githubLogin": "fqlx",
+    "origin": "contribution",
+    "awardedAt": "2026-10-19T19:10:39Z"
+  },
+  "draftDisplayStatus": "solved"
 }
