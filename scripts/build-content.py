@@ -114,7 +114,9 @@ for rid in catalogue['instanceIds']:
         record['content']['solution'] = f'data/{rid}/solution.html'
         emit(folder / 'solution.html', render(prose(local_path(solution['explanation'], folder)), root=ROOT, source_path=local_path(solution['explanation'], folder)))
         dump(folder / 'solution.json', solution)
-        credits.append({'instanceId': rid, **record['credit']})
+        accepted = solution['acceptedAt']
+        accepted = accepted.isoformat() if isinstance(accepted, (date, datetime)) else accepted
+        credits.append({'instanceId': rid, **record['credit'], 'acceptedAt': accepted})
     if not record['certificateAvailable']:
         record['render'].pop('divisorTerms', None)
         record['witnessAvailability'] = 'missing'

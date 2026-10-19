@@ -9,14 +9,19 @@ function rank(data,records){
     if(typeof login!=='string'||! /^[a-z\d](?:[a-z\d-]{0,37}[a-z\d])?$/i.test(login))throw new Error('Invalid account.');
     const record=known.get(credit.instanceId),key=login.toLowerCase();
     if(!record||!record.certificateAvailable||record.status!=='solved'||record.formalStatus!=='proved'||record.credit?.githubLogin.toLowerCase()!==key)throw new Error('Credit does not match the instance.');
-    if(!accounts.has(key))accounts.set(key,{githubLogin:login,solves:new Set(),formalSolves:new Set(),baseline:new Set()});
-    const account=accounts.get(key);account.solves.add(record.id);
+    if(!accounts.has(key))accounts.set(key,{githubLogin:login,solves:new Set(),formalSolves:new Set(),baseline:new Set(),scoreReachedAt:0});
+    const account=accounts.get(key);
+    if(!account.solves.has(record.id)){
+      const acceptedAt=Date.parse(credit.acceptedAt);
+      // Older cached exports lack dates; keep them usable until refreshed.
+      account.scoreReachedAt=Math.max(account.scoreReachedAt,Number.isFinite(acceptedAt)?acceptedAt:Infinity);
+    }
+    account.solves.add(record.id);
     if(credit.origin==='starting-example')account.baseline.add(record.id);
     if(record.formalStatus==='proved')account.formalSolves.add(record.id);
   }
-  const rows=[...accounts.values()].filter(a=>a.solves.size).map(a=>({githubLogin:a.githubLogin,score:a.solves.size,formalScore:a.formalSolves.size,startingExamples:a.baseline.size,instanceIds:[...a.solves]})).sort((a,b)=>b.score-a.score||a.githubLogin.toLowerCase().localeCompare(b.githubLogin.toLowerCase(),'en'));
-  let rank=0;
-  return rows.map((row,i)=>{if(i===0||row.score!==rows[i-1].score)rank=i+1;return {...row,rank};});
+  const rows=[...accounts.values()].filter(a=>a.solves.size).map(a=>({githubLogin:a.githubLogin,score:a.solves.size,formalScore:a.formalSolves.size,startingExamples:a.baseline.size,instanceIds:[...a.solves],scoreReachedAt:a.scoreReachedAt})).sort((a,b)=>b.score-a.score||a.scoreReachedAt-b.scoreReachedAt||a.githubLogin.toLowerCase().localeCompare(b.githubLogin.toLowerCase(),'en'));
+  return rows.map((row,i)=>({...row,rank:i+1}));
 }
 window.HodgeLeaderboard=Object.freeze({rank});
 })();
