@@ -74,6 +74,8 @@
     "four-plus-two-residual",
     "quadric-contact-residual",
     "one-reflection-y2-sector",
-    "one-reflection-skew"
+    "one-reflection-skew",
+    "holdout-moving-branch",
+    "holdout-ternary-deformation"
   ]
 }
