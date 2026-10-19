@@ -760,15 +760,20 @@
     {
       "id": "holdout",
       "title": "The holdout",
-      "status": "open",
-      "formalStatus": "unproved",
-      "evidenceKind": "none",
-      "certificateAvailable": false,
+      "status": "solved",
+      "formalStatus": "proved",
+      "evidenceKind": "existence-proof",
+      "certificateAvailable": true,
       "visibility": "navigation",
-      "draftDisplayStatus": "open",
+      "draftDisplayStatus": "solved",
       "category": "Challenge instances",
       "q": 1,
-      "path": "data/holdout/record.json"
+      "path": "data/holdout/record.json",
+      "credit": {
+        "githubLogin": "fqlx",
+        "origin": "contribution",
+        "awardedAt": "2026-10-19T16:51:53Z"
+      }
     },
     {
       "id": "holdout-p-y14",
