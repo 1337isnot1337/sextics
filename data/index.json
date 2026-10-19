@@ -850,15 +850,20 @@
     {
       "id": "holdout-x13-y13",
       "title": "Holdout · second cubic",
-      "status": "open",
-      "formalStatus": "unproved",
-      "evidenceKind": "none",
-      "certificateAvailable": false,
+      "status": "solved",
+      "formalStatus": "proved",
+      "evidenceKind": "existence-proof",
+      "certificateAvailable": true,
       "visibility": "navigation",
-      "draftDisplayStatus": "open",
+      "draftDisplayStatus": "solved",
       "category": "Challenge instances",
       "q": 1,
-      "path": "data/holdout-x13-y13/record.json"
+      "path": "data/holdout-x13-y13/record.json",
+      "credit": {
+        "githubLogin": "fqlx",
+        "origin": "contribution",
+        "awardedAt": "2026-10-19T19:11:10Z"
+      }
     },
     {
       "id": "holdout-x0-y03-y12",
