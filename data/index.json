@@ -778,15 +778,20 @@
     {
       "id": "holdout-p-y14",
       "title": "Holdout · quartic spectator",
-      "status": "open",
-      "formalStatus": "unproved",
-      "evidenceKind": "none",
-      "certificateAvailable": false,
+      "status": "solved",
+      "formalStatus": "proved",
+      "evidenceKind": "existence-proof",
+      "certificateAvailable": true,
       "visibility": "navigation",
-      "draftDisplayStatus": "open",
+      "draftDisplayStatus": "solved",
       "category": "Challenge instances",
       "q": 1,
-      "path": "data/holdout-p-y14/record.json"
+      "path": "data/holdout-p-y14/record.json",
+      "credit": {
+        "githubLogin": "fqlx",
+        "origin": "contribution",
+        "awardedAt": "2026-10-19T19:10:43Z"
+      }
     },
     {
       "id": "holdout-p3",
