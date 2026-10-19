@@ -832,15 +832,20 @@
     {
       "id": "holdout-x12-p-y02",
       "title": "Holdout · mixed quadratic",
-      "status": "open",
-      "formalStatus": "unproved",
-      "evidenceKind": "none",
-      "certificateAvailable": false,
+      "status": "solved",
+      "formalStatus": "proved",
+      "evidenceKind": "existence-proof",
+      "certificateAvailable": true,
       "visibility": "navigation",
-      "draftDisplayStatus": "open",
+      "draftDisplayStatus": "solved",
       "category": "Challenge instances",
       "q": 1,
-      "path": "data/holdout-x12-p-y02/record.json"
+      "path": "data/holdout-x12-p-y02/record.json",
+      "credit": {
+        "githubLogin": "fqlx",
+        "origin": "contribution",
+        "awardedAt": "2026-10-19T19:11:06Z"
+      }
     },
     {
       "id": "holdout-x13-y13",
