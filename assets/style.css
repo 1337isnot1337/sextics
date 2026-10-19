@@ -171,6 +171,11 @@ dialog.solution-dialog{max-width:920px;width:calc(100% - 44px);max-height:88dvh;
 
 /* A padded, rounded highlight keeps rank and score comfortably inside the row. */
 .leaderboard-table{border-collapse:separate;border-spacing:0 8px}
+.leaderboard-table tbody tr{position:relative}
+.leaderboard-table .github-account::after{content:"";position:absolute;inset:0;border-radius:10px}
+.leaderboard-table .github-account:hover::after{background:#c2d4f608}
+.leaderboard-table .github-account:focus-visible{outline:none}
+.leaderboard-table .github-account:focus-visible::after{outline:2px solid var(--acid);outline-offset:-2px}
 .leaderboard-table th:first-child,.leaderboard-table td:first-child{padding-left:18px}
 .leaderboard-table th:last-child,.leaderboard-table td:last-child{padding-right:18px}
 .leaderboard-table tbody td{transition:background 1s,box-shadow 1s}

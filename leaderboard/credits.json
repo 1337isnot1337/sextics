@@ -3,16 +3,16 @@
   "basis": "accepted-proofs",
   "credits": [
     {
-      "instanceId": "quadric-contact-broken",
-      "githubLogin": "HeadOfNaps",
-      "origin": "contribution",
-      "awardedAt": "2026-10-19T02:02:43Z"
-    },
-    {
       "instanceId": "fermat-pair-rational-d4-strict",
       "githubLogin": "benediamond",
       "origin": "contribution",
       "awardedAt": "2026-10-15T16:52:57Z"
+    },
+    {
+      "instanceId": "fermat-q2",
+      "githubLogin": "benediamond",
+      "origin": "contribution",
+      "awardedAt": "2026-10-15T16:53:59Z"
     },
     {
       "instanceId": "xtype-sparse-rational-1m142",
@@ -225,12 +225,6 @@
       "awardedAt": "2026-10-15T16:53:58Z"
     },
     {
-      "instanceId": "fermat-q2",
-      "githubLogin": "benediamond",
-      "origin": "contribution",
-      "awardedAt": "2026-10-15T16:53:59Z"
-    },
-    {
       "instanceId": "block-q2",
       "githubLogin": "benediamond",
       "origin": "contribution",
@@ -259,6 +253,12 @@
       "githubLogin": "benediamond",
       "origin": "contribution",
       "awardedAt": "2026-10-15T16:54:08Z"
+    },
+    {
+      "instanceId": "quadric-contact-broken",
+      "githubLogin": "HeadOfNaps",
+      "origin": "contribution",
+      "awardedAt": "2026-10-19T02:02:43Z"
     }
   ]
 }

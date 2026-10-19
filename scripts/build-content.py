@@ -3,14 +3,13 @@
 import argparse
 from datetime import date, datetime
 from fractions import Fraction
-import html
 import hashlib
 import json
 import re
 import sys
 from pathlib import Path
 
-import mistune
+from content import render
 import yaml
 sys.path.insert(0, str(Path(__file__).resolve().parent / "proposals"))
 from acceptance import validate_solution
@@ -58,40 +57,6 @@ def write_output(path, text):
 def dump(path, value):
     emit(path, json.dumps(value, ensure_ascii=False, indent=2) + '\n')
 
-def slug(text):
-    return re.sub(r'[^\w\s-]', '', text.lower()).strip().replace(' ', '-')
-
-class Renderer(mistune.HTMLRenderer):
-    def heading(self, text, level):
-        return f'<h{level} id="{html.escape(slug(re.sub("<[^>]*>", "", text)))}">{text}</h{level}>\n'
-
-markdown = mistune.create_markdown(renderer=Renderer(escape=True), plugins=['table', 'strikethrough'])
-
-def render(source):
-    # Protect TeX before Markdown interprets underscores, backslashes, or table bars.
-    formulas = []
-    def keep(match):
-        raw = match.group(0)
-        display = raw.startswith('$$') or raw.startswith('\\[')
-        tex = raw[2:-2].strip()
-        formulas.append((tex, display))
-        token = f'HODGEMATHTOKEN{len(formulas)-1}END'
-        return '\n\n' + token + '\n\n' if display else token
-    source = re.sub(r'\$\$[\s\S]*?\$\$|\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)', keep, source)
-    result = markdown(source)
-    # Heading links must depend on the formula, not its position in the document.
-    def heading_id(match):
-        identifier = re.sub(r'hodgemathtoken(\d+)end',
-                            lambda token: slug(formulas[int(token[1])][0]), match[1])
-        return f'id="{identifier}"'
-    result = re.sub(r'id="([^"]*)"', heading_id, result)
-    for i, (tex, display) in enumerate(formulas):
-        token = f'HODGEMATHTOKEN{i}END'
-        tag = 'div' if display else 'span'
-        node = f'<{tag} class="{"page-equation" if display else "inline-math"}" data-math{" data-display" if display else ""}>{html.escape(tex)}</{tag}>'
-        result = result.replace(f'<p>{token}</p>', node) if display else result
-        result = result.replace(token, node)
-    return result
 
 catalogue = json.loads((ROOT / 'data/catalogue.json').read_text())
 summaries = []
@@ -113,7 +78,7 @@ for rid in catalogue['instanceIds']:
     record['certificateAvailable'] = False
     record['formalStatus'] = 'unproved'
     record['content'] = {'why': f'data/{rid}/why.html'}
-    emit(folder / 'why.html', render(prose(local_path(record['rationale'], folder))))
+    emit(folder / 'why.html', render(prose(local_path(record['rationale'], folder)), root=ROOT, source_path=local_path(record['rationale'], folder)))
     if (folder / 'solution.rec').is_file():
         solution = yaml.load((folder / 'solution.rec').read_text(), Loader=yaml.CSafeLoader)
         validate_solution(ROOT, rid, solution)
@@ -147,7 +112,7 @@ for rid in catalogue['instanceIds']:
         solution['submittedAt'] = submitted
         record['credit'] = {'githubLogin': login, 'origin': solution['creditOrigin'], 'awardedAt': submitted}
         record['content']['solution'] = f'data/{rid}/solution.html'
-        emit(folder / 'solution.html', render(prose(local_path(solution['explanation'], folder))))
+        emit(folder / 'solution.html', render(prose(local_path(solution['explanation'], folder)), root=ROOT, source_path=local_path(solution['explanation'], folder)))
         dump(folder / 'solution.json', solution)
         credits.append({'instanceId': rid, **record['credit']})
     if not record['certificateAvailable']:

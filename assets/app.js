@@ -122,12 +122,15 @@ function setExploring(value,fromRenderer=false){
   if(!fromRenderer)state.renderer?.setMode(value?'free':'parallax');
   if(!value&&state.lastFocus?.isConnected)state.lastFocus.focus({preventScroll:true});
 }
+function instancesInGroup(key,records=state.records){
+  return records.filter(r=>group(r)===key).sort((a,b)=>Number(b.number)-Number(a.number));
+}
 function buildIndex(){
   const query=$('caseSearch').value.toLowerCase().trim();
   $('atlasColophon').hidden=!!query||!state.records.length;
   const filtered=state.records.filter(r=>(`${r.id} ${r.title} ${r.category||''} ${r.family||''} ${r.evidenceKind||''}`).toLowerCase().includes(query));
   $('caseIndex').innerHTML=groupOrder.map(key=>{
-    const rows=filtered.filter(r=>group(r)===key);
+    const rows=instancesInGroup(key,filtered);
     if(!rows.length&&key!=='solved')return '';
     if(!rows.length&&query)return '';
     return `<section class="index-section" aria-label="${escape(groupNames[key])}"><h2 class="index-heading"><span class="status-dot ${key==='open'?'open':''}"></span>${escape(groupNames[key])}<span class="index-count">${rows.length.toString().padStart(2,'0')}</span></h2>${rows.map(r=>`<div class="case-index-row"><a class="case-link${state.current===r.id?' active':''}" href="#case/${encodeURIComponent(r.id)}" ${state.current===r.id?'aria-current="page"':''}><span class="case-number">${escape(r.number)}</span><span class="case-index-title"><span class="case-name">${escape(r.title)}</span>${r.id==='holdout'||r.featured?`<span class="case-family">${escape(r.subtitle||r.category||'A central open target')}</span>`:''}</span></a><a class="case-discussion-link" href="#case/${encodeURIComponent(r.id)}/discussion" data-discussion="${escape(r.id)}" data-title="${escape(r.title)}" aria-label="Open discussion for ${escape(r.title)}"><svg viewBox="0 0 30 25" aria-hidden="true"><path d="M6 2.5h18a3 3 0 0 1 3 3v11a3 3 0 0 1-3 3h-8l-6 4v-4H6a3 3 0 0 1-3-3v-11a3 3 0 0 1 3-3Z"/></svg><span aria-hidden="true">—</span></a></div>`).join('')}${!rows.length?'<p class="index-empty">Reserved for verified Lean proofs.</p>':''}</section>`;
@@ -182,7 +185,7 @@ function definitionsMarkup(r){
   return `<div class="definitions">${values.map(d=>math(polynomialTex(typeof d==='string'?d:d.latex||''),true)).join('')}</div>`;
 }
 function caseNavigation(record){
-  const ordered=groupOrder.flatMap(key=>state.records.filter(r=>group(r)===key));
+  const ordered=groupOrder.flatMap(key=>instancesInGroup(key));
   const index=ordered.findIndex(r=>r.id===record.id);
   if(index<0)return '';
   const link=(target,direction,label,arrow)=>target?`<div class="case-pagination-entry ${direction}"><a class="page-next" href="#case/${encodeURIComponent(target.id)}" rel="${direction}" aria-label="${label} instance: ${escape(target.title)}">${direction==='prev'?`<span aria-hidden="true">${arrow}</span>`:''}${label}${direction==='next'?`<span aria-hidden="true">${arrow}</span>`:''}</a><p class="case-pagination-title">${escape(target.title)}</p></div>`:'';
@@ -230,7 +233,7 @@ async function loadCatalogue(){
   if(responses.some(r=>!r.ok))throw new Error('Catalogue content unavailable');
   const [data,accounts,chapters]=await Promise.all(responses.map(r=>r.json()));
   state.accounts=new Map(accounts.accounts.map(a=>[a.githubLogin.toLowerCase(),a]));state.chapters=chapters.pages;state.overview=chapters.overview;buildChapterIndex();
-  state.records=data.records.filter(r=>r.visibility!=='hidden'&&r.visibility!=='backend').map((r,i)=>({...r,number:String(i+1).padStart(2,'0')}));
+  state.records=data.records.map((r,i)=>({...r,number:String(i+1).padStart(2,'0')})).filter(r=>r.visibility!=='hidden'&&r.visibility!=='backend');
   $('totalCount').textContent=`${state.records.length} instances`;$('openCount').textContent=state.records.filter(r=>group(r)==='open').length;$('solvedCount').textContent=state.records.filter(hasCertificate).length;
 }
 async function restorePreview(){

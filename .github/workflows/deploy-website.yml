@@ -11,6 +11,7 @@ on:
       - discussions/**
       - docs/**
       - scripts/build-content.py
+      - scripts/content.py
       - scripts/validate-records.py
       - scripts/check-content.py
       - scripts/requirements-content.txt

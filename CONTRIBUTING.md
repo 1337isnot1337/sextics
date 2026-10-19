@@ -48,7 +48,7 @@ The manifest has exactly these fields when no JSON witness is submitted:
 
 With `witness.json`, add exactly one further field: `"witnessTheorem": "Submission.witness"`.
 
-The trusted publisher adds `acceptance.json` and derives `solution.rec`, the rendered content, the atlas status, and leaderboard credit **after** an eligible merge. Do not submit these files or manually edit generated JSON/HTML. Attribution, PR URLs, and acceptance dates come from the reviewed GitHub event, not editable manifest fields.
+The trusted publisher adds `acceptance.json` and derives `solution.rec`, the rendered content, the atlas status, and leaderboard credit **after** an eligible merge. Do not submit these files or manually edit generated JSON/HTML. Attribution, PR URLs, and acceptance dates come from the reviewed GitHub event, not editable manifest fields. After merging, the PR's separate `solve/publication` check reports whether acceptance and leaderboard updates were recorded, with a link to any failure. Website deployment follows successful publication.
 
 ### Protected Lean statement
 
@@ -108,6 +108,10 @@ Limits are in `.github/solve-policy.json`: 64 files, 16 MiB of source, a 30-minu
 
 Write `solution.md` so the argument is understandable without reading Lean. Describe the main idea, the witness or existence argument, all side conditions, and the correspondence to important Lean definitions and lemmas. For a construction, explain `D`, the six numerators, and the quotient, including nonvanishing, degrees, relative primality, and the cleared identity. Use LaTeX for formulas. Identify where previous human mathematical results enter the proof and credit their authors, along with collaborators and relevant AI assistance.
 
+Links to local files are relative to `data/<instance-id>/solution.md`. For example, write `[Lean proof](Solution.lean)`, `[motivation](why.md)`, or `[helper](Helper.lean#L20)`. The file must exist in the repository or be included in your proposal. The website links motivation back to the instance and source artifacts to their readable GitHub pages. Existing repository-root links such as `data/<instance-id>/witness.json` also remain supported. Use full HTTPS URLs for papers, GitHub discussions, and external reproduction packets; verify those external links yourself. Do not use local-machine paths or links to files you have not supplied.
+
+Use `\(...\)` for inline mathematics and `\[...\]` or `$$...$$` for display mathematics in `solution.md`. The PR's **Validate explanation links and displayed mathematics** check uses the same renderer and KaTeX validation as publication. It runs before Lean and names any missing local link or invalid formula. External websites are not fetched by this check.
+
 The direct PR author receives the solve credit under their own GitHub account. Each distinct accepted instance earns one point. Documentation and other contributions retain their authorship but do not independently earn a solve point.
 
 ### PR title and description
@@ -120,6 +124,13 @@ Use a title such as `Solve <instance-id>: <method>`. Complete the [PR template](
 - **Solve checklist:** confirm the allowed-file boundary, required files, exact theorem, optional witness binding, and unchanged protected files.
 
 ### Local verification
+
+Check the explanation first (Python content dependencies and Node.js are required; no Lean build is needed):
+
+```sh
+python3 -m pip install -r scripts/requirements-content.txt
+python3 scripts/proposals/check-explanation.py --instance your-instance-id --output /tmp/hodge-explanation-check
+```
 
 Install Python 3.11 with `scripts/requirements-content.txt` and the pinned toolchain in `formal/lean/lean-toolchain`. Keep the committed Lake manifest. Prepare dependencies once:
 

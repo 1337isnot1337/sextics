@@ -16,7 +16,7 @@ The loopback preview watches content and UI files, rebuilds valid edits, and ref
 
 ## Catalogue curation
 
-The catalogue lists fixed instances of the existence problem in `formal/README.md`. `data/catalogue.json` determines navigation order; each instance has a stable ID, exact statement, motivation, mathematical context, and saved visualization.
+The catalogue lists fixed instances of the existence problem in `formal/README.md`. `data/catalogue.json` determines displayed instance numbers; append new instances to preserve existing numbers. Solving or hiding an instance does not renumber other entries. The sidebar shows both open and solved targets by descending number. Previous/next navigation follows that same order. These numbers are presentation labels; proofs, discussion mappings, and acceptance records use stable instance IDs. Each instance has an exact statement, motivation, mathematical context, and saved visualization.
 
 A target is open until a checked and merged PR has a validated acceptance receipt. The publisher derives solved status, contributor attribution, and leaderboard credit from that receipt. Solution files are first introduced by their solve PR and remain beside the target after acceptance.
 
@@ -39,6 +39,8 @@ Solver portraits link to the contributor's leaderboard entry; the construction h
 Solve contributions are direct GitHub PRs. The protected checker validates the exact target and proof, the owner signs off on the checked commit, and the owner merges it. A separate trusted publisher records acceptance and rebuilds the atlas and leaderboard. No workflow merges a PR automatically.
 
 ### Protected checks
+
+Before preparing Lean, CI renders the proposed `solution.md` with the publication renderer, validates local file links against the protected checkout plus proposed files, and checks formulas with the bundled KaTeX. This check does not fetch external URLs or execute proposal code. `scripts/content.py` resolves ordinary Markdown links relative to the instance folder; existing repository-root artifact links remain supported.
 
 `solve-proposal.yml` uses trusted base-branch code. Draft PRs wait until marked ready, or until the owner explicitly dispatches a check. Pinned protected Lean dependencies are cached between runs; each submitted proof is still compiled and checked independently. It fetches the PR as data and freezes the base and head commit IDs. A solve may add only permitted proof, witness, and explanation files to one existing `data/<id>/` folder. Existing target, context, infrastructure, and generated files are protected. A mixed solve/maintenance change fails even with owner approval; split it into separate PRs.
 
@@ -72,7 +74,7 @@ Branch protection or repository rulesets can require `solve/lean`, up-to-date br
 - The same target and all proof, witness, and explanation hashes in the merged checkout.
 - Contributor attribution matching the PR author.
 
-It then writes `data/<id>/acceptance.json`, derives `solution.rec`, and runs the content builder and validators. The workflow commits these derived files to main. A failed or interrupted publication leaves no accepted solve in published output; rerun the workflow once the cause is resolved. The generated acceptance record is durable even after transient CI artifacts expire.
+The PR receives a separate `solve/publication` status linking to this workflow. It reports pending, successful, or failed publication independently of `solve/lean`, so a post-merge failure is visible from the PR. It then writes `data/<id>/acceptance.json`, derives `solution.rec`, and runs the content builder and validators. The workflow commits these derived files to main. A failed or interrupted publication leaves no accepted solve in published output; rerun the workflow once the cause is resolved. The generated acceptance record is durable even after transient CI artifacts expire.
 
 Version 2 verification reports separate proof checking from owner authorization; the acceptance receipt records both. Version 1 reports retain their original meaning: a successful run already required owner authorization. Existing accepted solves and publication retries remain valid under that earlier evidence.
 

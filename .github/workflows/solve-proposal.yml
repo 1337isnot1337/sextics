@@ -107,6 +107,14 @@ jobs:
           AUTHOR: ${{ steps.context.outputs.author }}
           PR: ${{ steps.context.outputs.pr }}
         run: python3 scripts/proposals/check.py --base "$BASE" --head "$HEAD" --author "$AUTHOR" --pr "$PR" --output /tmp/proposal-report --structure-only
+      - name: Validate explanation links and displayed mathematics
+        id: explanation
+        if: steps.proposal.outputs.solve == 'true'
+        env:
+          BASE: ${{ steps.context.outputs.base }}
+          HEAD: ${{ steps.context.outputs.head }}
+          AUTHOR: ${{ steps.context.outputs.author }}
+        run: python3 scripts/proposals/check-explanation.py --base "$BASE" --head "$HEAD" --author "$AUTHOR" --output /tmp/proposal-report
       - name: Make room for Lean and its dependency cache
         if: steps.proposal.outputs.solve == 'true'
         run: |
@@ -195,6 +203,7 @@ jobs:
         env:
           CONTEXT: ${{ steps.context.outcome }}
           STRUCTURE: ${{ steps.structure.outcome }}
+          EXPLANATION: ${{ steps.explanation.outcome }}
           PROOF: ${{ steps.proof.outcome }}
           AUTHORIZATION: ${{ steps.authorization.outcome }}
           FRESHNESS: ${{ steps.freshness.outcome }}
@@ -205,6 +214,8 @@ jobs:
             message='The PR or main no longer matches the scheduled run. Read the commit-resolution error; if main advanced, start a fresh Solve proposal run on main.'
           elif [ "$STRUCTURE" = failure ]; then
             message='Submission format validation failed before Lean ran. See the structure-check error and CONTRIBUTING.md for the permitted files and manifest.'
+          elif [ "$EXPLANATION" = failure ]; then
+            message='The solution explanation contains a broken local link or invalid displayed mathematics. Read the explanation-check error for the file and link/formula to fix. Lean has not run.'
           elif [ "$PROOF" = failure ]; then
             message='Proof verification did not complete successfully. See the Lean/kernel/audit error and the preserved solve artifact for compiler logs; review approval cannot override this failure.'
           elif [ "$AUTHORIZATION" = failure ] && [ "$IS_SOLVE" != true ]; then

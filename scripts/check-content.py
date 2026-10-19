@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Check rendered math, chapter navigation, and local links without a browser."""
 from html.parser import HTMLParser
+import argparse
 from pathlib import Path
 import json
 import re
@@ -8,6 +9,13 @@ import subprocess
 from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--explanation', type=Path, help='Also check a proposed, rendered explanation before acceptance')
+args = parser.parse_args()
+
+def label(path):
+    return str(path.relative_to(ROOT)) if path.is_relative_to(ROOT) else path.name
+
 class Content(HTMLParser):
     def __init__(self, path):
         super().__init__(); self.path=path; self.math=[]; self.links=[]; self.ids=set(); self.current=None
@@ -18,7 +26,7 @@ class Content(HTMLParser):
         if 'id' in a: self.ids.add(a['id'])
     def handle_endtag(self,tag):
         if self.current is not None and tag in ('span','div'):
-            self.math.append({'file':str(self.path.relative_to(ROOT)), 'tex':''.join(self.current)})
+            self.math.append({'file':label(self.path), 'tex':''.join(self.current)})
             self.current=None
     def handle_data(self,text):
         if self.current is not None: self.current.append(text)
@@ -26,6 +34,8 @@ class Content(HTMLParser):
 index=json.loads((ROOT/'docs/index.json').read_text())
 pages={p['id']:p for p in index['pages']}
 files=list((ROOT/'data').glob('*/*.html'))+list((ROOT/'docs').glob('*.html'))+[ROOT/'index.html']
+if args.explanation:
+    files.append(args.explanation.resolve())
 contents={}
 for p in files:
     c=Content(p);c.feed(p.read_text());contents[p]=c

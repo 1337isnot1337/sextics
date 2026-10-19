@@ -22,6 +22,7 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/'scripts/proposals'))
 from acceptance import accepted_sources, solution_record, statement_hash
+from content import render
 import publish as publisher
 
 RID = 'test-example'
@@ -152,6 +153,41 @@ class ContentUpdates(unittest.TestCase):
         self.assertIn('Missing solution explanation', self.run_build(success=False).stderr)
         (self.root/'data'/RID/'solution.md').unlink()
         self.run_build(success=False)
+
+    def test_relative_explanation_links_render_in_the_instance_context(self):
+        self.receipt_fixture()
+        self.write(f'data/{RID}/solution.md',
+                   '[Motivation](why.md) and [proof](Solution.lean#L1).\n\n'
+                   '[data](data/test-example/witness.json)')
+        self.run_build()
+        rendered=(self.root/f'data/{RID}/solution.html').read_text()
+        self.assertIn('href="#case/test-example"',rendered)
+        self.assertIn('href="https://github.com/hodge-computer/sextics/blob/main/data/test-example/Solution.lean#L1"',rendered)
+        self.assertIn('href="data/test-example/witness.json"',rendered)
+
+    def test_preflight_resolves_added_files_before_checkout_and_rejects_missing_links(self):
+        source=Path('data')/RID/'solution.md'
+        proof=source.parent/'Solution.lean'
+        text='[proof][src]\n\n[src]: Solution.lean#L1'
+        with self.assertRaisesRegex(ValueError,'solution.md: missing local link Solution.lean'):
+            render(text,root=self.root,source_path=source)
+        rendered=render(text,root=self.root,source_path=source,extra_files=[proof])
+        self.assertIn('/data/test-example/Solution.lean#L1',rendered)
+        self.assertFalse((self.root/proof).exists())
+        for link in ('missing.md','../../../../etc/passwd','%2e%2e/%2e%2e/%2e%2e/etc/passwd'):
+            with self.subTest(link=link),self.assertRaisesRegex(ValueError,'missing local link'):
+                render('[bad]('+link+')',root=self.root,source_path=source,extra_files=[proof])
+
+    def test_explanation_preflight_reports_invalid_formula(self):
+        path=self.root/'candidate-solution.html'
+        for formula,valid in [(r'\(D=1\)',True),(r'\(\undefinedHodgeCommand\)',False)]:
+            path.write_text(render(formula))
+            result=subprocess.run([sys.executable,str(ROOT/'scripts/check-content.py'),
+                                   '--explanation',str(path)],capture_output=True,text=True)
+            self.assertEqual(result.returncode==0,valid,result.stdout+result.stderr)
+            if not valid:
+                self.assertIn('candidate-solution.html',result.stderr)
+                self.assertIn('undefinedHodgeCommand',result.stderr)
 
     def test_added_proof_helper_requires_reverification(self):
         self.receipt_fixture()

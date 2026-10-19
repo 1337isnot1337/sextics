@@ -14,7 +14,7 @@ permissions:
   contents: write
   actions: read
   pull-requests: read
-  statuses: read
+  statuses: write
 
 concurrency:
   group: publish-accepted-solves
@@ -35,7 +35,37 @@ jobs:
         with:
           python-version: '3.11'
       - run: python3 -m pip install -r scripts/requirements-content.txt
+      - name: Identify the merged solve for publication status
+        id: context
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number || inputs.pr_number }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          [[ "$PR" =~ ^[0-9]+$ ]]
+          gh api "repos/$REPO/pulls/$PR" > /tmp/publish-pr.json
+          python3 - <<'PYCODE'
+          import json, os, re, subprocess
+          pr=json.load(open('/tmp/publish-pr.json'))
+          head=pr['head']['sha']; merge=pr['merge_commit_sha']
+          assert pr['merged'] and all(re.fullmatch(r'[0-9a-f]{40}', sha) for sha in (head,merge))
+          paths=subprocess.check_output(['git','diff','--name-only','--diff-filter=A',merge+'^1',merge],text=True).splitlines()
+          solve=any(re.fullmatch(r'data/[^/]+/proof\.json',path) for path in paths)
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:
+              print('head='+head,file=f)
+              print('solve='+str(solve).lower(),file=f)
+          PYCODE
+      - name: Show publication progress on the solve PR
+        if: steps.context.outputs.solve == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD: ${{ steps.context.outputs.head }}
+          REPO: ${{ github.repository }}
+          RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: gh api "repos/$REPO/statuses/$HEAD" -f state=pending -f context=solve/publication -f description='Publishing the accepted solve and leaderboard credit' -f target_url="$RUN"
       - name: Authenticate the merged PR and protected Lean receipt
+        id: acceptance
         env:
           GH_TOKEN: ${{ github.token }}
           PR: ${{ github.event.pull_request.number || inputs.pr_number }}
@@ -44,6 +74,7 @@ jobs:
           [[ "$PR" =~ ^[0-9]+$ ]]
           python3 scripts/proposals/publish.py --pr "$PR"
       - name: Commit the derived acceptance, atlas, and leaderboard
+        id: commit
         env:
           GH_TOKEN: ${{ github.token }}
           PR: ${{ github.event.pull_request.number || inputs.pr_number }}
@@ -56,3 +87,22 @@ jobs:
           auth=$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)
           # A concurrent change causes a safe rejection; rerun publication from current main.
           git -c "http.https://github.com/.extraheader=AUTHORIZATION: basic $auth" push origin HEAD:main
+      - name: Report publication outcome on the solve PR
+        if: always() && !cancelled() && steps.context.outputs.solve == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD: ${{ steps.context.outputs.head }}
+          REPO: ${{ github.repository }}
+          RESULT: ${{ job.status }}
+          RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          state=failure
+          description='Publication failed; open details for the specific error'
+          if [ "$RESULT" = success ]; then
+            state=success
+            description='Accepted solve recorded; website deployment follows'
+          else
+            echo '::error::The solve has not been published. Read the first failed step for the cause. A successful Lean check does not mean publication completed.'
+          fi
+          printf '### Solve publication\n\n%s. [Workflow details](%s).\n' "$description" "$RUN" >> "$GITHUB_STEP_SUMMARY"
+          gh api "repos/$REPO/statuses/$HEAD" -f state="$state" -f context=solve/publication -f description="$description" -f target_url="$RUN"
