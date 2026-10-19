@@ -1,4 +1,4 @@
-## The first collision character
+# The first collision character
 Here the contact divisor pulls back to
 \[
 D=X_0^2-Y_0^2-X_1^2.

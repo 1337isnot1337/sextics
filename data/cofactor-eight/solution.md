@@ -1,4 +1,4 @@
-## Work in a quadratic–cubic coordinate map
+# Work in a quadratic–cubic coordinate map
 Define
 \[
 C=X_0^2+X_0\cdot X_1+2\cdot X_1^2+X_2^2-2\cdot Y_0^2,

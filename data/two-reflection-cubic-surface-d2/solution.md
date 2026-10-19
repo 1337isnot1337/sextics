@@ -1,4 +1,4 @@
-## A rotation field with a radial denominator
+# A rotation field with a radial denominator
 The denominator and numerator are unusually small:
 \[
 D=4\cdot (X_0^2+Y_0^2),\qquad

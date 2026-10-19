@@ -1,4 +1,4 @@
-## Three contact channels over a cubic algebra
+# Three contact channels over a cubic algebra
 Put \(u=X_0^2\), \(w=Y_0^2\), \(x=X_1^2\), and \(a=u+w\). The active cubic is \(u^3+w^3+x^3+t\cdot u\cdot w\cdot x\), with \(t=-2\). The relevant contact parameters are roots of
 \[
 C^3-t\cdot C^2-4=0.

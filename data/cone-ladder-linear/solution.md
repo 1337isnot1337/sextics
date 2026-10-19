@@ -1,3 +1,5 @@
+# A hyperplane certificate from the contact ladder
+
 ## How this example arose
 
 The mathematical sequence began with contact presentations, rather than a search for a hyperplane denominator for this prescribed target. A cubic-contact construction used \(f=h^2+C\cdot k\). A subsequent quartic construction used \(f=c\cdot e^3+P_4\cdot k_2\), with \(e\) a conic, and the field \(\nabla P_4\times\nabla e\).

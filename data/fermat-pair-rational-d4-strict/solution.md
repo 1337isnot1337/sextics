@@ -1,4 +1,4 @@
-## A quartic cofactor of two sixth powers
+# A quartic cofactor of two sixth powers
 Write \(x=X_0\), \(y=X_1\), and \(B=X_2\cdot Y_0\). The denominator comes from the elementary factorization
 \[
 x^6+y^6=(x^2+y^2)D,\qquad D=x^4-x^2\cdot y^2+y^4.

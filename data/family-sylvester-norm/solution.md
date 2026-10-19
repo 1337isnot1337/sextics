@@ -1,4 +1,4 @@
-## Diagonalize the binary cubic over its Hessian field
+# Diagonalize the binary cubic over its Hessian field
 The first block is \(p(u,v)=u^3+2\cdot u^2\cdot v+3\cdot u\cdot v^2+5\cdot v^3\), where \((u,v)=(X_0^2,Y_0^2)\). For a general binary cubic \(a\cdot u^3+b\cdot u^2\cdot v+c\cdot u\cdot v^2+d\cdot v^3\), use the Hessian quadratic
 \[
 H_p=(3\cdot a\cdot c-b^2)u^2+(9\cdot a\cdot d-b\cdot c)u\cdot v+(3\cdot b\cdot d-c^2)v^2.

@@ -1,4 +1,4 @@
-## An osculating cube for a binary cubic
+# An osculating cube for a binary cubic
 The active cubic is \(p(s)=s^3+s^2+2\cdot s+3\), corresponding to the displayed homogeneous block in \(X_0^2,Y_0^2\). At the family parameter \(\theta=0\), the osculating cube is
 \[
 C=\frac{(2\cdot X_0^2+9\cdot Y_0^2)^3}{243}.

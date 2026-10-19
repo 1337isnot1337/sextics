@@ -1,4 +1,4 @@
-## A quadratic norm in squared coordinates
+# A quadratic norm in squared coordinates
 For the binary block \(X_0^6-2\cdot X_0^4\cdot Y_0^2+Y_0^6\), the compatible target is
 \[
 A=X_0^3\cdot Y_0^2\cdot Y_1-\frac67\cdot X_0\cdot Y_0^4\cdot Y_1.

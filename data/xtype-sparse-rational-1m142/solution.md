@@ -1,4 +1,4 @@
-## A compatible target bundle
+# A compatible target bundle
 Put \(u=X_0^2\), \(w=Y_0^2\). The active binary block is
 \[
 P(u,w)=u^3+u^2\cdot w-\frac14\cdot u\cdot w^2+2\cdot w^3.

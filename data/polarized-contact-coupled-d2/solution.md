@@ -1,4 +1,4 @@
-## A contact field with two first integrals
+# A contact field with two first integrals
 In three variables define
 \[
 r=z_0^3+2\cdot z_0^2\cdot z_1+3\cdot z_0\cdot z_1^2+5\cdot z_1^3,

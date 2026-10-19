@@ -1,4 +1,4 @@
-## A cyclotomic cofactor across blocks
+# A cyclotomic cofactor across blocks
 Let \(L=X_1^2-2\cdot Y_1^2\). The denominator is
 \[
 D=L^2+L\cdot X_2^2+X_2^4.

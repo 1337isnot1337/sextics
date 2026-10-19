@@ -1,4 +1,4 @@
-## A second rational companion
+# A second rational companion
 The active cubic in squared coordinates is \(u^3+2\cdot u^2\cdot w+3\cdot u\cdot w^2+w^3\), and the target is
 \[
 A=X_0^3\cdot Y_0^2\cdot Y_1+\frac97\cdot X_0\cdot Y_0^4\cdot Y_1.

@@ -1,4 +1,4 @@
-## A subset Euler field at pole order two
+# A subset Euler field at pole order two
 Let \(I=\{X_1,X_2\}\) and \(E_I=X_1\partial_{X_1}+X_2\partial_{X_2}\). The denominator is
 \[
 D=E_I(F)=6\cdot (X_1^6+X_2^6).

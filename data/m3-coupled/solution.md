@@ -1,4 +1,4 @@
-## A conic hidden in quadratic coordinates
+# A conic hidden in quadratic coordinates
 Set \(U=X_0^2-X_1^2\), \(W=X_2^2-Y_1^2\), \(r=Y_0\), \(s=Y_2\), and use \(x=X_1^2\), \(y=Y_1^2\) as active coordinates. With \(U,W,r,s\) fixed, the sextic becomes a quadratic polynomial
 \[
 f=a\cdot x^2+h\cdot x\cdot y+b\cdot y^2+c\cdot x+d\cdot y+e.

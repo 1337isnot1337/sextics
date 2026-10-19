@@ -1,4 +1,4 @@
-## A rational norm of two contact factors
+# A rational norm of two contact factors
 Take \(x=X_0\), \(y=X_1\), \(R=Y_0^2+Y_2^2\), and \(B=X_2\cdot Y_1\). The Hesse cofactor in \((x^2,y^2,-R/3)\) gives a quartic denominator over \(\mathbb Q\). Over \(\mathbb Q(\sqrt{-3})\), it splits into two conjugate quadratic factors \(Q_+,Q_-\).
 
 This splitting suggests a logarithmic Hamiltonian

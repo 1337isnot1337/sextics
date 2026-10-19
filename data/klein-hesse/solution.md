@@ -1,4 +1,4 @@
-## Move from Klein monomials to Hesse coordinates
+# Move from Klein monomials to Hesse coordinates
 Define
 \[
 r=X_0\cdot X_1\cdot X_2,\quad U=X_0^3\cdot X_1^2,\quad V=X_1^3\cdot X_2^2,\quad W=X_2^3\cdot X_0^2,\quad p=U+V+W.

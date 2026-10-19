@@ -1,4 +1,4 @@
-## Move the passive variables inside the quadratic map
+# Move the passive variables inside the quadratic map
 Use
 \[
 C=X_0^2+X_0\cdot X_1+2\cdot X_1^2-2\cdot Y_0^2+Y_1^2+Y_2^2,

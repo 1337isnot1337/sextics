@@ -1,4 +1,4 @@
-## Pull back the Hesse cofactor
+# Pull back the Hesse cofactor
 Take \(x=X_0\), \(y=X_2\), \(R=Y_2^2\), and \(B=X_1\cdot Y_1\). In the Hesse identity use \((u,v,w)=(x^2,y^2,-R/3)\). The denominator is the corresponding quartic cofactor
 \[
 D=u^2+v^2+w^2-u\cdot v-u\cdot w-v\cdot w.

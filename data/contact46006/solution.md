@@ -1,4 +1,4 @@
-## Start with a plane contact presentation
+# Start with a plane contact presentation
 In three variables \(z\), the retained sextic has form
 \[
 f=h^2+C\cdot k,\qquad h=z_0^3+2\cdot z_2^3,

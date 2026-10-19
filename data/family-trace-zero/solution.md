@@ -1,4 +1,4 @@
-## A trace-zero rotation inside a cubic complement
+# A trace-zero rotation inside a cubic complement
 Let
 \[
 U=X_0^2+Y_0^2,\quad V=X_0^2-Y_0^2,\quad Q=\frac{101}{103}\cdot (X_1^2+Y_1^2).

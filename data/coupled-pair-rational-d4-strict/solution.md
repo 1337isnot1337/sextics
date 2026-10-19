@@ -1,4 +1,4 @@
-## Deform the sextic while retaining a logarithmic field
+# Deform the sextic while retaining a logarithmic field
 Start with the two-coordinate Fermat cofactor construction in \(x=X_0\), \(y=Y_0\), with passive multiplier \(B=X_1\cdot X_2\). Its denominator is
 \[
 D=x^4-x^2\cdot y^2+y^4,

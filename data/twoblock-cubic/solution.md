@@ -1,4 +1,4 @@
-## A fixed denominator serving a companion bundle
+# A fixed denominator serving a companion bundle
 The first binary block has coefficients \((-11/8,0,1)\) after its leading cube; the second has coefficients \((7/3,-2,1)\). The target and selected divisor are
 \[
 A=X_0^3\cdot Y_0^2\cdot Y_1-3\cdot X_0\cdot Y_0^4\cdot Y_1,

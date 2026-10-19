@@ -1,4 +1,4 @@
-## Interpolating along a binary-cubic pencil
+# Interpolating along a binary-cubic pencil
 Use \(u=X_0^2\), \(w=Y_0^2\), and set
 \[
 P=u^3+u^2\cdot w+u\cdot w^2+3\cdot w^3,\qquad C=(u+w)^3.

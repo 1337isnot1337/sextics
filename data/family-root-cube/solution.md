@@ -1,4 +1,4 @@
-## A weighted split rather than a separated sum
+# A weighted split rather than a separated sum
 In adapted binary coordinates \(R,S\), the cubic block has the root-cube form \(\alpha\cdot R^3+\kappa\cdot R\cdot S^2\). Write the full sextic as \(F=C+D\) so that the weighted derivation
 \[
 W=\frac16\cdot (2\cdot R\partial_R-S\partial_S+z\partial_z+w\partial_w)

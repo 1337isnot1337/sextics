@@ -1,4 +1,4 @@
-## Complete the square before constructing the field
+# Complete the square before constructing the field
 The sextic is arranged as
 \[
 F=X_1^6+T^2+G(X_0,X_2,Y_0,Y_2),\qquad

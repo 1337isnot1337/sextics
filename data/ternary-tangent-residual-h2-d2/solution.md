@@ -1,4 +1,4 @@
-## Contact geometry supplies a quadric
+# Contact geometry supplies a quadric
 Put \((u,w,x)=(X_0^2,Y_0^2,X_1^2)\). The relevant line is
 \[
 \ell=u-2\cdot w+x=0,\qquad D=X_0^2-2\cdot Y_0^2+X_1^2.

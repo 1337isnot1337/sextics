@@ -1,4 +1,4 @@
-## A Hesse cofactor with a passive multiplier
+# A Hesse cofactor with a passive multiplier
 Use the quadratic quantities
 \[
 u=X_0^2,\qquad v=Y_1^2,\qquad w=-\frac13\cdot X_1^2.

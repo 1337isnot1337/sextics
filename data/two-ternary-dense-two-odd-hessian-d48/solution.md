@@ -1,4 +1,4 @@
-## The main idea
+# A rational certificate from ternary cubic covariants
 
 This construction uses the splitting of the fixed sextic into two ternary blocks,
 

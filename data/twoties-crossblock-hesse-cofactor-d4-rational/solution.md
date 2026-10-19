@@ -1,4 +1,4 @@
-## Use the second tie and keep the multiplier passive
+# Use the second tie and keep the multiplier passive
 Choose active coordinates \(x=X_2\), \(y=Y_2\), passive quadratic \(R=Y_1^2\), and multiplier \(B=Y_0\cdot Y_1\). The denominator is the Hesse cofactor in
 \[
 (u,v,w)=(X_2^2,Y_2^2,-Y_1^2/3).

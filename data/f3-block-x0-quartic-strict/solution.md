@@ -1,4 +1,4 @@
-## A contact conic in the square-coordinate plane
+# A contact conic in the square-coordinate plane
 Let \(u=X_0^2\), \(x=X_1^2\), and \(w=Y_0^2\). The active cubic is \(u^3+x^3+w^3+u\cdot x\cdot w\). On the conic \(u^2=x\cdot w\), use the parametrization
 \[
 (u,x,w)=(s\cdot r,s^2,r^2).

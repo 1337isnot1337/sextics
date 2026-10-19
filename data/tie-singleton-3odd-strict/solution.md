@@ -1,4 +1,4 @@
-## Combine an active correction with passive radial motion
+# Combine an active correction with passive radial motion
 For \(A=X_0^3\cdot Y_0\cdot Y_1\cdot Y_2\), take
 \[
 D=\frac78\cdot X_1^6+\frac{27}{32}\cdot (X_2^6+Y_0^6+Y_2^6).

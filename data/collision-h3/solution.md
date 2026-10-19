@@ -1,4 +1,4 @@
-## A line with triple contact
+# A line with triple contact
 In square coordinates \((u,w,x)=(X_0^2,Y_0^2,X_1^2)\), the active cubic is
 \[
 p=(u-2\cdot w)^3+(u-2\cdot w+x)\cdot (2\cdot u^2+3\cdot u\cdot w+5\cdot w^2+7\cdot u\cdot x+12\cdot w\cdot x+13\cdot x^2).

@@ -1,4 +1,4 @@
-## Use the cyclic monomial map
+# Use the cyclic monomial map
 Define
 \[
 U=X_0^3\cdot X_1^2,\qquad V=X_1^3\cdot X_2^2,\qquad W=X_2^3\cdot X_0^2,

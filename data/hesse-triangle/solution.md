@@ -1,4 +1,4 @@
-## Split the sextic into a Hesse triangle and a radial part
+# Split the sextic into a Hesse triangle and a radial part
 Put \(U=Y_0^2\), \(V=Y_1^2\), \(W=Y_2^2\). Then
 \[
 F=C+D,\qquad C=U^3+V^3+W^3-3\cdot U\cdot V\cdot W,\qquad

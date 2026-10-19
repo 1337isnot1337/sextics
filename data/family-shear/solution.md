@@ -1,4 +1,4 @@
-## Expose a product with opposite weights
+# Expose a product with opposite weights
 Take the weighted coordinate map
 \[
 \Phi=(X_0,T,X_1^2,Y_0,Y_1,Y_2),\qquad

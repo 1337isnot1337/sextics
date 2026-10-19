@@ -1,4 +1,4 @@
-## The second character of a contact collision
+# The second character of a contact collision
 The denominator is the pullback of a line in the square-coordinate plane:
 \[
 D=X_1^2-X_0^2-Y_0^2.

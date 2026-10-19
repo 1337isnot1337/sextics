@@ -1,4 +1,4 @@
-## Reveal a hidden cubic identity
+# Reveal a hidden cubic identity
 Introduce three quadratic forms
 \[
 u=X_0^2,\qquad v=X_2^2-2\cdot X_0^2,\qquad w=X_1^2+X_0^2.

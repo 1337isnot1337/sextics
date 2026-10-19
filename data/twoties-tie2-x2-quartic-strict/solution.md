@@ -1,4 +1,4 @@
-## Localize the contact construction to the second block
+# Localize the contact construction to the second block
 The active variables are \((X_2,Y_1,Y_2)\). Their sextic block has the same form as a Hesse cubic in their squares. The chosen target and denominator are
 \[
 A=X_2^3\cdot Y_1^3-\frac53\cdot X_2\cdot Y_1\cdot Y_2^4,\qquad D=X_2^4-Y_1^2\cdot Y_2^2.

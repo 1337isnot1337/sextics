@@ -1,4 +1,4 @@
-## A binary block and its compatible degree-twelve bundle
+# A binary block and its compatible degree-twelve bundle
 Use \(u=X_0^2\), \(w=Y_0^2\), and
 \[
 D=P(u,w)=u^3+2\cdot u^2\cdot w-u\cdot w^2+w^3.

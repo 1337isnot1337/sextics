@@ -1,4 +1,4 @@
-## A linear-contact constituent of a larger family
+# A linear-contact constituent of a larger family
 Write
 \[
 R=\frac{13}{17}\cdot Y_0^2+\frac59\cdot Y_0\cdot Y_2+\frac7{11}\cdot Y_2^2.

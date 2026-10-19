@@ -1,4 +1,4 @@
-## Deform by a multiple of the preserved divisor
+# Deform by a multiple of the preserved divisor
 Start with the coupled polarized-contact field \(N\), denominator \(D=X_2^2-Y_2^2\), and target \(A_0\). Its special properties are
 \[
 N(F_0)=A_0\cdot D,\qquad N(D)=0,\qquad \operatorname{div}N=0.
