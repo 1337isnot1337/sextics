@@ -278,13 +278,37 @@
   "slice": "slices/one-reflection-y2-sector.json",
   "rationale": "why.md",
   "provenanceFile": "provenance.json",
-  "formalStatus": "unproved",
-  "status": "open",
-  "evidenceKind": "none",
-  "certificateAvailable": false,
+  "formalStatus": "proved",
+  "status": "solved",
+  "evidenceKind": "existence-proof",
+  "certificateAvailable": true,
   "content": {
-    "why": "data/one-reflection-y2-sector/why.html"
+    "why": "data/one-reflection-y2-sector/why.html",
+    "solution": "data/one-reflection-y2-sector/solution.html"
   },
-  "witnessAvailability": "missing",
-  "draftDisplayStatus": "open"
+  "pullRequest": {
+    "number": 144,
+    "url": "https://github.com/hodge-computer/sextics/pull/144",
+    "headCommit": "f89a722ef32efd81452e4769bb89d8be8a95f8cc",
+    "baseCommit": "fb0e58426e254208119fac0bbab1f35adc14a2c4",
+    "mergeCommit": "c7b7d60e715d30c891d96bc36610de02491d933b"
+  },
+  "certificate": {
+    "proofSource": "data/one-reflection-y2-sector/Solution.lean"
+  },
+  "witnessAvailability": "lean-source",
+  "leanVerification": {
+    "formalStatus": "proved",
+    "status": "accepted",
+    "proofFile": "data/one-reflection-y2-sector/Solution.lean",
+    "receipt": "data/one-reflection-y2-sector/acceptance.json",
+    "theorem": "Submission.certificate",
+    "checker": "Lean (version 4.33.0, x86_64-unknown-linux-gnu, commit d8b18978322de05a8f3dba51ef03cf5461676c17, Release)"
+  },
+  "credit": {
+    "githubLogin": "DiamondJM",
+    "origin": "contribution",
+    "awardedAt": "2026-10-19T19:34:22Z"
+  },
+  "draftDisplayStatus": "solved"
 }

@@ -1215,15 +1215,20 @@
     {
       "id": "one-reflection-y2-sector",
       "title": "One reflection · transverse sector",
-      "status": "open",
-      "formalStatus": "unproved",
-      "evidenceKind": "none",
-      "certificateAvailable": false,
+      "status": "solved",
+      "formalStatus": "proved",
+      "evidenceKind": "existence-proof",
+      "certificateAvailable": true,
       "visibility": "navigation",
-      "draftDisplayStatus": "open",
+      "draftDisplayStatus": "solved",
       "category": "Challenge instances",
       "q": 1,
-      "path": "data/one-reflection-y2-sector/record.json"
+      "path": "data/one-reflection-y2-sector/record.json",
+      "credit": {
+        "githubLogin": "DiamondJM",
+        "origin": "contribution",
+        "awardedAt": "2026-10-19T19:34:22Z"
+      }
     },
     {
       "id": "one-reflection-skew",
