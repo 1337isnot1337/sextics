@@ -3,6 +3,12 @@
   "basis": "accepted-proofs",
   "credits": [
     {
+      "instanceId": "quadric-contact-broken",
+      "githubLogin": "HeadOfNaps",
+      "origin": "contribution",
+      "awardedAt": "2026-10-19T02:02:43Z"
+    },
+    {
       "instanceId": "fermat-pair-rational-d4-strict",
       "githubLogin": "benediamond",
       "origin": "contribution",

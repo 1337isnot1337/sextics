@@ -121,15 +121,20 @@
     {
       "id": "quadric-contact-broken",
       "title": "Quadric contact · broken reflections",
-      "status": "open",
-      "formalStatus": "unproved",
-      "evidenceKind": "none",
-      "certificateAvailable": false,
+      "status": "solved",
+      "formalStatus": "proved",
+      "evidenceKind": "existence-proof",
+      "certificateAvailable": true,
       "visibility": "navigation",
-      "draftDisplayStatus": "open",
+      "draftDisplayStatus": "solved",
       "category": "Challenge instances",
       "q": 1,
-      "path": "data/quadric-contact-broken/record.json"
+      "path": "data/quadric-contact-broken/record.json",
+      "credit": {
+        "githubLogin": "HeadOfNaps",
+        "origin": "contribution",
+        "awardedAt": "2026-10-19T02:02:43Z"
+      }
     },
     {
       "id": "four-plus-two-residual",
