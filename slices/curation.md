@@ -6,6 +6,10 @@ Meshes sample the real section obtained by intersecting the chosen four-plane wi
 
 Validate finite values, normals, coordinate and index bounds, edge lengths, and polynomial residuals when replacing a mesh. `scripts/validate-records.py` checks consistency between the current records, saved slices, and mesh manifests. A finite grid can miss sufficiently thin features. Camera and slice choices are aesthetic decisions, independent of the mathematical target.
 
-Accepted denominator values are evaluated from the accepted record when the mesh is loaded. Open instances contain no saved denominator samples. Changing a solution therefore does not require changing the geometric mesh.
+Denominators are evaluated directly at each pixel, independently of the geometric mesh. Compact formulas and slice-specific factorizations can be supplied through `data/<id>/display-divisor.json`; see MAINTAINING.md. A factorization restricted to a saved plane must be regenerated if that plane or its coordinate phases change. Open instances have no displayed denominator.
 
 The homepage and Contact cone 46006 atlas entry share the canonical view described in `home.json`: the 256³ mesh, seed 245646, yaw 0.710, pitch 0.455, and distance 3.22.
+
+Equal-sextic targets share the same geometric section and camera: the two Fermat targets, and the two cross-block Two ties targets. Their accepted denominators are evaluated independently. Special sections used to expose repeated-factor divisors are checked by the exact `sliceIdentity` mechanism described in MAINTAINING.md.
+
+Off-block tie and One tie intentionally use different sections. The special section that exposes the off-block quartic makes the other target's denominator vanish on surface components, producing broad highlights instead of divisor curves; One tie retains its general section.

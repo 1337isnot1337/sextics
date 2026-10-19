@@ -10,6 +10,7 @@ import sys
 from pathlib import Path
 
 from content import render
+from divisors import validate_display, validate_slice_identity
 import yaml
 sys.path.insert(0, str(Path(__file__).resolve().parent / "proposals"))
 from acceptance import validate_solution
@@ -105,6 +106,14 @@ for rid in catalogue['instanceIds']:
             record['render']['divisorTerms'] = [[float(Fraction(c)), m] for c,m in record['D']['terms']]
         record['witnessAvailability'] = solution['witnessAvailability']
         record['leanVerification'] = solution['proof']
+        display_divisor = folder / 'display-divisor.json'
+        if display_divisor.is_file():
+            display = validate_display(json.loads(display_divisor.read_text()), folder, record['render'])
+            if 'D' in witness:
+                validate_slice_identity(display, witness['D'], record['render'], folder)
+            else:
+                require('sliceIdentity' not in display, f'{rid}: slice identity needs an explicit denominator')
+            record['render']['divisorProgram'] = display
         submitted = solution.get('submittedAt')
         if isinstance(submitted, (date, datetime)):
             submitted = submitted.isoformat()
@@ -119,6 +128,8 @@ for rid in catalogue['instanceIds']:
         credits.append({'instanceId': rid, **record['credit'], 'acceptedAt': accepted})
     if not record['certificateAvailable']:
         record['render'].pop('divisorTerms', None)
+        record['render'].pop('divisorProgram', None)
+        require(not (folder / 'display-divisor.json').exists(), f'{rid}: display divisor requires an accepted proof')
         record['witnessAvailability'] = 'missing'
     record['draftDisplayStatus'] = record['status']
     dump(folder / 'record.json', record)

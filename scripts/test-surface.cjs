@@ -25,15 +25,15 @@ function core() {
   const canvas = Object.assign(new EventTarget(), {clientWidth:800, clientHeight:600, width:800, height:600, getContext:() => gl});
   const view = Object.assign(new EventTarget(), {innerWidth:800, innerHeight:600, devicePixelRatio:1});
   const page = Object.assign(new EventTarget(), {hidden:false});
-  const meta = {vertexCount:3, triangleCount:1, positionMin:[0,0,0], positionMax:[.1,.1,.1], centerOriginal:[0,0,0], displayScale:10};
+  const meta = {vertexCount:3, triangleCount:1, positionMin:[0,0,0], positionMax:[.1,.1,.1], centerOriginal:[0,0,0], displayScale:10, planeMatrix:Array.from({length:6},()=>[0,0,0,0])};
   const context = {URL, Float32Array, Float64Array, Uint16Array, Int16Array, Uint32Array, Uint8Array,
     ArrayBuffer, Map, performance:{now:() => now}, location:{href:'http://localhost/assets/surface-worker.js'},
     requestAnimationFrame:fn => (raf = fn, 1), cancelAnimationFrame:() => { raf = null; },
-    HodgeDivisor:{apply:async mesh => mesh},
     fetch:async url => {
       await new Promise(resolve => { if (context.pauseFetch) resumeFetch = resolve; else resolve(); });
       return {ok:true, json:async () => meta, arrayBuffer:async () => new ArrayBuffer(String(url).includes('index') ? 12 : 18)};
     }};
+  vm.runInNewContext(source('divisor.js'), context);
   vm.runInNewContext(source('renderer.js'), context);
   const renderer = context.HodgeSurfaceCore.create(canvas, {host:{view,page,reducedMotion:true},
     onStatus:s => status.push(s), onFatal:message => failures.push(message)});
@@ -82,6 +82,20 @@ function controller({supported = true, transferThrows = false, hidden = false} =
   assert.equal(c.status.at(-1).state, 'loading');
   c.frame(100); assert.equal(c.status.at(-1).state, 'loading');
   c.frame(150); assert.equal(c.status.at(-1).state, 'ready');
+
+  // Switching formulas replaces the shader, but an identical formula reuses
+  // it. Compiled shader objects and replaced programs must not accumulate.
+  let switching = core();
+  const first = {...switching.record, certificateAvailable:true, render:{...switching.record.render, divisorTerms:[[1,[1,0,0,0,0,0]]]}};
+  const second = {...first, render:{...first.render, divisorTerms:[[1,[0,1,0,0,0,0]]]}};
+  await switching.renderer.setCase(first); await switching.renderer.setCase(first);
+  assert.equal(switching.calls.filter(x=>x==='createProgram').length,1);
+  await switching.renderer.setCase(second);
+  assert.equal(switching.calls.filter(x=>x==='createProgram').length,2);
+  assert.equal(switching.calls.filter(x=>x==='deleteProgram').length,1);
+  assert.equal(switching.calls.filter(x=>x==='deleteShader').length,4);
+  switching.renderer.destroy();
+  assert.equal(switching.calls.filter(x=>x==='deleteProgram').length,2);
 
   // The screenshot's failure: navigation / resizing / teardown after loss or
   // restoration must never delete or bind handles from the former context.

@@ -64,6 +64,7 @@ for summary in index['records']:
     else:
         require('D' not in record, f'{rid}: open target has a displayed denominator')
         require(not record['render'].get('divisorTerms'), f'{rid}: open target has divisor rendering')
+        require(not record['render'].get('divisorProgram'), f'{rid}: open target has divisor rendering')
     if record.get('formalStatus') == 'proved':
         proved += 1
         require((ROOT/'data'/rid/'acceptance.json').is_file(), f'{rid}: missing acceptance receipt')

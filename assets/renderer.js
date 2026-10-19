@@ -3,6 +3,7 @@
 "use strict";
 function shader(gl, type, source) {
   const s = gl.createShader(type);
+  if (!s) throw new Error('The graphics device could not allocate a shader.');
   gl.shaderSource(s, source);
   gl.compileShader(s);
   if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
@@ -14,16 +15,21 @@ function shader(gl, type, source) {
 }
 
 function program(gl, vsSource, fsSource) {
-  const p = gl.createProgram();
-  gl.attachShader(p, shader(gl, gl.VERTEX_SHADER, vsSource));
-  gl.attachShader(p, shader(gl, gl.FRAGMENT_SHADER, fsSource));
-  gl.linkProgram(p);
-  if (!gl.getProgramParameter(p, gl.LINK_STATUS)) {
-    const info = gl.getProgramInfoLog(p);
+  const p = gl.createProgram(), compiled = [];
+  if (!p) throw new Error('The graphics device could not allocate a program.');
+  try {
+    compiled.push(shader(gl, gl.VERTEX_SHADER, vsSource));
+    compiled.push(shader(gl, gl.FRAGMENT_SHADER, fsSource));
+    for (const s of compiled) gl.attachShader(p, s);
+    gl.linkProgram(p);
+    if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error('Shader link failed: ' + gl.getProgramInfoLog(p));
+    return p;
+  } catch (error) {
     gl.deleteProgram(p);
-    throw new Error('Shader link failed: ' + info);
+    throw error;
+  } finally {
+    for (const s of compiled) gl.deleteShader(s);
   }
-  return p;
 }
 
 const VS = `#version 300 es
@@ -32,20 +38,17 @@ precision highp int;
 layout(location=0) in vec3 aPosition;
 layout(location=1) in vec3 aNormal;
 layout(location=2) in vec2 aComplex;
-layout(location=3) in float aDivisor;
 uniform mat4 uModel;
 uniform mat4 uView;
 uniform mat4 uProjection;
 out vec3 vPosition;
 out vec3 vNormal;
 out vec2 vComplex;
-out float vDivisor;
 void main() {
   vec4 world = uModel * vec4(aPosition, 1.0);
   vPosition = world.xyz;
   vNormal = mat3(uModel) * aNormal;
   vComplex = aComplex;
-  vDivisor = aDivisor;
   gl_Position = uProjection * uView * world;
 }`;
 
@@ -55,7 +58,6 @@ precision highp int;
 in vec3 vPosition;
 in vec3 vNormal;
 in vec2 vComplex;
-in float vDivisor;
 uniform vec3 uCamera;
 uniform float uTime;
 uniform vec3 uOriginalCenter;
@@ -63,6 +65,7 @@ uniform float uDisplayScale;
 uniform float uDivisorStrength;
 uniform float uProjectionBox;
 uniform float uDivisorMode;
+uniform vec4 uDivisorPlane[6];
 uniform float uTranslucencyEnabled;
 uniform float uTransNear;
 uniform float uTransFar;
@@ -75,6 +78,16 @@ uniform highp sampler2D uAccumulated;
 out vec4 outColor;
 const float PI = 3.141592653589793;
 const float TAU = 6.283185307179586;
+
+// DIVISOR_EXPRESSION
+float pixelDivisor() {
+  vec3 p=vPosition*uDisplayScale+uOriginalCenter;
+  float r2=dot(p,p);
+  vec4 sphere=vec4(2.0*p,r2-1.0)/(1.0+r2);
+  vec3 a=vec3(dot(uDivisorPlane[0],sphere),dot(uDivisorPlane[1],sphere),dot(uDivisorPlane[2],sphere));
+  vec3 b=vec3(dot(uDivisorPlane[3],sphere),dot(uDivisorPlane[4],sphere),dot(uDivisorPlane[5],sphere));
+  return divisorField(a,b);
+}
 
 float pixelNoise(ivec2 pixel) {
   highp uint h=uint(pixel.x)*0x9E3779B9u ^ uint(pixel.y)*0x85EBCA6Bu;
@@ -167,8 +180,9 @@ void main() {
   color += albedo*rim*0.52 + vec3(0.32,0.42,0.68)*rim*0.17;
 
   // Highlight the accepted denominator evaluated on this saved slice.
-  float d = abs(vDivisor);
-  float w = max(0.85*fwidth(vDivisor),1e-10);
+  float field = pixelDivisor();
+  float d = abs(field);
+  float w = max(0.85*fwidth(field),1e-35);
   float divisor = 1.0-smoothstep(0.4*w,2.0*w,d);
   float halo = 1.0-smoothstep(2.0*w,5.5*w,d);
   vec3 divisorColor = mix(vec3(1.0,0.72,0.92),vec3(0.68,0.90,1.0),0.5+0.5*sin(TAU*phase));
@@ -504,9 +518,17 @@ function create(canvas,options={}){
   const gl=canvas.getContext('webgl2',{alpha:true,antialias:true,premultipliedAlpha:false,preserveDrawingBuffer:false,powerPreference:'high-performance',failIfMajorPerformanceCaveat:true});
   if(!gl)throw new Error('WebGL 2 is required for the mathematical surface.');
   gl.disable(gl.DITHER);gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);gl.disable(gl.CULL_FACE);gl.clearColor(0,0,0,0);
-  const p=program(gl,VS,FS),U={};
-  for(const name of ['Model','View','Projection','Camera','Time','OriginalCenter','DisplayScale','DivisorStrength','ProjectionBox','DivisorMode','TranslucencyEnabled','TransNear','TransFar','TransMinAlpha','RenderPass'])U[name]=gl.getUniformLocation(p,'u'+name);
-  gl.useProgram(p);gl.uniformMatrix4fv(U.Model,false,mat4Identity());
+  let p=null,programSource=null;const U={};
+  function useDivisorShader(pixel){
+    if(pixel.source!==programSource){
+      const next=program(gl,VS,FS.replace('// DIVISOR_EXPRESSION',pixel.source));
+      if(depthPeeler){depthPeeler.dispose();depthPeeler=null;}
+      if(p)gl.deleteProgram(p);p=next;programSource=pixel.source;
+      for(const name of ['Model','View','Projection','Camera','Time','OriginalCenter','DisplayScale','DivisorStrength','ProjectionBox','DivisorMode','TranslucencyEnabled','TransNear','TransFar','TransMinAlpha','RenderPass'])U[name]=gl.getUniformLocation(p,'u'+name);
+      U.DivisorPlane=gl.getUniformLocation(p,'uDivisorPlane[0]');
+    }
+    gl.useProgram(p);gl.uniformMatrix4fv(U.Model,false,mat4Identity());
+  }
   let activeVao=null,activeBuffers=[],activeCount=0,activeMeta=null,record=null;
   let job=0,busy=false,destroyed=false,contextLost=false,graphicsFault=false,needsDraw=true;
   let depthPeeler=null,depthPeelerFailed=false,frameFence=null,frameId=0,fenceStarted=0,frameJob=0,awaitingFirstFrame=false,lastFrameTick=performance.now();
@@ -543,14 +565,18 @@ function create(canvas,options={}){
     const vao=gl.createVertexArray(),vbo=gl.createBuffer(),ebo=gl.createBuffer();
     if(!vao||!vbo||!ebo)throw new Error('The graphics device could not allocate a mesh.');
     gl.bindVertexArray(vao);gl.bindBuffer(gl.ARRAY_BUFFER,vbo);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(buffer),gl.STATIC_DRAW);
-    for(const [location,size,offset] of [[0,3,0],[1,3,12],[2,2,24],[3,1,32]]){gl.enableVertexAttribArray(location);gl.vertexAttribPointer(location,size,gl.FLOAT,false,36,offset);}
+    for(const [location,size,offset] of [[0,3,0],[1,3,12],[2,2,24]]){gl.enableVertexAttribArray(location);gl.vertexAttribPointer(location,size,gl.FLOAT,false,36,offset);}
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,ebo);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint32Array(indexBuffer),gl.STATIC_DRAW);
     if(!usable())return;
     if(gl.getError()!==gl.NO_ERROR){gl.deleteVertexArray(vao);gl.deleteBuffer(vbo);gl.deleteBuffer(ebo);throw new Error('Surface upload failed.');}
     clearMesh();activeVao=vao;activeBuffers=[vbo,ebo];activeCount=meta.triangleCount*3;
-    const hasD=hasCertificate(selected)&&!!selected.render?.divisorTerms?.length;
+    const hasD=hasCertificate(selected)&&!!(selected.render?.divisorTerms?.length||selected.render?.divisorProgram);
     activeMeta={...meta,divisorVisible:hasD,projectionBox:10,xray:{enabled:true,reach:2.0,layers:6},cameraDefault:{yaw:baseYaw,pitch:basePitch,distance:baseDistance,center:baseCenter.slice()},sliceDescription:'A real two-dimensional section of X, on a fixed phase-rotated real four-plane; stereographic projection in [−10, 10]³.'};
-    gl.useProgram(p);gl.uniform3fv(U.OriginalCenter,new Float32Array(meta.centerOriginal));gl.uniform1f(U.DisplayScale,meta.displayScale);gl.uniform1f(U.ProjectionBox,10);gl.uniform1f(U.DivisorStrength,hasD?1:0);gl.uniform1f(U.DivisorMode,1);
+    const r=selected.render||{},pixel=HodgeDivisor.fragment(hasD?(r.divisorProgram||r.divisorTerms):null,meta.phaseSigns,meta.planeMatrix);
+    useDivisorShader(pixel);
+    gl.uniform3fv(U.OriginalCenter,new Float32Array(meta.centerOriginal));gl.uniform1f(U.DisplayScale,meta.displayScale);gl.uniform1f(U.ProjectionBox,10);gl.uniform1f(U.DivisorStrength,hasD?1:0);gl.uniform1f(U.DivisorMode,1);
+    gl.uniform4fv(U.DivisorPlane,new Float32Array(meta.planeMatrix.flat()));
+    activeMeta.divisorEvaluation='per-pixel polynomial';activeMeta.divisorOperations=pixel.operations;
     options.onLabel?.((selected.title||'Sextic fourfold')+' — real slice of F = 0'+(hasD?', with certificate divisor highlighted':''));
     needsDraw=true;awaitingFirstFrame=true;
   }
@@ -589,8 +615,7 @@ function create(canvas,options={}){
       homeOrientation=ScreenTrackball.fromYawPitch(baseYaw,basePitch);resetCamera();
       if(r.bakedHome){
         const mesh=await baked();if(id!==job||!usable())return;
-        const shaded=await HodgeDivisor.apply(mesh,hasCertificate(selected)?r.divisorTerms:null,()=>id===job&&usable());
-        if(id!==job||!usable())return;busy=false;upload(shaded,selected);return;
+        busy=false;upload(mesh,selected);return;
       }
       if(r.mesh){
         const response=await fetch(new URL(r.mesh,assetBase));if(!response.ok)throw new Error('Missing saved slice.');
@@ -598,13 +623,11 @@ function create(canvas,options={}){
         const [buffer,indexBuffer]=await Promise.all([ungzip(new URL(manifest.vertices,root)),ungzip(new URL(manifest.indices,root))]);
         const mesh={buffer,indexBuffer,meta:manifest.meta};await validateDynamicMesh(buffer,indexBuffer,mesh.meta,()=>id===job&&usable());
         if(id!==job||!usable())return;
-        const shaded=await HodgeDivisor.apply(mesh,hasCertificate(selected)?r.divisorTerms:null,()=>id===job&&usable());
-        if(id!==job||!usable())return;busy=false;upload(shaded,selected);return;
+        busy=false;upload(mesh,selected);return;
       }
       if(r.pairId==='contact46006'&&!r.terms&&(r.seed===undefined||r.seed===245646)){
         const mesh=await baked();if(id!==job||!usable())return;
-        const shaded=await HodgeDivisor.apply(mesh,hasCertificate(selected)?r.divisorTerms:null,()=>id===job&&usable());
-        if(id!==job||!usable())return;busy=false;upload(shaded,selected);return;
+        busy=false;upload(mesh,selected);return;
       }
       throw new Error('This instance has no saved slice.');
     }catch(error){if(id===job&&usable()){busy=false;status('error',error.message||String(error));}throw error;}
