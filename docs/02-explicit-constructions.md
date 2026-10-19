@@ -4,7 +4,7 @@
 
 The useful common structure behind the explicit certificates is a transport identity. A change of variables converts \(F\) into an equation with accessible geometry; a rational field on that equation is pulled back by cofactors. Its Jacobian determines the target. Geometry becomes decisive when it proves that the available targets span the required space.
 
-We first work at \(q=1\). An Euler-normalized strict certificate satisfies \(v(F)=A\) and \(\operatorname{div} v=0\). After writing \(v=N/D\), these are \(N(F)=A\cdot D\) and \(D\cdot \operatorname{div} N-N(D)=0\). Every construction below also requires the homogeneity, involution parity, and denominator legality of [Chapter 1](#technical-information/certificates). Finite sums and normalized field traces preserve the identities.
+We first work at \(q=1\). An Euler-normalized strict certificate satisfies \(v(F)=A\) and \(\operatorname{div} v=0\). After writing \(v=N/D\), these are \(N(F)=A\cdot D\) and \(D\cdot \operatorname{div} N-N(D)=0\). The residue construction in §2.7 also permits a nonzero quotient in the cleared certificate equation. Every construction requires the homogeneity, involution parity, and denominator legality of [Chapter 1](#technical-information/certificates). Finite sums and normalized field traces preserve the identities.
 
 ## 2.1 Cofactor transport
 
@@ -462,4 +462,176 @@ If \(\Phi _{0}\) is equivariant for linear involutions on its quadratic and line
 
 For coordinatewise-even \(F\) at \(q=1\), square four chosen coordinates and retain two linearly in \(\Phi _{0}\). Its determinant is a nonzero scalar times their product \(C_I\). The initial density has weight two, giving \(C_I(\sum b_{j}\cdot Z_{j}^{2}+b_{rs}\cdot r\cdot s)\). There are six globally odd four-coordinate carriers, each giving six distinct four-odd target monomials; the single all-six-odd monomial is also obtained. Thus the degree-ten construction covers 37 of the 226 allowed monomials. The six-line construction serves the other 189 two-odd monomials too, but has no stated physical degree bound. Arbitrary quadratics enlarge the bounded construction beyond coordinatewise-even equations while retaining its determinant-density target restriction.
 
-Cofactor transport makes fields explicit, and algebraic cycle classes prove target spanning. The conic and cubic-surface arguments establish these assertions at every smooth member of their stated families. Their success does not prove that a suitable adapted map or sufficiently rich cycle space exists for a general \(Y\)-even sextic.
+
+## 2.7 Creating a reflection on a finite cover
+
+A useful reflection need not act on the original sextic. It can appear after a finite cover, provided that the resulting certificate descends to the prescribed target. This separates two tasks: constructing primitives on the auxiliary quotient, and identifying the physical target selected by trace.
+
+Consider the chain sextic
+
+\[
+F_H=\sum_{i=0}^{2}(X_i^6+Y_i^6)
+ +X_0^3\cdot X_1\cdot Y_0\cdot Y_1
+ +X_1^3\cdot X_2\cdot Y_1\cdot Y_2.
+\]
+
+It is smooth: at a nonzero common zero of its partial derivatives, a coordinate of maximal modulus would contribute a pure derivative of modulus \(6M^5\), while all its mixed derivative terms together have modulus at most \(4M^5\). This is impossible. The endpoint cubic construction of §2.5 does not reach the reflection-invariant target \(X_0^3\cdot Y_0^3\). The following cover supplies a different density sector.
+
+Adjoin \(T^6=Y_0^6+Y_2^6\), set \(\alpha=Y_0/T\), \(\beta=Y_2/T\), and write \(y=Y_1\). The coefficient field is the function field
+
+\[
+K_b=\operatorname{Frac}\bigl(\mathbb C[\alpha,\beta]/(\alpha^6+\beta^6-1)\bigr).
+\]
+
+Over this field the equation becomes symmetric in \(y,T\). With \(S=y^2+T^2\) and \(P=yT\), its quotient is
+
+\[
+H=\sum_{i=0}^{2}X_i^6
+  +P\cdot(\alpha X_0^3\cdot X_1+\beta X_1^3\cdot X_2)
+  +S^3-3S\cdot P^2.
+\]
+
+The weights of \((X_0,X_1,X_2,S,P)\) are \((1,1,1,2,2)\). The parameters \(\alpha,\beta\) satisfy the Fermat relation; they are not two independent passive ratios.
+
+### A polynomial primitive on the quotient
+
+Write \(K_H=\operatorname{Frac}(K_b[X_0,X_1,X_2,S,P]/(H))\), choose the normal coordinate \(X_0\), and put \(g=H_{X_0}\). For the remaining four coordinates let
+
+\[
+\mathcal E_i=\partial_i-\frac{H_i}{g}\partial_{X_0},\qquad
+\operatorname{div}_g(w)=\sum_i\left(\mathcal E_iw_i-\frac{w_i\mathcal E_i g}{g}\right).
+\]
+
+**Moving-conic primitive.** For every polynomial \(B\in K_b[X_0,X_1,X_2,S,P]\), there is \(w\in K_H^4\) with
+
+\[
+\operatorname{div}_g(w)=-r_B,\qquad
+r_B=\frac{\partial_{X_0}B}{g}-\frac{B\cdot H_{X_0X_0}}{g^2}.
+\]
+
+The construction is due to `fqlx`; its [exact conic seed and coefficient calculations](https://github.com/hodge-computer/sextics/pull/128) and [shared implementation](https://github.com/hodge-computer/sextics/tree/main/formal/lean/HodgeComputer/Constructions/HoldoutCover) supply the algebraic data. Its mechanism is as follows.
+
+Start with an endpoint on \(X_1=0\). Seek a polynomial curve \(\phi(t)\) with \(\phi(0)\) equal to that endpoint, \(X_1=kt\) with \(k\ne0\), the other \(X\) coordinates quadratic in \(t\), and \(S,P\) quartic. The equation \(H(\phi(t))=0\) gives twelve positive-degree coefficient equations for twelve coefficients. An exact complex seed, lying on an actual fiber of the Fermat coefficient curve, makes their Jacobian invertible. Localizing at this determinant gives a nonzero étale algebra over the endpoint ring. Flatness preserves nontriviality at the generic point; a finite field factor supplies the curve coefficients. The resulting evaluation embeds \(K_H\) in a finite extension of it of the form \(E(t)\), with \(E\) finite over the endpoint function field.
+
+The same invertible coefficient matrix constructs a polynomial normal vector \(\psi(t)\) satisfying \(\nabla H(\phi)\cdot\psi=1\). Complete it by the curve tangent and the three endpoint tangent vectors. The resulting five-by-five matrix has a nonzero polynomial determinant \(J(t)\). The residue Piola identity expresses the pullback of \(r_B\) through polynomial combinations of \(\phi,\psi,J\), their derivatives, and the first two derivatives of \(H\). All of these are polynomial in \(t\). Integrating \(\sum c_nt^n\) as \(\sum c_nt^{n+1}/(n+1)\), and then dividing by \(J\), gives the residue primitive over \(E(t)\). No rational antiderivative of an arbitrary algebraic function is assumed.
+
+Normalized trace returns the primitive to \(K_H\). In characteristic zero, derivations extend uniquely through finite field extensions and commute with trace. This is the reason trace is suitable here; an arbitrary linear coefficient functional would not suffice. The argument constructs a primitive for every polynomial \(B\) on this fixed quotient, but does not yet identify which physical targets its pullback serves.
+
+### Target selection by the deck character
+
+Take \(\beta\) as the base coordinate, retaining the full change of variables when returning to the physical field. The physical-to-quotient Jacobian is
+
+\[
+J_c=\frac{2\alpha^5(T^2-y^2)}{T}.
+\]
+
+The quotient and physical normal derivatives agree because \(X_0\) is unchanged. Suppose a homogeneous physical sextic \(A\), a physical polynomial \(C\), and a polynomial quotient source \(B\) satisfy
+
+\[
+J_c B=A-Ct,\qquad
+J_c\partial_{X_0}B=\partial_{X_0}A-(\partial_{X_0}C)t,
+\]
+
+where \(t\) is an element of the common cover field with normalized trace zero over the physical field. Then Piola transport and trace give the residue equation for \(A\). The second identity is needed because the source is \(r_B\), not merely \(B\). In the applications below it follows by differentiation: \(J_c\) and \(t\) are independent of \(X_0\). The derivatives of the Fermat base coordinates are included in the full transport, rather than silently treated as physical constants.
+
+For the central target the choice
+
+\[
+B=\frac{X_0^3\cdot S}{2\alpha^2}
+\]
+
+gives
+
+\[
+J_cB=X_0^3\cdot Y_0^3
+ -X_0^3\cdot Y_0^3\cdot Y_1^4\cdot T^{-4}.
+\]
+
+The deck action fixes all physical coordinates and sends \((T,\alpha,\beta)\) to \((\zeta T,\zeta^{-1}\alpha,\zeta^{-1}\beta)\), where \(\zeta^6=1\). The correction has a nontrivial character, so its trace is zero. Thus the original target is recovered exactly.
+
+The same calculation gives a convenient monomial criterion. Write
+
+\[
+A=M(X)\cdot Y_0^a\cdot Y_1^b\cdot Y_2^c,\qquad
+m=a+c+1,\qquad e=b-m,
+\]
+
+with total degree six and odd total \(Y\)-degree. Then \(m,b\) have the same parity. The expression
+
+\[
+B=\frac{M(X)\alpha^{a-5}\beta^c}{2}\,
+       \frac{y^mT^b-T^my^b}{y^2-T^2}
+\]
+
+is a polynomial in \(S,P\) over \(K_b\): the quotient is symmetric in \(y,T\), invariant under their simultaneous sign change, and polynomial because \(m-b\) is even. Direct multiplication gives
+
+\[
+J_cB=A-C T^e,\qquad
+C=M(X)\cdot Y_0^a\cdot Y_2^c\cdot Y_1^m.
+\]
+
+Whenever \(e\not\equiv0\pmod6\), the correction has trace zero. For these degree-six monomials the useful exponents are \(-4,-2,2,4\). This criterion includes the central target and all nine other single-monomial \(q=1\) holdout entries; the target-specific source identities are the additional input, not another conic construction. Linear combinations of served targets are served as well. The source-by-source extension and its per-target identities were independently recorded by `DiamondJM` in [the holdout discussion](https://github.com/hodge-computer/sextics/discussions/44#discussioncomment-19046728), with the cover and moving-conic construction credited to `fqlx`.
+
+The exclusions reveal the scope of this particular projection. When \(e=0\), the numerator defining \(B\) is zero. When \(e=-6\), the correction is deck-invariant, since \(T^{-6}=(Y_0^6+Y_2^6)^{-1}\) is physical. Neither case is removed by this trace argument. These are limitations of the selected source map, not nonexistence results for certificates.
+
+### Equal coupling coefficients
+
+The cover construction can survive a change of equation, but its conic seed must then be checked on the new coefficient locus. Consider
+
+\[
+F_{\mathrm{eq}}=\sum_{i=0}^{2}(X_i^6+Y_i^6)
+ +Y_0\cdot Y_1\cdot(X_0^3\cdot X_1+X_1^3\cdot X_2).
+\]
+
+The same Fermat cover gives
+
+\[
+H_{\mathrm{eq}}=\sum_{i=0}^{2}X_i^6
+ +\alpha P\cdot(X_0^3\cdot X_1+X_1^3\cdot X_2)
+ +S^3-3S\cdot P^2.
+\]
+
+The two coupling coefficients now coincide. The base still satisfies \(\alpha^6+\beta^6=1\): replacing the second coupling coefficient by \(\alpha\) does **not** replace the base coordinate \(\beta=Y_2/T\), or impose \(2\alpha^6=1\).
+
+An equal-coefficient conic seed, constructed by `DiamondJM` from `fqlx`'s conic family, supplies the missing incidence check. In that family equality of the coupling coefficients reduces to
+
+\[
+g(r)=r^8+7r^7-58r^6+149r^5-178r^4+115r^3-44r^2+10r-1=0.
+\]
+
+The values \(g(-13)=35869443\) and \(g(-12)=-35000185\) give a root in \((-13,-12)\). The same interval makes the seed denominators and both even and odd Jacobian factors nonzero. The resulting conic lies on \(H_{\mathrm{eq}}\); choosing a separate sixth root \(\beta_c^6=1-\alpha_c^6\) places it over the actual Fermat base. The [exact seed and incidence identities](https://github.com/hodge-computer/sextics/pull/144) therefore permit the moving-conic primitive for every polynomial source on this quotient. An isolated formal substitution in the old coefficient field would not establish this: the new coefficient locus needs a nonsingular seed of its own.
+
+For the [transverse target](#case/one-reflection-y2-sector), put
+
+\[
+A=X_0^3\cdot Y_0\cdot Y_1\cdot Y_2,\qquad
+B=\frac{\beta X_0^3\cdot P}{2\alpha^4}.
+\]
+
+The source identity is
+
+\[
+J_cB=A-X_0^3\cdot Y_0\cdot Y_1^3\cdot Y_2\cdot T^{-2}.
+\]
+
+Its \(X_0\)-derivative gives the normal-source identity, and the inverse-square deck character kills the correction under trace. This yields a checked finite-algebraic certificate for a target outside both binary-cubic density sectors of §2.5. The general monomial criterion above applies to \(F_{\mathrm{eq}}\) as well, because the physical cover and its Jacobian are unchanged. A checked target application, this source-map criterion, and all-target geometric support remain distinct statements; the last is discussed in §4.6.
+
+### Returning to a homogeneous polynomial certificate
+
+For either \(F=F_H\) or \(F=F_{\mathrm{eq}}\), a residue primitive in \(K_F=\operatorname{Frac}(\mathbb C[X,Y]/(F))\) has representatives \(w_i=n_i/d\) with \(d\) nonzero modulo \(F\). Put \(g_i=\partial_iF\) and
+
+\[
+D=g_0d,\qquad N_0=Ad-\sum_{i=1}^5g_in_i,\qquad N_i=g_0n_i\quad(i>0).
+\]
+
+Then \(N(F)=AD\) exactly. The residue equation says that
+
+\[
+D\operatorname{div}N-N(D)=FQ,
+\]
+
+so the full cleared defect is \(F^2Q\). The quotient need not vanish. Both \(g_0\) and \(d\) are nonzero in \(K_F\), giving denominator legality. Finite homogeneous extraction produces a homogeneous denominator and numerators of degree \(\deg D+1\), preserving these identities; see the [extraction argument](https://github.com/hodge-computer/sextics/pull/128).
+
+This is a finite algebraic existence proof of the required certificate. It does not provide an expanded denominator or a numerical degree bound. Extracting a usable divisor requires making the finite coefficient algebra, traces, and clearing explicit. The certificate statement, the source-map criterion, and the practical size of a witness are distinct questions.
+
+Cofactor transport makes fields explicit, algebraic cycle classes prove target spanning, and finite covers can expose symmetries absent on the original variety. Each method must still identify its physical target image. None establishes that a suitable map or supporting family exists for a general \(Y\)-even sextic.

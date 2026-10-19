@@ -1,13 +1,16 @@
-Here the target is the balanced monomial
+The target is the balanced monomial
 \[
 A=X_0\cdot X_1\cdot X_2\cdot Y_0\cdot Y_1\cdot Y_2,
 \]
-but the equation is a deformation of the holdout rather than the holdout itself. In addition to the two chain terms with coefficient \(1/2\), it contains \(\frac13\cdot X_0\cdot X_1\cdot Y_0\cdot Y_1^3\). That last term has bidegree \((2,4)\), while the chain terms have bidegree \((4,2)\).
+on a deformation of the holdout with chain coefficients \(1/2\) and an additional term \(\tfrac13\cdot X_0\cdot X_1\cdot Y_0\cdot Y_1^3\). That term has bidegree \((2,4)\), whereas the chain terms have bidegree \((4,2)\). The paired sign changes preserve both equation and target.
 
-The shared factor \(X_0\cdot X_1\cdot Y_0\cdot Y_1\) in the two initial couplings leaves a low-complexity structure: the remaining factor combines \(X_0^2\) and \(Y_1^2\). This is a plausible place to search for adapted quadratic quantities or contact geometry. It does not make the six-variable equation additively split, and the two bidegrees frustrate an immediate block-Euler reduction.
+Compare the identical target on [the all-six holdout instance](#case/holdout-all-six). Its cover construction uses \(T^6=Y_0^6+Y_2^6\), \(y=Y_1\), and the exchange \(y\leftrightarrow T\). In the present equation the extra coupling becomes
+\[
+\frac13\cdot\alpha\cdot X_0\cdot X_1\cdot y^3\cdot T,
+\qquad \alpha=Y_0/T.
+\]
+It lacks the exchanged term proportional to \(y\cdot T^3\). Consequently the equation does not descend to the same weighted quotient, even though the balanced target has exactly the trace character used successfully on the holdout. A favorable target projection cannot compensate for the loss of the quotient geometry on which its primitive is constructed.
 
-The paired sign changes still preserve both equation and target. The product of all six coordinates is naturally compatible with that symmetry, but a quotient must also account for the residue volume and ramification. Its balanced appearance alone does not identify a supported character or supply the appropriate density for a nonlinear change of variables.
+The common factor \(X_0\cdot X_1\cdot Y_0\cdot Y_1\) in the first coupling and the added term still leaves useful structure. It suggests investigating adapted quadratic coordinates or a replacement cover, with the asymmetric combination of \(X_0^2\) and \(Y_1^2\) kept explicit. A successful construction must control both the equation and the density; matching the target's pairwise balance alone is insufficient.
 
-This target can be compared directly with [the all-six holdout instance](#case/holdout-all-six). The class has exactly the same monomial expression, while the equation changes in a controlled way. Such a comparison tests whether a candidate construction responds to the target's pairwise balance or depends on the precise orientation of the original chain.
-
-A useful solution would explain how to accommodate couplings in both bidegrees while preserving the exact requested class. Even partial calculations can help if they isolate the additional term a known construction cannot cancel, or identify a geometric family of poles more suitable than the ones inherited from split examples. The problem imposes no preferred denominator or low-degree ansatz.
+The [discussion calculation by `1337isnot1337`](https://github.com/hodge-computer/sextics/discussions/58#discussioncomment-19046015) reports a complete exclusion through denominator degree five and rejects one specified degree-six polar after all numerator corrections. These are bounded results, not unrestricted nonexistence. They make this a useful test of a mechanism that reaches beyond small polars while retaining a sparse, structured sextic.

@@ -1,13 +1,25 @@
-Keep the central holdout sextic and put \(p=X_2\cdot Y_2\). This target is
+Keep the holdout sextic and write \(p=X_2\cdot Y_2\). This target is
 \[
 A=p\cdot Y_1^4.
 \]
-It moves the requested class away from the first coordinate pair and places most of its degree in the middle odd coordinate. The question is whether that concentration makes a new construction accessible on the same coupled variety.
+It concentrates four degrees in the middle odd coordinate while retaining the simplest endpoint product. Compared with [the endpoint cube](#case/holdout-p3), it isolates the effect of moving degree into a coordinate that participates in both links of the chain.
 
-The endpoint variables enter the sextic through \(X_2^6+Y_2^6\) and \(X_1^3\cdot Y_1\cdot p\). Their exchange is a reflection, and the product \(p\) is its simplest invariant. This gives an appealing quotient coordinate, but also identifies why the immediate reflection argument misses the target: \(A\) is symmetric under the exchange, so its residue is antisymmetric. One cannot infer support merely from the low degree of the expression in \(p\).
+The endpoint exchange fixes \(p\), and therefore fixes the numerator. Its determinant still reverses the residue volume, putting this class outside the invariant sector served by the reflection quotient. Direct finite-quotient calculations leave it among ten independent directions beyond their 48-dimensional supported subspace inside the 58-dimensional paired-sign sector. Neither the low degree in \(p\) nor the numerator's symmetry supplies the missing support.
 
-This class belongs to the ten independent remaining directions in the paired-sign-invariant sector. Known quotient constructions cover 48 of that sector's 58 dimensions and 182 of the full 208 primitive odd directions. The displayed monomial survives after quotienting by that known support. It is therefore a distinct test within the holdout, rather than another notation for its central cubic target.
+The factor \(Y_1^4\) also cannot simply multiply a known field without further work. The variable \(Y_1\) occurs in both mixed terms of the sextic; differentiating that multiplier can change the divergence equation. This is the concrete difference between a passive-coordinate extension and the target-dependent identities used by the cover construction.
 
-The factor \(Y_1^4\) makes the middle pair important. It is not automatically a passive multiplier: the coordinate \(Y_1\) participates in both couplings, so a field serving an endpoint expression may differentiate this factor and acquire an extra divergence term. This is a concrete obstacle to transporting a certificate from a simpler binary example.
+On the cover and quotient
+\[
+T^6=Y_0^6+Y_2^6,\qquad
+\alpha=Y_0/T,\quad\beta=Y_2/T,\qquad
+S=Y_1^2+T^2,\quad P=Y_1\cdot T,
+\]
+the required source is
+\[
+B=-\frac{P^2\cdot X_2\cdot\beta}{2\cdot\alpha^5}.
+\]
+The moving-conic machinery integrates this polynomial source on the same weighted quotient as the central construction. The lifted correction has deck exponent \(2\), so trace removes a positive square of the cover coordinate. The resulting source and derivative identities recover exactly \(p\cdot Y_1^4\), with the middle-coordinate contributions included.
 
-Compare [the endpoint cube](#case/holdout-p3), which has the same symmetry but a different degree distribution. A method that handles both would begin to explain a target space on the holdout, rather than a single fortunate monomial. The relevant support-versus-character distinction is developed in [Chapter 3](#technical-information/geometric-support).
+The comparison with \(p^3\) is particularly informative: its source uses \(S\cdot X_2^3\cdot\beta^3\), while this source uses \(P^2\cdot X_2\cdot\beta\). Their exponents \(-4\) and \(2\) give the same nontrivial deck character, even though the explicit correction terms are different. One geometric family can therefore serve both degree distributions without identifying their target calculations.
+
+[Chapter 2](#technical-information/explicit-constructions) develops the common source-and-trace mechanism. The broader geometric argument in [Chapter 4](#technical-information/known-locus) supplies all-target existence on the fixed holdout, while these explicit applications explain how particular classes are recovered through checked algebraic identities.

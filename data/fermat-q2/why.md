@@ -10,4 +10,4 @@ The higher pole makes the distinction between a fixed identity and a reusable co
 
 This is a deliberately tractable control for higher-pole computations. The diagonal all-target theorem supplies a constructive setting in which the change from \(q=1\) to \(q=2\) can be understood without additional coupling geometry. It helps distinguish errors in homogeneity, the factor of \(q\), or the order of divisibility from a genuine difficulty in choosing a support.
 
-[The open holdout at \(q=2\)](#case/holdout-q2) uses the same target on a coupled sextic. That comparison isolates what the mixed terms destroy. [The one-block \(q=2\) bundle](#case/block-q2) offers an intermediate step, retaining enough structure to study a nontrivial target compatibility relation.
+[The coupled holdout at \(q=2\)](#case/holdout-q2) uses the same target on a coupled sextic. That comparison isolates what the mixed terms destroy. [The one-block \(q=2\) bundle](#case/block-q2) offers an intermediate step, retaining enough structure to study a nontrivial target compatibility relation.

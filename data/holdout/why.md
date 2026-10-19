@@ -1,12 +1,23 @@
-This is the central test case for extending the known constructions beyond separated blocks. Starting with the Fermat sextic \(F_0\), add the two adjacent couplings
+The central holdout isolates what happens when two adjacent couplings are added to the Fermat sextic:
 \[
 X_0^3\cdot X_1\cdot Y_0\cdot Y_1
 +X_1^3\cdot X_2\cdot Y_1\cdot Y_2.
 \]
-They form an oriented chain through the three coordinate pairs. The target \(A=X_0^3\cdot Y_0^3\) is concentrated at its first end.
+They form an oriented chain through the three coordinate pairs, while the target \(A=X_0^3\cdot Y_0^3\) is concentrated at its first end. The equation is sparse and retains substantial symmetry, but the separated-block constructions no longer apply directly.
 
-The equation still has considerable symmetry. In particular, simultaneously changing the signs of \(X_i,Y_i\) preserves it, and exchanging \(X_2,Y_2\) is a reflection. These symmetries do prove support for many classes, but not this one: the target is unchanged by the endpoint exchange while the residue volume changes sign. Merely finding a reflection is therefore insufficient; the class must occupy the appropriate character.
+In particular, simultaneously changing the signs of \(X_i,Y_i\) preserves the equation, and exchanging \(X_2,Y_2\) is a reflection. That reflection fixes the target numerator and reverses the residue volume, placing this class outside its invariant residue sector. The collection of direct reflection and diagonal-quotient arguments serves 182 of the 208 primitive odd sextic directions; this target is among the ten missed directions within the 58-dimensional paired-sign sector. These are limits of those particular quotient arguments, not limits of geometric existence.
 
-The existing finite-quotient arguments prove nonconstructive existence for 182 of the 208 primitive odd degree-six directions on this exact sextic. Within the 58-dimensional paired-sign-invariant subspace, 48 are covered and ten remain. This target is one of those ten, not a direction already disposed of by the quotient count. [Chapter 4](#technical-information/known-locus) places this remaining problem in the wider coverage map.
+The equation also has an instructive surface fibration over the ratios \([X_0:Y_0]\), \([X_1:Y_1]\). On a ratio chart, quotienting the two remaining pair scales by their signs gives a degree-six surface in \(\mathbb P(2,2,1,1)\); its generic smooth resolution is a K3 surface. This organizes the geometry without providing a primitive compatible with variation over the whole base. It is a different viewpoint from the cover used in the certificate, rather than an obstruction to every possible supporting divisor.
 
-There is also useful geometry beyond the symmetry calculation. The ratios \([X_0:Y_0]\) and \([X_1:Y_1]\) give a map to \(\mathbb P^1\times\mathbb P^1\); finite quotients of its generic surface fibers are K3 surfaces. Existing calculations rule out supporting this remaining sector using divisors confined over proper subsets of that base. A successful geometric construction must therefore engage the varying fibers, or find a different route altogether. This is a small sparse equation on which several easy reductions have already reached a meaningful boundary.
+The successful construction instead adjoins
+\[
+T^6=Y_0^6+Y_2^6,\qquad
+\alpha=Y_0/T,\quad\beta=Y_2/T,
+\]
+so \(\alpha^6+\beta^6=1\), and sets \(S=Y_1^2+T^2\), \(P=Y_1\cdot T\). Interchanging \(Y_1,T\) preserves the covered equation. Quotienting also by their simultaneous sign change gives a weighted threefold carrying a moving family of conics, and the source for this target is
+\[
+B=\frac{S\cdot X_0^3}{2\cdot\alpha^2}.
+\]
+The lifted primitive has the desired density plus a reflected correction of deck exponent \(-4\). The normalized deck trace kills that correction and recovers exactly \(A\).
+
+The essential advance is the use of a useful symmetry on an auxiliary cover, despite the original variety's quotient methods missing the class. The same conic geometry accepts other polynomial sources and serves the companion holdout targets. [Chapter 2](#technical-information/explicit-constructions) explains the source, derivative, and trace identities; [The all-target theorem in §4.6](#technical-information/known-locus/46-all-target-support-on-the-chain-example) combines this cover with a complementary diagonal quotient to prove geometric existence for every odd target at every positive pole parameter on this fixed sextic. Explicit fields, manageable divisors, and formal proofs retain their own computational content.
