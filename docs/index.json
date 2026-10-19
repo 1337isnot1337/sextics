@@ -28,7 +28,7 @@
       "number": "2",
       "title": "2. Explicit constructions: transport, contact, and algebraic cycles",
       "shortTitle": "Explicit constructions",
-      "description": "Cofactor transport, finite line algebras, cubic target solvers, and density sectors.",
+      "description": "Cofactor transport, cubic target solvers, finite covers, and residue primitives.",
       "source": "docs/02-explicit-constructions.md",
       "content": "docs/explicit-constructions.html"
     },
@@ -64,7 +64,7 @@
       "number": "4",
       "title": "4. The known locus and the open frontier",
       "shortTitle": "The open frontier",
-      "description": "Coverage, generic targets, and the unresolved paired-sign holdout.",
+      "description": "Coverage, finite-quotient and cover target maps, and the general-sextic frontier.",
       "source": "docs/04-known-locus-and-frontier.md",
       "content": "docs/known-locus.html"
     },

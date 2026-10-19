@@ -1,13 +1,16 @@
 This sextic closes the two-link holdout into a cycle:
 \[
 F=F_0+\frac12\cdot\bigl(
-X_0^3X_1Y_0Y_1+X_1^3X_2Y_1Y_2+X_2^3X_0Y_2Y_0
-\bigr).
+X_0^3\cdot X_1\cdot Y_0\cdot Y_1+
+X_1^3\cdot X_2\cdot Y_1\cdot Y_2+
+X_2^3\cdot X_0\cdot Y_2\cdot Y_0\bigr).
 \]
-The simultaneous cyclic permutation of the three \((X_i,Y_i)\) pairs preserves the equation. It replaces the holdout's distinguished endpoint by a genuinely cyclic arrangement, while the coefficient \(1/2\) keeps a sparse, explicitly smooth specialization.
+Simultaneously cycling the three coordinate pairs preserves the equation. The target \(A=X_0^3\cdot Y_0^3\) singles out one pair, so a certificate transports to its cyclic translates. A certificate for their invariant sum, however, does not automatically separate into certificates for each summand.
 
-The target \(A=X_0^3\cdot Y_0^3\) singles out one pair. Its two cyclic translates lie on the same hypersurface, so a certificate could be transported to them by an actual symmetry. But averaging those three targets produces only their invariant sum; a construction for that sum would not automatically serve an individual summand. This makes the example a useful test of character-resolved methods rather than just symmetric ansätze.
+The closing edge gives a precise boundary for the [holdout cover construction](#technical-information/explicit-constructions). Adjoin \(T^6=Y_0^6+Y_2^6\), and write \(\alpha=Y_0/T\), \(\beta=Y_2/T\), \(y=Y_1\). The two chain terms become \(yT\) times a quartic in \(X\), which respects the exchange \(y\leftrightarrow T\). The closing term becomes
+\[
+\frac12\cdot\alpha\cdot\beta\cdot X_0\cdot X_2^3\cdot T^2.
+\]
+There is no matching \(y^2\) term. The exchange that creates the weighted quotient and its moving conic is therefore lost. This is more specific than a general lack of symmetry: the cycle retains paired signs and a cyclic permutation while breaking the particular symmetry used by the cover.
 
-Each paired sign change also survives. What disappears is the simple endpoint exchange used in the holdout's reflection analysis: the closing term distinguishes \(X_2\) from \(Y_2\), just as the other links distinguish their coordinates. Thus the cycle has more permutation symmetry but less of that particular reflection geometry. “More symmetric” is not a single measure of how tractable a certificate problem is.
-
-The cyclic pattern supplies several concrete starting points: decompose targets under the order-three action, investigate quotient geometry, or deform from the uncoupled Fermat equation while retaining the cycle. None of those observations is itself an existence proof for the displayed class. The instance asks which of them leads to usable support or a rational primitive. [The degree-twelve cyclic target](#case/cycle-q2) then tests whether a method found here survives the next pole order, while [Chapter 3](#technical-information/geometric-support) explains when finite symmetries really imply support.
+A useful next construction would replace that quotient, compensate for the unmatched term, or combine the three choices of distinguished coordinate in a way that recovers the individual target. None follows simply by transporting the chain proof. The discussion contains a reported exact exclusion of denominator degrees at most five by `rbajaj5`, with full numerator space and a nonzero quotient allowed; see the [calculation and reproduction packet](https://github.com/hodge-computer/sextics/discussions/55#discussioncomment-19002099). This bounds one search parameter, not unrestricted existence. [The degree-twelve companion](#case/cycle-q2) separately tests the pole-order boundary.

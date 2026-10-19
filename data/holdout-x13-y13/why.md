@@ -1,13 +1,23 @@
-This instance asks for the middle cubic
+This instance places the cubic target in the middle pair of the holdout chain:
 \[
-A=X_1^3\cdot Y_1^3
+A=X_1^3\cdot Y_1^3.
 \]
-on the same holdout sextic used by the central target. It is superficially identical to \(X_0^3\cdot Y_0^3\) after relabeling a pair, but the equation is not invariant under that relabeling. The middle coordinates participate in both mixed terms, once with \(X_0,Y_0\) and once with \(X_2,Y_2\).
+It resembles the central \(X_0^3\cdot Y_0^3\) target after relabeling, but the equation is not invariant under that relabeling. The middle coordinates participate in both mixed terms, once with \(X_0,Y_0\) and once with \(X_2,Y_2\). A field adapted to one end cannot simply be moved to the middle without acquiring additional derivative terms.
 
-That difference makes this a meaningful separate target. A rational field concentrated in the middle pair sees both couplings simultaneously. A method adapted to one end of the chain may therefore acquire an extra derivative contribution when moved here. The example is a small test of whether an apparently local binary construction extends across two interacting neighbors.
+The monomial is invariant under all three paired sign changes and under the endpoint exchange \(X_2\leftrightarrow Y_2\). The latter reverses the residue volume, so its quotient does not serve the class. The broader direct quotient calculation likewise leaves this target among ten independent directions outside its 48-dimensional supported subspace of the 58-dimensional paired-sign sector. The relevant distinction is the character of the residue, including its volume determinant, rather than the numerator alone.
 
-The target is invariant under all three paired sign changes. It also has equal endpoint exponents, both zero, so exchanging \(X_2,Y_2\) leaves its numerator fixed and changes the residue sign. The reflection quotient therefore supports the wrong character. The broader finite-quotient calculation likewise leaves this monomial among ten independent directions outside the known support in the paired-sign sector.
+The Fermat cover supplies a different exchange. Write
+\[
+T^6=Y_0^6+Y_2^6,\qquad
+\alpha=Y_0/T,\quad\beta=Y_2/T,\qquad
+S=Y_1^2+T^2,\quad P=Y_1\cdot T.
+\]
+The covered equation is invariant under \(Y_1\leftrightarrow T\), with \(\alpha,\beta\) fixed. On its weighted quotient, the source selecting the middle cubic is
+\[
+B=-\frac{P\cdot X_1^3}{2\cdot\alpha^5}.
+\]
+The same moving-conic family used for the central target constructs its primitive. Here the reflected correction has deck exponent \(2\), rather than \(-4\): the trace kills a positive square of the cover coordinate. Both exponents give the same nontrivial sixth-root character, but their explicit trace identities use different rational expressions.
 
-The ratios \([X_0:Y_0]\) and \([X_1:Y_1]\) organize a useful surface fibration of the holdout. This target places its cubic balance directly in one of those base ratios. It is consequently a useful comparison with [the endpoint cube](#case/holdout-p3), whose numerator is expressed in the product of the two remaining coordinates. A construction that handles both must explain how base dependence and fiber dependence interact.
+This is a useful test of the construction's target independence. The two neighboring couplings remain in the quotient geometry throughout; they are not discarded by treating one side of the chain as passive. What changes between the central and middle cubes is the polynomial source and the identity recovering the original density. The primitive, its normal derivative, and the deck trace together establish the six-variable certificate.
 
-The aim is a certificate for this exact class, with no prescribed pole degree. More broadly, understanding why a common support can or cannot serve the three cubic placements would be informative even before the full target space is accessible. [Chapter 4](#technical-information/known-locus) explains the surrounding boundary of known coverage.
+Compare [the endpoint cube](#case/holdout-p3), whose source contains \(S\) and \(\beta^3\) instead of \(P\). These examples show how one curve family handles classes with different coordinate dependence. [Chapter 2](#technical-information/explicit-constructions) develops the common construction, while [Chapter 4](#technical-information/known-locus) explains why its geometric consequences extend beyond the particular monomials formalized here.

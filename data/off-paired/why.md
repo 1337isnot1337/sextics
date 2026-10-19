@@ -1,13 +1,15 @@
-This example begins with the sparse holdout chain and adds
+This example begins with the sparse holdout chain, with coefficients \(1/2\), and adds
 \[
 \frac13\cdot X_0^2\cdot X_1\cdot X_2\cdot Y_0\cdot Y_2.
 \]
-The chain coefficients are \(1/2\), and the target remains \(X_0^3\cdot Y_0^3\). All mixed terms still have \(X/Y\)-bidegree \((4,2)\); what changes is their finer sign symmetry.
+The target remains \(X_0^3\cdot Y_0^3\), and every mixed term still has \(X/Y\)-bidegree \((4,2)\). The added term breaks the separate paired sign changes in the first two pairs, while preserving their product and the third paired sign change. It is a controlled loss of symmetry rather than a generic dense perturbation.
 
-In the original chain, simultaneously negating each pair \((X_i,Y_i)\) preserves every monomial. The new term has odd total degree in the first and second pairs and even total degree in the third. It therefore breaks the full paired-sign group, although the third paired reflection and the product of the first two remain. This controlled loss is more informative than removing every visible symmetry at once.
+The [Fermat-cover construction](#technical-information/explicit-constructions) identifies a second, more direct obstruction to reusing the holdout proof. With \(T^6=Y_0^6+Y_2^6\), \(\alpha=Y_0/T\), \(\beta=Y_2/T\), and \(y=Y_1\), the added term becomes
+\[
+\frac13\cdot\alpha\cdot\beta\cdot X_0^2\cdot X_1\cdot X_2\cdot T^2.
+\]
+It is not invariant under \(y\leftrightarrow T\). Thus the equation no longer descends through \(S=y^2+T^2\), \(P=yT\) to the weighted quotient used by that construction. Maintaining the same bidegree and central target is insufficient to maintain the transfer.
 
-The distinction matters because much of the holdout's known support was organized by characters of that larger diagonal group. A coordinate quotient or target projection using a symmetry that no longer preserves \(F\) is not valid here. At the same time, the unchanged global parity and single mixed bidegree leave some structure available for a different argument.
+This makes the instance a useful comparison with [the cyclic coupling](#case/cycle-three): both produce an unmatched \(T^2\) term on this cover, but only the cyclic example retains the full paired-sign group. One can therefore ask whether the obstruction is best addressed through a replacement cover, a different quotient, or a method insensitive to these sign characters. A failed correction to the existing conic does not exclude such alternatives.
 
-The instance asks whether methods developed on the paired-sign family extend across this first symmetry-breaking direction. Keeping the central cubic as target makes that comparison concrete. One can examine how an existing ansatz changes under the extra monomial, but failure of its first correction would only delimit that ansatz; it would not establish unrestricted nonexistence.
-
-Compare [the mixed-biweight instance](#case/mixed-biweight), which preserves the paired signs while changing the bidegree pattern. The two deformations separate assumptions that can otherwise be conflated in sparse examples: invariance under a finite group and compatibility with a block-scaling argument. A successful method that handles both would reach appreciably beyond the original holdout's special presentation.
+The [mixed-biweight deformation](#case/mixed-biweight) supplies the complementary comparison: its paired signs survive, but its cover acquires an unmatched fourth power. Together these entries separate symmetry of the physical sextic, symmetry after base change, and the target-density identities needed to return a certificate.

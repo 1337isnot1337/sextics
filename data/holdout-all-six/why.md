@@ -1,11 +1,23 @@
-Among the holdout targets, this is the most evenly distributed monomial:
+This is the most evenly distributed of the basic holdout monomials:
 \[
 A=X_0\cdot X_1\cdot X_2\cdot Y_0\cdot Y_1\cdot Y_2.
 \]
-Every variable occurs once. In a coordinatewise-even sextic, such a product often suggests the Jacobian density of a map to squared coordinates. The holdout, however, contains the mixed chain terms \(X_0^3X_1Y_0Y_1\) and \(X_1^3X_2Y_1Y_2\), so that simple square-coordinate reduction is unavailable.
+Every variable occurs once. On a coordinatewise-even sextic, such a product suggests the Jacobian density of the map to squared coordinates. The holdout's two mixed chain terms are not coordinatewise even, so that immediate square-coordinate reduction does not apply to its equation.
 
-There remains a more selective symmetry: simultaneously negating \(X_i,Y_i\) fixes both the equation and the numerator. This permits a paired-sign quotient, but passing to it does not itself construct a supporting divisor. The residue lies in one of the two conjugate character sectors that survive all currently known quotient-support arguments for the holdout.
+A more selective symmetry remains: simultaneously negating \(X_i,Y_i\) preserves both the equation and the numerator. The target also has equal endpoint exponents, so exchanging \(X_2,Y_2\) fixes the numerator and reverses the residue. Passing to a paired-sign quotient or observing an endpoint reflection is therefore not enough to supply the required support. Direct quotient calculations place this monomial among ten directions outside their 48-dimensional span in the 58-dimensional paired-sign sector, specifically in the four-dimensional character component conjugate to the central cubic's component.
 
-More precisely, this monomial is one of ten independent directions left in the 58-dimensional paired-sign-invariant target space after removing its 48 known supported directions. It belongs to the four-dimensional character component complementary to the six containing the central cubic. This makes it a useful counterweight to the visually simpler targets concentrated in one pair; neither subset should be mistaken for the whole remaining problem.
+Writing \(A=(X_0\cdot Y_0)\cdot(X_1\cdot Y_1)\cdot(X_2\cdot Y_2)\) makes the three pairs visible, but does not remove the unequal exponents in the chain couplings. The successful construction keeps the full equation and instead introduces an auxiliary cover:
+\[
+T^6=Y_0^6+Y_2^6,\qquad
+\alpha=Y_0/T,\quad\beta=Y_2/T,\qquad
+S=Y_1^2+T^2,\quad P=Y_1\cdot T.
+\]
+The exchange \(Y_1\leftrightarrow T\) gives a weighted quotient with source
+\[
+B=\frac{P\cdot X_0\cdot X_1\cdot X_2\cdot\beta}{2\cdot\alpha^4}.
+\]
+The moving-conic primitive for this source lifts with a correction of deck exponent \(-2\). Normalized trace removes the correction, and the source and derivative identities recover the exact balanced target.
 
-Writing the target as \((X_0Y_0)\cdot(X_1Y_1)\cdot(X_2Y_2)\) suggests a construction respecting all three pairs at once. A rational primitive of that kind would need to handle both links of the chain and their unequal exponents. Its value would extend beyond producing one certificate: it could indicate whether the remaining geometry is naturally organized by pair products, projective ratios, or a different set of auxiliary coordinates. Compare [the mixed-polar deformation](#case/mixed-polar), which preserves this target while changing the sextic's coupling pattern.
+The example demonstrates that the conic method is not tied to a numerator concentrated in a single binary pair. It handles a product involving every coordinate through a polynomial source on the same quotient. At the same time, changing the sextic is a separate issue: [the mixed-polar instance](#case/mixed-polar) keeps this numerator but adds a term that breaks the cover's exchange symmetry. A source formula alone cannot be imported when the covered equation is no longer invariant.
+
+[Chapter 2](#technical-information/explicit-constructions) explains this distinction between the geometry of the quotient and the selection of its source. The balanced target is a particularly direct comparison between generalizing across numerators on a fixed variety and generalizing the construction to a different variety.
