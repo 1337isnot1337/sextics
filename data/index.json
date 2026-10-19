@@ -973,15 +973,20 @@
     {
       "id": "holdout-q2",
       "title": "Holdout · pole order two",
-      "status": "open",
-      "formalStatus": "unproved",
-      "evidenceKind": "none",
-      "certificateAvailable": false,
+      "status": "solved",
+      "formalStatus": "proved",
+      "evidenceKind": "existence-proof",
+      "certificateAvailable": true,
       "visibility": "navigation",
-      "draftDisplayStatus": "open",
+      "draftDisplayStatus": "solved",
       "category": "Challenge instances",
       "q": 2,
-      "path": "data/holdout-q2/record.json"
+      "path": "data/holdout-q2/record.json",
+      "credit": {
+        "githubLogin": "HeadOfNaps",
+        "origin": "contribution",
+        "awardedAt": "2026-10-19T13:52:35Z"
+      }
     },
     {
       "id": "cycle-q2",
