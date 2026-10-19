@@ -884,15 +884,20 @@
     {
       "id": "holdout-x0-x14-y0",
       "title": "Holdout · fourth-power X",
-      "status": "open",
-      "formalStatus": "unproved",
-      "evidenceKind": "none",
-      "certificateAvailable": false,
+      "status": "solved",
+      "formalStatus": "proved",
+      "evidenceKind": "existence-proof",
+      "certificateAvailable": true,
       "visibility": "navigation",
-      "draftDisplayStatus": "open",
+      "draftDisplayStatus": "solved",
       "category": "Challenge instances",
       "q": 1,
-      "path": "data/holdout-x0-x14-y0/record.json"
+      "path": "data/holdout-x0-x14-y0/record.json",
+      "credit": {
+        "githubLogin": "fqlx",
+        "origin": "contribution",
+        "awardedAt": "2026-10-19T19:10:51Z"
+      }
     },
     {
       "id": "holdout-x04-p",
