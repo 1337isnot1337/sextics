@@ -31,7 +31,14 @@ function fixtures(){
   const root=path.join(__dirname,'../data'),out=[];
   for(const id of fs.readdirSync(root)){
     const file=path.join(root,id,'record.json');if(!fs.existsSync(file))continue;const r=JSON.parse(fs.readFileSync(file));if(r.status!=='solved')continue;
-    const formula=r.render.divisorProgram||r.render.divisorTerms;if(!formula)throw Error('Missing D: '+id);
+    const formula=r.render.divisorProgram||r.render.divisorTerms;
+    // Accepted existence proofs need not supply a drawable denominator.
+    // A saved divisor must still be present in the generated rendering data.
+    if(!formula){
+      assert.equal(r.evidenceKind,'existence-proof','Missing D: '+id);
+      assert.ok(!r.D&&!fs.existsSync(path.join(root,id,'display-divisor.json')),'Missing saved D: '+id);
+      continue;
+    }
     out.push({id,formula,signs:r.render.phaseSigns,plane:r.render.planeMatrix});
   }
   for(const mask of Array.from({length:64},(_,j)=>j))for(const id of ['one-reflection','two-ternary-dense-two-odd-hessian-d48']){
