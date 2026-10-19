@@ -15,13 +15,17 @@ import zipfile
 import yaml
 
 from acceptance import REPOSITORY, read_acceptance, require, sha256, solution_record, statement_hash, accepted_sources
+from review import approved, latest_owner_review, dispatched_approval
 
 ROOT = Path(__file__).resolve().parents[2]
 
 
-def api(path, *, binary=False):
-    result = subprocess.run(['gh','api',path],check=True,stdout=subprocess.PIPE,timeout=120)
-    return result.stdout if binary else json.loads(result.stdout)
+def api(path, *, binary=False, paginate=False):
+    result = subprocess.run(['gh','api',path,*(['--paginate','--slurp'] if paginate else [])],
+                            check=True,stdout=subprocess.PIPE,timeout=120)
+    if binary: return result.stdout
+    data=json.loads(result.stdout)
+    return [item for page in data for item in page] if paginate else data
 
 
 def git(*args):
@@ -29,6 +33,7 @@ def git(*args):
 
 
 def validate_report(report, pr, run, merge, policy):
+    require(report.get('schemaVersion') in (1,2), 'Unsupported protected report version')
     require(pr['merged'] and pr['base']['ref']=='main' and
             pr['base']['repo']['full_name']==REPOSITORY, 'Expected a merged main-branch PR')
     require(pr['merged_by']['login'].lower()==policy['owner'].lower(), 'Only an owner-merged proposal can be published')
@@ -39,12 +44,38 @@ def validate_report(report, pr, run, merge, policy):
     require(report['pullRequest']==pr['number'] and report['githubLogin']==pr['user']['login'], 'PR attribution mismatch')
     require(report['mode']=='live' and report['kernelReplay'] is True and
             report['result']=='lean-checked-awaiting-owner', 'A live protected proof check is required')
+    # The Actions REST API associates a pull_request_target run with the PR
+    # head, even though GITHUB_SHA and the executed workflow are from main.
+    # A manual dispatch is associated with main itself.
+    run_head=pr['head']['sha'] if run['event']=='pull_request_target' else report['baseCommit']
     require(run['conclusion']=='success' and run['path']=='.github/workflows/solve-proposal.yml' and
             run['event'] in ('pull_request_target','workflow_dispatch') and
-            run['head_sha']==report['baseCommit'], 'Receipt does not come from the protected base workflow')
+            run['head_sha']==run_head, 'Receipt does not come from the protected base workflow')
     for path,expected in report['verifierSha256'].items():
         require(sha256(git('show',report['baseCommit']+':'+path))==expected, 'Verifier evidence differs from the checked base')
     require('.github/workflows/solve-proposal.yml' in report['verifierSha256'], 'Missing workflow source binding')
+    if report['schemaVersion']==2:
+        require('scripts/proposals/review.py' in report['verifierSha256'], 'Missing sign-off source binding')
+
+
+def validate_owner_authorization(report, pr, run, policy, reviews):
+    """A green proof check is not owner approval. Authenticate that separately."""
+    head=pr['head']['sha']
+    owner=policy['owner']
+    latest=latest_owner_review(reviews,owner)
+    if approved(reviews,owner,head):
+        return {'method':'review','reviewId':latest['id'],'githubLogin':owner,'headCommit':head}
+    # Do not let a saved dispatch override an explicitly withdrawn review.
+    require(not latest or latest['state'] not in ('CHANGES_REQUESTED','DISMISSED'),
+            'Owner approval was withdrawn; obtain a new approving review before publication')
+    signoff=report.get('ownerAuthorization') or {}
+    if (signoff.get('method')=='workflow_dispatch' and
+        signoff.get('actor')==run.get('actor',{}).get('login') and
+        signoff.get('triggeringActor')==run.get('triggering_actor',{}).get('login') and
+        dispatched_approval(run['event'],signoff.get('actor',''),signoff.get('triggeringActor',''),
+                            signoff.get('headCommit',''),owner,head)):
+        return {'method':'workflow_dispatch','runId':run['id'],'githubLogin':owner,'headCommit':head}
+    raise ValueError('Lean passed, but the owner has not approved this exact commit. Approve the PR, then retry publication; an unchanged proof and base do not need another Lean run.')
 
 
 def publish(number):
@@ -101,6 +132,11 @@ def publish(number):
         # editorial changes are allowed by read_acceptance, including on retry.
         require(accepted_sources(folder)==report['sourceHashes'],
                 'Merged proposal differs from the checked sources')
+        if report['schemaVersion']==2:
+            reviews=api(f'repos/{REPOSITORY}/pulls/{number}/reviews?per_page=100',paginate=True)
+            receipt['ownerAuthorization']=validate_owner_authorization(report,pr,run,policy,reviews)
+        # Version 1 required authorization inside the successful workflow itself.
+        # Preserve that evidence when publishing or retrying older checked solves.
     solution=solution_record(ROOT,receipt)
     path.parent.mkdir(exist_ok=True)
     path.write_text(json.dumps(receipt,indent=2)+'\n')

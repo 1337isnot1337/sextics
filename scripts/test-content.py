@@ -212,6 +212,55 @@ class ContentUpdates(unittest.TestCase):
         solution['solver']['githubLogin']='another-user';path.write_text(yaml.safe_dump(solution))
         self.assertIn('differs from the accepted',self.run_build(success=False).stderr)
 
+    def test_separate_review_gates_initial_publication_and_credits_the_contributor(self):
+        receipt=self.receipt_fixture(login='contributor')
+        report=receipt['verification']; report['schemaVersion']=2
+        pr=receipt['pullRequest']; folder=self.root/'data'/RID
+        (folder/'acceptance.json').unlink(); (folder/'solution.rec').unlink()
+        self.write('.github/solve-policy.json',json.dumps({'mode':'live','owner':'benediamond'}))
+        archive=io.BytesIO()
+        with zipfile.ZipFile(archive,'w') as bundle:
+            bundle.writestr('report.json',json.dumps(report))
+        reviews=[]
+        responses={
+            'pulls/123':{'merged':True,'merge_commit_sha':pr['mergeCommit'],
+                         'head':{'sha':pr['headCommit']},'user':{'login':'contributor'},
+                         'created_at':receipt['submittedAt'],'merged_at':receipt['acceptedAt'],
+                         'html_url':pr['url']},
+            'commits/'+pr['mergeCommit']:{},
+            'commits/'+pr['headCommit']+'/statuses?per_page=100':[
+                {'context':'solve/lean','state':'success','creator':{'login':'github-actions[bot]'},
+                 'target_url':'https://github.com/hodge-computer/sextics/actions/runs/123'}],
+            'actions/runs/123':{'path':'.github/workflows/solve-proposal.yml','event':'pull_request_target'},
+            'actions/runs/123/artifacts?per_page=100':{'artifacts':[
+                {'name':'solve-123-'+pr['headCommit'],'expired':False,'size_in_bytes':1000,'id':1}]},
+            'actions/artifacts/1/zip':archive.getvalue(),
+            'pulls/123/reviews?per_page=100':reviews,
+        }
+        def api(path,**kwargs):
+            return responses[path.removeprefix('repos/hodge-computer/sextics/')]
+        # Report authentication is covered in test_check.py; exercise the real
+        # owner gate, receipt creation, and content binding without compiling Lean.
+        with patch.object(publisher,'ROOT',self.root),patch.object(publisher,'api',api), \
+             patch.object(publisher,'git',return_value=f'data/{RID}/proof.json\n'.encode()), \
+             patch.object(publisher,'validate_report'), \
+             patch.object(publisher.subprocess,'run',return_value=SimpleNamespace(returncode=0)):
+            with self.assertRaisesRegex(ValueError,'owner has not approved'):
+                publisher.publish(123)
+            self.assertFalse((folder/'acceptance.json').exists())
+            reviews.append({'id':5,'user':{'login':'benediamond'},'state':'APPROVED',
+                            'commit_id':pr['headCommit']})
+            publisher.publish(123)
+            accepted=self.read(f'data/{RID}/acceptance.json')
+            self.assertEqual(accepted['ownerAuthorization']['reviewId'],5)
+            self.assertEqual(accepted['githubLogin'],'contributor')
+            # Publication retries retain the already accepted approval evidence.
+            reviews.clear()
+            publisher.publish(123)
+            self.assertEqual(accepted,self.read(f'data/{RID}/acceptance.json'))
+        self.run_build()
+        self.assertEqual(self.read('leaderboard/credits.json')['credits'][0]['githubLogin'],'contributor')
+
     def test_instance_formal_flag_cannot_bypass_acceptance(self):
         path=self.root/'data'/RID/'instance.rec'
         path.write_text(path.read_text().replace('formalStatus: unproved','formalStatus: proved'))

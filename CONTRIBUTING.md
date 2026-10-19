@@ -157,7 +157,7 @@ This checks the proof against the checkout's target and exports logs, without co
 
 ### Review and acceptance
 
-The protected workflow compiles in an OS sandbox, replays every submitted module with `leanchecker`, and audits the exact theorem and transitive axioms. Proposal code receives no network access, repository write access, or GitHub credentials. An updated PR commit requires fresh checks and owner sign-off.
+The protected workflow compiles in an OS sandbox, replays every submitted module with `leanchecker`, and audits the exact theorem and transitive axioms. Proposal code receives no network access, repository write access, or GitHub credentials. A green `solve/lean` status means verification passed; the owner's review is a separate step. After the owner approves the checked commit, no additional Lean run is needed if the head and base remain unchanged. An updated PR commit or changed base requires fresh checks, and a new PR commit requires renewed owner sign-off.
 
 The owner merges the checked head with a merge commit. The trusted publication workflow then validates the successful run, source hashes, unchanged target, contributor identity, and merge parents. It writes an acceptance receipt and rebuilds the website and leaderboard. The instance remains open if publication fails; fix the cause and rerun publication rather than editing status flags. See [verification and owner sign-off](MAINTAINING.md#verification-sign-off-and-publication).
 

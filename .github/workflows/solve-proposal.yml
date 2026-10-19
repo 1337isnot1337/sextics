@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       pr_number:
-        description: Pull request to recheck after owner approval
+        description: Pull request to verify (an approving review does not require a rerun)
         required: true
         type: string
       approved_head:
@@ -26,7 +26,7 @@ concurrency:
 jobs:
   verify:
     if: github.event_name == 'workflow_dispatch' || github.event.pull_request.draft == false
-    name: Protected Lean proposal checks
+    name: Protected proposal verification
     runs-on: ubuntu-24.04
     timeout-minutes: 55
     steps:
@@ -91,7 +91,7 @@ jobs:
           HEAD: ${{ steps.context.outputs.head }}
           REPO: ${{ github.repository }}
           RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        run: gh api "repos/$REPO/statuses/$HEAD" -f state=pending -f context=solve/lean -f description='Checking proposal; owner sign-off required' -f target_url="$RUN"
+        run: gh api "repos/$REPO/statuses/$HEAD" -f state=pending -f context=solve/lean -f description='Checking the submitted proposal' -f target_url="$RUN"
       - name: Prepare Python
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
@@ -99,6 +99,7 @@ jobs:
       - name: Install trusted Python dependencies
         run: python3 -m pip install -r scripts/requirements-content.txt
       - name: Check proposal structure before preparing Lean
+        id: structure
         if: steps.proposal.outputs.solve == 'true'
         env:
           BASE: ${{ steps.context.outputs.base }}
@@ -135,6 +136,7 @@ jobs:
           lake exe cache get
           lake build HodgeComputer.Verify
       - name: Verify exact statement, kernel replay, and axioms
+        id: proof
         if: steps.proposal.outputs.solve == 'true'
         env:
           BASE: ${{ steps.context.outputs.base }}
@@ -142,7 +144,8 @@ jobs:
           AUTHOR: ${{ steps.context.outputs.author }}
           PR: ${{ steps.context.outputs.pr }}
         run: python3 scripts/proposals/check.py --base "$BASE" --head "$HEAD" --author "$AUTHOR" --pr "$PR" --output /tmp/proposal-report
-      - name: Require owner authorization for maintenance or live solves
+      - name: Report solve sign-off or require maintenance authorization
+        id: authorization
         env:
           GH_TOKEN: ${{ github.token }}
           PR: ${{ steps.context.outputs.pr }}
@@ -156,7 +159,11 @@ jobs:
         run: |
           gh api --paginate "repos/$REPO/pulls/$PR/reviews" --slurp > /tmp/proposal-reviews.json
           extra=()
-          if [ "$IS_SOLVE" != true ]; then extra+=(--maintenance); fi
+          if [ "$IS_SOLVE" = true ]; then
+            extra+=(--report /tmp/proposal-report/report.json)
+          else
+            extra+=(--maintenance)
+          fi
           python3 scripts/proposals/review.py --reviews /tmp/proposal-reviews.json --head "$HEAD" --event "$APPROVAL_EVENT" --actor "$APPROVAL_ACTOR" --triggering-actor "$APPROVAL_TRIGGERING_ACTOR" --approved-head "$APPROVED_HEAD" "${extra[@]}"
       - name: Preserve check receipts
         if: always() && steps.proposal.outputs.solve == 'true'
@@ -166,6 +173,7 @@ jobs:
           path: /tmp/proposal-report
           retention-days: 30
       - name: Reject a result for a superseded PR or base
+        id: freshness
         env:
           GH_TOKEN: ${{ github.token }}
           HEAD: ${{ steps.context.outputs.head }}
@@ -182,6 +190,30 @@ jobs:
           assert p['state']=='open' and p['base']['ref']=='main' and p['base']['repo']['full_name']==os.environ['REPO'] and p['head']['sha']==os.environ['HEAD'], 'PR changed during checking; rerun against the current commits'
           assert main['ref']=='refs/heads/main' and main['object']['type']=='commit' and main['object']['sha']==os.environ['BASE'], 'Main changed during checking; rerun against the current commits'
           PYCODE
+      - name: Explain a failed check
+        if: failure()
+        env:
+          CONTEXT: ${{ steps.context.outcome }}
+          STRUCTURE: ${{ steps.structure.outcome }}
+          PROOF: ${{ steps.proof.outcome }}
+          AUTHORIZATION: ${{ steps.authorization.outcome }}
+          FRESHNESS: ${{ steps.freshness.outcome }}
+          IS_SOLVE: ${{ steps.proposal.outputs.solve }}
+        run: |
+          message='Workflow preparation or reporting failed. Read the first failed step; this does not establish that the proof is invalid.'
+          if [ "$CONTEXT" = failure ]; then
+            message='The PR or main no longer matches the scheduled run. Read the commit-resolution error; if main advanced, start a fresh Solve proposal run on main.'
+          elif [ "$STRUCTURE" = failure ]; then
+            message='Submission format validation failed before Lean ran. See the structure-check error and CONTRIBUTING.md for the permitted files and manifest.'
+          elif [ "$PROOF" = failure ]; then
+            message='Proof verification did not complete successfully. See the Lean/kernel/audit error and the preserved solve artifact for compiler logs; review approval cannot override this failure.'
+          elif [ "$AUTHORIZATION" = failure ] && [ "$IS_SOLVE" != true ]; then
+            message='This is a maintenance PR and needs owner authorization for its exact commit. Approve it and rerun, or dispatch with the full reviewed SHA in approved_head.'
+          elif [ "$FRESHNESS" = failure ]; then
+            message='The PR or main changed during checking. This result is stale; start a fresh Solve proposal run on main before merging.'
+          fi
+          echo "::error::$message"
+          printf '### Check not accepted\n\n%s\n' "$message" >> "$GITHUB_STEP_SUMMARY"
       - name: Record result on the submitted commit
         if: always() && !cancelled() && steps.context.outputs.head != ''
         env:
@@ -194,13 +226,10 @@ jobs:
         run: |
           state=failure
           if [ "$RESULT" = success ]; then state=success; fi
-          description='Protected checks; owner merge decision required'
+          description='Proposal verification failed; see workflow details'
+          if [ "$state" = success ]; then description='Lean verified; owner approval and merge required'; fi
           if [ "$IS_SOLVE" != true ]; then
             description='Maintenance requires owner authorization'
             if [ "$state" = success ]; then description='Owner-authorized maintenance; not a solve'; fi
           fi
           gh api "repos/$REPO/statuses/$HEAD" -f state="$state" -f context=solve/lean -f description="$description" -f target_url="$RUN"
-      - name: Explain the review boundary
-        if: steps.proposal.outputs.solve == 'true'
-        run: |
-          echo 'Lean checks passed. The repository owner must review and merge this PR. This workflow never merges or changes atlas credit or formal acceptance.' >> "$GITHUB_STEP_SUMMARY"

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import unittest
+import copy
 import json
 import io
 import os
@@ -12,6 +13,8 @@ import yaml
 from check import ROOT, read_proposal
 from check import module_order, polynomial, strip_comments, target_source
 from review import approved, dispatched_approval, requires_owner_review
+import publish
+from acceptance import sha256
 
 class WorkflowCommitBinding(unittest.TestCase):
     def run_step(self, name, *, main='b'*40, head='c'*40, workflow='b'*40):
@@ -56,6 +59,31 @@ class WorkflowCommitBinding(unittest.TestCase):
             self.run_step('Reject a result for a superseded PR or base',head='d'*40)
 
 class ProposalChecks(unittest.TestCase):
+    def test_solve_cli_keeps_pending_review_separate_from_proof_result(self):
+        owner=json.loads((ROOT/'.github/solve-policy.json').read_text())['owner']
+        head='a'*40
+        with tempfile.TemporaryDirectory() as tmp:
+            reviews=Path(tmp)/'reviews.json'; reviews.write_text('[[]]')
+            report=Path(tmp)/'report.json'
+            checked={'schemaVersion':2,'headCommit':head,'kernelReplay':True,
+                     'result':'lean-checked-awaiting-owner'}
+            report.write_text(json.dumps(checked))
+            command=[sys.executable,str(ROOT/'scripts/proposals/review.py'),
+                     '--reviews',str(reviews),'--head',head,'--report',str(report)]
+            result=subprocess.run(command,capture_output=True,text=True)
+            self.assertEqual(result.returncode,0,result.stderr)
+            self.assertIn('Lean verification passed. Awaiting owner approval',result.stdout)
+            self.assertIsNone(json.loads(report.read_text())['ownerAuthorization'])
+            result=subprocess.run(command+['--event','workflow_dispatch','--actor',owner,
+                '--triggering-actor',owner,'--approved-head',head],capture_output=True,text=True)
+            self.assertEqual(result.returncode,0,result.stderr)
+            self.assertEqual(json.loads(report.read_text())['ownerAuthorization']['headCommit'],head)
+            # A sign-off cannot be attached to an incomplete or different check.
+            for mutation in ({'result':'structure-only'},{'headCommit':'b'*40},{'kernelReplay':False}):
+                report.write_text(json.dumps({**checked,**mutation}))
+                with self.subTest(mutation=mutation):
+                    self.assertNotEqual(subprocess.run(command,capture_output=True).returncode,0)
+
     def test_maintenance_cli_rejects_missing_and_stale_approval(self):
         owner=json.loads((ROOT/'.github/solve-policy.json').read_text())['owner']
         head='a'*40
@@ -116,6 +144,90 @@ class ProposalChecks(unittest.TestCase):
         self.assertFalse(approved([approved_review,dismissed],'benediamond',head))
         changes={**approved_review,'id':3,'state':'CHANGES_REQUESTED'}
         self.assertFalse(approved([approved_review,changes],'benediamond',head))
+
+
+class PublicationAuthorization(unittest.TestCase):
+    def setUp(self):
+        self.head='a'*40; self.base='b'*40
+        self.policy={'owner':'benediamond'}
+        self.pr={'merged':True,'number':122,'head':{'sha':self.head},
+                 'user':{'login':'contributor'},'merged_by':{'login':'benediamond'},
+                 'base':{'ref':'main','repo':{'full_name':'hodge-computer/sextics'}}}
+        self.report={'schemaVersion':2,'baseCommit':self.base,'headCommit':self.head,
+                     'pullRequest':122,'githubLogin':'contributor','mode':'live',
+                     'kernelReplay':True,'result':'lean-checked-awaiting-owner',
+                     'verifierSha256':{path:sha256(b'trusted fixture') for path in
+                       ('.github/workflows/solve-proposal.yml','scripts/proposals/review.py')}}
+        self.run={'id':123,'event':'pull_request_target','head_sha':self.head,
+                  'path':'.github/workflows/solve-proposal.yml','conclusion':'success',
+                  'actor':{'login':'contributor'},'triggering_actor':{'login':'contributor'}}
+        self.merge={'parents':[{'sha':self.base},{'sha':self.head}]}
+        self.review={'id':1,'user':{'login':'benediamond'},'commit_id':self.head,'state':'APPROVED'}
+
+    def validate(self):
+        with patch.object(publish,'git',return_value=b'trusted fixture'):
+            publish.validate_report(self.report,self.pr,self.run,self.merge,self.policy)
+
+    def authorize(self, reviews):
+        return publish.validate_owner_authorization(self.report,self.pr,self.run,self.policy,reviews)
+
+    def test_automatic_and_manual_run_commit_associations(self):
+        self.validate()
+        self.run.update(event='workflow_dispatch',head_sha=self.base)
+        self.validate()
+        self.run['head_sha']=self.head
+        with self.assertRaisesRegex(ValueError,'protected base workflow'):self.validate()
+
+    def test_failed_untrusted_stale_or_changed_runs_are_rejected(self):
+        for field,value in (('conclusion','failure'),('event','pull_request'),
+                            ('path','untrusted.yml'),('head_sha','c'*40)):
+            original=copy.deepcopy(self.run)
+            self.run[field]=value
+            with self.subTest(field=field),self.assertRaises(ValueError):self.validate()
+            self.run=original
+        self.merge['parents'][0]['sha']='d'*40
+        with self.assertRaisesRegex(ValueError,'checked base and head'):self.validate()
+
+    def test_old_reports_remain_valid_and_new_reports_bind_signoff_code(self):
+        self.report['schemaVersion']=1
+        del self.report['verifierSha256']['scripts/proposals/review.py']
+        self.validate()
+        self.report['schemaVersion']=2
+        with self.assertRaisesRegex(ValueError,'sign-off source binding'):self.validate()
+        self.report['schemaVersion']=3
+        with self.assertRaisesRegex(ValueError,'report version'):self.validate()
+
+    def test_approval_reuses_completed_check_without_changing_author(self):
+        self.validate()
+        with self.assertRaisesRegex(ValueError,'owner has not approved'):self.authorize([])
+        self.assertEqual(self.authorize([self.review])['reviewId'],1)
+        self.assertEqual(self.report['githubLogin'],'contributor')
+
+    def test_stale_nonowner_and_withdrawn_approvals_are_rejected(self):
+        for review in ({**self.review,'commit_id':'c'*40},
+                       {**self.review,'user':{'login':'stranger'}},
+                       {**self.review,'id':2,'state':'DISMISSED'},
+                       {**self.review,'id':2,'state':'CHANGES_REQUESTED'}):
+            with self.subTest(review=review),self.assertRaises(ValueError):self.authorize([review])
+        comment={**self.review,'id':3,'state':'COMMENTED'}
+        self.assertEqual(self.authorize([self.review,comment])['reviewId'],1)
+
+    def test_manual_signoff_must_match_the_authenticated_run_and_head(self):
+        self.run.update(event='workflow_dispatch',head_sha=self.base,
+                        actor={'login':'benediamond'},triggering_actor={'login':'benediamond'})
+        signoff={'method':'workflow_dispatch','actor':'benediamond',
+                 'triggeringActor':'benediamond','headCommit':self.head}
+        self.report['ownerAuthorization']=signoff
+        self.assertEqual(self.authorize([])['runId'],123)
+        for field,value in (('actor','stranger'),('triggeringActor','stranger'),('headCommit','c'*40)):
+            self.report['ownerAuthorization']={**signoff,field:value}
+            with self.subTest(field=field),self.assertRaises(ValueError):self.authorize([])
+        self.report['ownerAuthorization']=signoff
+        self.run['actor']={'login':'stranger'}
+        with self.assertRaises(ValueError):self.authorize([])
+        self.run['actor']={'login':'benediamond'}
+        with self.assertRaisesRegex(ValueError,'withdrawn'):
+            self.authorize([{**self.review,'state':'DISMISSED'}])
 
 class ProposalBoundary(unittest.TestCase):
     def setUp(self):
