@@ -29,4 +29,12 @@ The verifier generates a protected exact target from the base branch's record. C
 
 A rational-coefficient identity transfers to complex coefficients, but denominator admissibility over the complex numbers must also be established. Do not infer complex coprimality merely from rational irreducibility. Nonconstructive proofs are allowed when they establish the same protected existential theorem.
 
-The Lean project pins its toolchain and mathlib manifest. Proof sources belong to each instance's existing data folder and first enter through its solve PR. Owner sign-off, a checked merge, and a trusted acceptance receipt are required before the publisher derives solved status and leaderboard credit. See [the proposal specification](../CONTRIBUTING.md) and [verification workflow](../MAINTAINING.md#verification-sign-off-and-publication).
+The Lean project pins its toolchain and mathlib manifest. Instance-specific proofs belong to each instance's existing data folder and first enter through its solve PR. Reusable machinery from accepted proofs can be extracted into the shared library through a separate maintenance PR. Owner sign-off, a checked merge, and a trusted acceptance receipt are required before the publisher derives solved status and leaderboard credit. See [the proposal specification](../CONTRIBUTING.md) and [verification workflow](../MAINTAINING.md#verification-sign-off-and-publication).
+
+## Reusable constructions
+
+[`HodgeComputer.Constructions.HoldoutCover`](lean/HodgeComputer/Constructions/HoldoutCover/README.md) contains the Fermat-cover and moving-conic machinery from `fqlx`'s accepted [holdout proof](https://github.com/hodge-computer/sextics/pull/128). The construction supplies a primitive for an arbitrary polynomial source on its weighted quotient; an application must prove the source and derivative identities that transport its own target back to the original sextic.
+
+New holdout specializations can import `HodgeComputer.Constructions.HoldoutCover.GeneralizedCover` and apply `HoldoutGeneralization.certificate_of_source_pair`. The module also supplies the vanishing traces of the square and inverse square of the cover coordinate. These are ingredients for the fixed holdout sextic, not a theorem for arbitrary sextics or targets.
+
+The original accepted files under `data/holdout/` remain unchanged as the source of the original verification record. New submissions use the maintained shared modules instead of copying those files. Imports retain the original declaration namespaces and mathematical attribution; do not import both copies into the same Lean module.

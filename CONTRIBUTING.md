@@ -98,6 +98,8 @@ This additional binding prevents a correct existence proof from being paired wit
 
 Name flat helper files with `[A-Z][A-Za-z0-9_]*.lean` and import them as `Proposal.Helper`. That namespace is the verifier's temporary compilation layout, not a permanent repository directory. `Target.lean`, `Checked.lean`, and `Audit.lean` are reserved. Imports must be on single lines at the start of the module, with no dependency cycles. Trusted imports may start with `Mathlib.`, `HodgeComputer.`, or `HodgeTestbed.`.
 
+Use the [shared constructions](formal/README.md#reusable-constructions) when they apply. Keep target-specific identities in your instance's `Solution.lean` or permitted helpers; avoid copying a complete accepted proof package to reuse its machinery. Additions or changes to the shared library belong in a separate maintenance PR before the solve PR that imports them. The verifier audits the final theorem's transitive axioms, including those of imported results.
+
 Ordinary declarations and tactic proofs are accepted. Custom executable extensions, `axiom`, `sorry`, `admit`, and unchecked native decision procedures are refused. Shared infrastructure changes need a separate maintenance PR. Do not submit binaries, compiled artifacts, symlinks, executable scripts, Lake configuration, nested directories, or unrelated files.
 
 The complete committed diff must consist solely of newly added permitted solution files in **one existing instance folder**. Edits to `instance.rec`, `why.md`, the leaderboard, the website, the verifier, workflows, or any other existing file fail validation. Owner approval does not override this solve-file boundary. A PR without a solve is treated as maintenance and requires owner authorization of its exact head commit.
