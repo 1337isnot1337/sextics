@@ -136,7 +136,7 @@ jobs:
           path: |
             formal/lean/.lake
             ~/.elan/toolchains
-          key: protected-lean-v2-${{ runner.os }}-${{ hashFiles('formal/lean/lean-toolchain', 'formal/lean/lake-manifest.json', 'formal/lean/lakefile.toml', 'formal/lean/HodgeComputer/Verify.lean') }}
+          key: protected-lean-v3-${{ runner.os }}-${{ hashFiles('formal/lean/lean-toolchain', 'formal/lean/lake-manifest.json', 'formal/lean/lakefile.toml', 'formal/lean/HodgeComputer.lean', 'formal/lean/HodgeTestbed.lean', 'formal/lean/HodgeComputer/**/*.lean', 'formal/lean/HodgeTestbed/**/*.lean') }}
       - name: Prepare protected dependencies
         if: steps.proposal.outputs.solve == 'true'
         working-directory: formal/lean
