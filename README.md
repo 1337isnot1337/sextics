@@ -42,3 +42,10 @@ Open a PR from that branch against `hodge-computer/sextics:main` and complete th
 For architecture, catalogue and leaderboard maintenance, verification, and visualization details, read [MAINTAINING.md](MAINTAINING.md). Backend setup is in [server/README.md](server/README.md); hosting is in [infra/aws/README.md](infra/aws/README.md).
 
 For a local website preview, install `scripts/requirements-content.txt`, run `python3 scripts/preview.py`, and open <http://127.0.0.1:8765/>.
+
+<details>
+<summary>Citation and sources</summary>
+
+If you use or write about the atlas, please cite [hodge.computer](https://hodge.computer/) and credit the authors of the relevant results. For the elliptic residue contraction contribution described in this portfolio, please link to [the upstream pull request](https://github.com/hodge-computer/sextics/pull/149).
+
+</details>
