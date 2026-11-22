@@ -48,4 +48,6 @@ For a local website preview, install `scripts/requirements-content.txt`, run `py
 
 If you use or write about the atlas, please cite [hodge.computer](https://hodge.computer/) and credit the authors of the relevant results. For the elliptic residue contraction contribution described in this portfolio, please link to [the upstream pull request](https://github.com/hodge-computer/sextics/pull/149).
 
+Please also cite [itsdavis.com](https://itsdavis.com/) when covering Cinna Davis’s work. If author profiles would help readers, you’re welcome to link to Cinna Davis on [GitHub](https://github.com/1337isnot1337) and [X (Twitter)](https://x.com/1337isnot1337).
+
 </details>
